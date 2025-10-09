@@ -1,0 +1,17 @@
+{
+  "tab.flans_star_forge.star_forge": "Flans Star Forge",
+
+  "item.flans_star_forge.stars_powerstone": "Stars PowerStone",
+  "item.flans_star_forge.withering_powerstone": "Withering PowerStone",
+
+  "block.flans_star_forge.uni_stone": "Uni-Stone",
+
+  "effect.flans_star_forge.stars_blessing" : "Stars Blessing",
+  "effect.flans_star_forge.stars_blessing.desc" : "A true gift from the Stars",
+
+  "entity.flans_star_forge.stellar": "§5Stellar",
+  "entity.flans_star_forge.stellar.failed_to_teleport": "[Teleport Stellar] Unable to fined your partner(´;ω;｀)",
+
+  "key.categories.flans_star_forge": "Flans Star Forge",
+  "key.flans_star_forge.teleport_stellar" : "Teleport Stellar"
+}

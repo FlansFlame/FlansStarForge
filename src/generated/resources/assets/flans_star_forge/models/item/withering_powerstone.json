@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "flans_star_forge:item/withering_powerstone"
+  }
+}
