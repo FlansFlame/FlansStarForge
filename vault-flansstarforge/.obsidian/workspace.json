@@ -15,7 +15,8 @@
               "state": {
                 "file": "Flans Star Forge.md",
                 "mode": "source",
-                "source": false
+                "source": false,
+                "backlinks": false
               },
               "icon": "lucide-file",
               "title": "Flans Star Forge"
@@ -169,7 +170,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "5e744b63da2e584f",
+  "active": "47b88a79709def37",
   "lastOpenFiles": [
     "Flans Star Forge.md",
     "Welcome.md"

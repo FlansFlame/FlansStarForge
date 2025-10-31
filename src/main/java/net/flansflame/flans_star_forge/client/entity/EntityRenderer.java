@@ -12,6 +12,7 @@ public class EntityRenderer {
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event){
         event.registerEntityRenderer(ModEntities.STELLAR.get(), renderManager -> new StellarRenderer<>(renderManager, "stellar"));
+        event.registerEntityRenderer(ModEntities.STARS_CLUSTER.get(), renderManager -> new StarsClusterRenderer<>(renderManager, "null"));
 
         event.registerEntityRenderer(ModEntities.STELLAR_END_STAGE.get(), renderManager -> new StellarEndStageRenderer<>(renderManager, "stellar_end_stage"));
     }

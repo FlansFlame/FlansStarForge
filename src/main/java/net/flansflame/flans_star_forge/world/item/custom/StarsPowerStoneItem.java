@@ -1,8 +1,10 @@
 package net.flansflame.flans_star_forge.world.item.custom;
 
+import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.componet.ModComponentTags;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -36,12 +38,16 @@ public class StarsPowerStoneItem extends Item {
             if (level instanceof ServerLevel server) {
                 StellarEntity entityToSpawn = ModEntities.STELLAR.get().spawn(server, player.getOnPos().above(), MobSpawnType.COMMAND);
                 if (entityToSpawn != null) {
-                    entityToSpawn.setInvulnerable(true);
                     entityToSpawn.tame(player);
                     entityToSpawn.setYRot(server.getRandom().nextFloat() * 360F);
                     entityToSpawn.setSitting(true);
                 }
             }
+
+            if (level.isClientSide){
+                player.displayClientMessage(Component.translatable("flanaf-bau." + FlansStarForge.MOD_ID + ".stellar_on_spawn", player.getName()), false);
+            }
+
             ModComponentTags.OWNER_UUID.set(itemStack);
             return InteractionResult.SUCCESS;
         }

@@ -11,7 +11,10 @@
 
   "entity.flans_star_forge.stellar": "§5Stellar",
   "entity.flans_star_forge.stellar.failed_to_teleport": "[Teleport Stellar] Unable to fined your partner(´;ω;｀)",
+  "entity.flans_star_forge.stars_cluster": "Stars Cluster",
 
   "key.categories.flans_star_forge": "Flans Star Forge",
-  "key.flans_star_forge.teleport_stellar" : "Teleport Stellar"
+  "key.flans_star_forge.teleport_stellar" : "Teleport Stellar",
+
+  "flanaf-bau.flans_star_forge.stellar_on_spawn": "[Stellar] .Nausneu Ni Laz as %s-af"
 }

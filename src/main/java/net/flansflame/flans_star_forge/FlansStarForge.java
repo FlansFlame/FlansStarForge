@@ -6,6 +6,7 @@ import net.flansflame.flans_star_forge.world.effect.ModEffects;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.flansflame.flans_star_forge.world.item.ModCreativeModeTabs;
 import net.flansflame.flans_star_forge.world.item.ModItems;
+import net.flansflame.flans_star_forge.world.particle.ModParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -54,6 +55,7 @@ public class FlansStarForge
         ModCreativeModeTabs.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModEffects.register(modEventBus);
+        ModParticles.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
 

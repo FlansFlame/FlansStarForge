@@ -38,6 +38,7 @@ public class ModBlocks {
         ITEMS.register(id, () -> new BlockItem(toReturn.get(), new Item.Properties()));
         return toReturn;
     }
+
     private static <T extends Block> RegistryObject<T> registerNull(String id, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(id, block);
         NULL_ITEMS.register(id, () -> new BlockItem(toReturn.get(), new Item.Properties()));

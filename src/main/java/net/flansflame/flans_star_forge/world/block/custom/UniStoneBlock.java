@@ -1,5 +1,6 @@
 package net.flansflame.flans_star_forge.world.block.custom;
 
+import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.variable.ModVariables;
 import net.flansflame.flans_star_forge.world.block.ModBlocks;
 import net.flansflame.flans_star_forge.world.effect.ModEffects;
@@ -8,6 +9,7 @@ import net.flansflame.flans_star_forge.world.entity.custom.StellarEndStageEntity
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
 import net.flansflame.flans_star_forge.world.item.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -57,7 +59,6 @@ public class UniStoneBlock extends Block {
         if (level instanceof ServerLevel server){
             StellarEntity entityToSpawn = ModEntities.STELLAR.get().spawn(server, pos, MobSpawnType.COMMAND);
             if (entityToSpawn != null) {
-                entityToSpawn.setInvulnerable(true);
                 entityToSpawn.tame(player);
                 entityToSpawn.setYRot(server.getRandom().nextFloat() * 360F);
                 entityToSpawn.setSitting(true);
@@ -65,6 +66,11 @@ public class UniStoneBlock extends Block {
         }
         player.addItem(new ItemStack(ModItems.STARS_POWERSTONE.get()));
         ModVariables.starsBlessing(player, true);
+
+        if (level.isClientSide){
+            player.displayClientMessage(Component.translatable("flanaf-bau." + FlansStarForge.MOD_ID + ".stellar_on_spawn", player.getName()), false);
+        }
+
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 }
