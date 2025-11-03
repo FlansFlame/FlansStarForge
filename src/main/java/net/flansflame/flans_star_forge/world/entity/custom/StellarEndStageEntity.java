@@ -1,5 +1,10 @@
 package net.flansflame.flans_star_forge.world.entity.custom;
 
+import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackGoal;
+import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
+import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhases;
+import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhase;
+import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhases;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,22 +49,6 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
 
     public StellarEndStageEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
-    }
-
-    @Override
-    public void tick() {
-        Level level = this.level();
-        double x = this.getX();
-        double y = this.getY();
-        double z = this.getZ();
-
-        this.addAttackPhase();
-        if (this.getAttackPhase() > 60) {
-            //this.attack(x, y, z, level);
-            this.setAttackPhase();
-        }
-
-        super.tick();
     }
 
     /*ATTACKS*/
@@ -120,6 +109,10 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
+
+        for (EndStellarAttackPhase attackPhase : EndStellarAttackPhases.ATTACK_PHASES) {
+            create(controllers, attackPhase.getAnimationId());
+        }
     }
 
     public <T extends GeoAnimatable> PlayState predicate(AnimationState<T> tAnimationState) {
@@ -167,8 +160,8 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new RangedAttackGoal(this, 1.0D, 40, 20.0F));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, false));
+        this.goalSelector.addGoal(2, new EndStellarAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(3, new RangedAttackGoal(this, 1.0D, 40, 20.0F));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomFlyingGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -185,7 +178,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
         builder.add(Attributes.MAX_HEALTH, 1024);
         builder.add(Attributes.ARMOR, 64);
         builder.add(Attributes.MOVEMENT_SPEED, 0.3f);
-        builder.add(Attributes.ATTACK_DAMAGE, 20);
+        builder.add(Attributes.ATTACK_DAMAGE, 40);
         builder.add(Attributes.ATTACK_SPEED, 1.8);
         return builder;
     }
@@ -247,11 +240,6 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
 
     @Override
     public void checkDespawn() {
-        if (this.level().getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
-            this.discard();
-        } else {
-            this.noActionTime = 0;
-        }
     }
 
     @Override
@@ -324,13 +312,5 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
 
     public int getAttackPhase() {
         return this.entityData.get(ATTACK_PHASE);
-    }
-
-    public void addAttackPhase(int i) {
-        setAttackPhase(getAttackPhase() + i);
-    }
-
-    public void addAttackPhase() {
-        addAttackPhase(1);
     }
 }

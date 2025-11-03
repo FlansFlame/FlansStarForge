@@ -2,9 +2,9 @@ package net.flansflame.flans_star_forge.world.entity.custom;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.componet.ModComponentTags;
-import net.flansflame.flans_star_forge.world.ai.StellarAttackGoal;
-import net.flansflame.flans_star_forge.world.ai.StellarAttackPhase;
-import net.flansflame.flans_star_forge.world.ai.StellarAttackPhases;
+import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackGoal;
+import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhase;
+import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhases;
 import net.flansflame.flans_star_forge.world.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -38,7 +38,7 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
-public class StellarEntity extends TamableAnimal implements GeoEntity {
+public class StellarEntity extends TamableAnimal implements GeoEntity{
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 

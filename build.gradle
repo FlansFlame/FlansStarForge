@@ -109,6 +109,7 @@ minecraft {
 
             property 'mixin.debug.export', 'false'
             property 'geckolib.disable', 'true'
+            property 'nbt-autocomplete.disable', 'true'
         }
     }
 }
@@ -144,7 +145,7 @@ dependencies {
     implementation fg.deobf("curse.maven:jei-238222:6075247")
     implementation fg.deobf("curse.maven:jade-324717:6106101")
     implementation fg.deobf("curse.maven:appleskin-248787:4770828")
-    //implementation fg.deobf("curse.maven:nbt-autocomplete-813557:5957924")
+    implementation fg.deobf("curse.maven:nbt-autocomplete-813557:5957924")
     implementation fg.deobf("curse.maven:collective-342584:6429218")
     implementation fg.deobf("curse.maven:full-brightness-toggle-391656:6185948")
 

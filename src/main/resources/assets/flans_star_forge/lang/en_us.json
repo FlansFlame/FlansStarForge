@@ -9,9 +9,11 @@
   "effect.flans_star_forge.stars_blessing" : "Stars Blessing",
   "effect.flans_star_forge.stars_blessing.desc" : "A true gift from the Stars",
 
-  "entity.flans_star_forge.stellar": "§5Stellar",
+  "entity.flans_star_forge.stellar": "§3Stellar",
   "entity.flans_star_forge.stellar.failed_to_teleport": "[Teleport Stellar] Unable to fined your partner(´;ω;｀)",
   "entity.flans_star_forge.stars_cluster": "Stars Cluster",
+
+  "entity.flans_star_forge.stellar_end_stage": "§5Stellar",
 
   "key.categories.flans_star_forge": "Flans Star Forge",
   "key.flans_star_forge.teleport_stellar" : "Teleport Stellar",

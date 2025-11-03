@@ -1,6 +1,6 @@
-package net.flansflame.flans_star_forge.world.ai.custom;
+package net.flansflame.flans_star_forge.world.ai.stellar.custom;
 
-import net.flansflame.flans_star_forge.world.ai.StellarAttackPhase;
+import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhase;
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;

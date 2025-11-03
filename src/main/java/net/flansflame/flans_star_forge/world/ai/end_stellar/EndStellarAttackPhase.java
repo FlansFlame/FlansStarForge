@@ -1,21 +1,21 @@
-package net.flansflame.flans_star_forge.world.ai;
+package net.flansflame.flans_star_forge.world.ai.end_stellar;
 
-import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
+import net.flansflame.flans_star_forge.world.entity.custom.StellarEndStageEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 
-public class StellarAttackPhase {
+public class EndStellarAttackPhase {
     private String animationId;
     private SoundEvent attackSound;
 
-    public StellarAttackPhase(String animationId) {
+    public EndStellarAttackPhase(String animationId) {
         this(animationId, null);
     }
 
-    public StellarAttackPhase(String animationId, SoundEvent attackSound) {
+    public EndStellarAttackPhase(String animationId, SoundEvent attackSound) {
         this.animationId = animationId;
         this.attackSound = attackSound;
     }
@@ -41,9 +41,8 @@ public class StellarAttackPhase {
     }
 
 
-
     /*Overrides*/
-    public void onAttack(StellarEntity stellar, LivingEntity target) {
+    public void onAttack(StellarEndStageEntity stellar, LivingEntity target) {
         stellar.swing(InteractionHand.MAIN_HAND);
         stellar.doHurtTarget(target);
 
@@ -52,7 +51,7 @@ public class StellarAttackPhase {
         }
     }
 
-    public void beforeAttack(StellarEntity stellar, LivingEntity target) {
+    public void beforeAttack(StellarEndStageEntity stellar, LivingEntity target) {
         stellar.trigger(stellar, stellar.level(), this.getAnimationId());
     }
 }
