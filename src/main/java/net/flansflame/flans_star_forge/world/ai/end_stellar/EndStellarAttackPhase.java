@@ -40,9 +40,15 @@ public class EndStellarAttackPhase {
         this.attackSound = attackSound;
     }
 
+    protected double getAttackReach(LivingEntity entity, LivingEntity target) {
+        return entity.getBbWidth() * 2 * entity.getBbWidth() * 2 + target.getBbWidth();
+    }
 
     /*Overrides*/
     public void onAttack(StellarEndStageEntity stellar, LivingEntity target) {
+
+        if (target == null || stellar.getPerceivedTargetDistanceSquareForMeleeAttack(target) > getAttackReach(stellar, target) * EndStellarAttackGoal.ATTACK_STAGE_RANGE_MULTIPLIER) return;
+
         stellar.swing(InteractionHand.MAIN_HAND);
         stellar.doHurtTarget(target);
 

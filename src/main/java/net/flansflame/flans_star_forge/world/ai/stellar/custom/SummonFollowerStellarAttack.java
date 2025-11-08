@@ -57,7 +57,7 @@ public class SummonFollowerStellarAttack extends StellarAttackPhase {
 
                     int stack = 0;
 
-                    while ((vX == x || vZ == z || !server.getBlockState(BlockPos.containing(vX, y, vZ)).canOcclude()) && stack < MAX_LOOPS) {
+                    while ((vX == x || vZ == z || server.getBlockState(BlockPos.containing(vX, y, vZ)).canOcclude()) && stack < MAX_LOOPS) {
                         vX = x + Mth.nextInt(RandomSource.create(), -4, 4);
                         vZ = z + Mth.nextInt(RandomSource.create(), -4, 4);
                         stack++;

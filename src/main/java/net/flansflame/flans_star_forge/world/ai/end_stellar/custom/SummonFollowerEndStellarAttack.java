@@ -57,7 +57,7 @@ public class SummonFollowerEndStellarAttack extends EndStellarAttackPhase {
 
                     int stack = 0;
 
-                    while ((vX == x || vZ == z || !server.getBlockState(BlockPos.containing(vX, y, vZ)).canOcclude()) && stack < MAX_LOOPS) {
+                    while ((vX == x || vZ == z || server.getBlockState(BlockPos.containing(vX, y, vZ)).canOcclude()) && stack < MAX_LOOPS) {
                         vX = x + Mth.nextInt(RandomSource.create(), -4, 4);
                         vZ = z + Mth.nextInt(RandomSource.create(), -4, 4);
                         stack++;
@@ -67,7 +67,7 @@ public class SummonFollowerEndStellarAttack extends EndStellarAttackPhase {
                     }
 
                     server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, vX, y, vZ, 1, 0, 0, 0, 0);
-                    var entityToSpawn = ModEntities.STARS_CLUSTER.get().spawn(server, BlockPos.containing(vX, y, vZ), MobSpawnType.MOB_SUMMONED);
+                    var entityToSpawn = EntityType.WITHER_SKELETON.spawn(server, BlockPos.containing(vX, y, vZ), MobSpawnType.MOB_SUMMONED);
                     if (entityToSpawn != null) {
                         entityToSpawn.setYRot(stellar.getYRot());
                         entityToSpawn.setPos(vX + 0.5, y, vZ + 0.5);

@@ -38,12 +38,13 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
-public class StellarEntity extends TamableAnimal implements GeoEntity{
+public class StellarEntity extends TamableAnimal implements GeoEntity {
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> ATTACK_PHASE = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
+
 
     public StellarEntity(EntityType<? extends TamableAnimal> type, Level level) {
         super(type, level);
@@ -219,8 +220,6 @@ public class StellarEntity extends TamableAnimal implements GeoEntity{
         setSitting(!isSitting());
     }
 
-
-
     /*CHUNK_LOADING*/
 
     @Override
@@ -244,7 +243,6 @@ public class StellarEntity extends TamableAnimal implements GeoEntity{
 
 
     /*STARS_POWERSTONE STORING & SITTING*/
-
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (this.isOwnedBy(player) && !this.level().isClientSide && hand == InteractionHand.MAIN_HAND) {

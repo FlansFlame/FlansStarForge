@@ -3,8 +3,6 @@ package net.flansflame.flans_star_forge.world.entity.custom;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackGoal;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhases;
-import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhase;
-import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhases;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,7 +16,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -46,53 +43,27 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
     private final ServerBossEvent bossInfo = createBossBar();
 
     public static final EntityDataAccessor<Integer> ATTACK_PHASE = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
 
     public StellarEndStageEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
     }
 
     /*ATTACKS*/
-
-    /*
-    public void attack(double x, double y, double z, Level level) {
-        int random = Mth.nextInt(RandomSource.create(), 0, 2);
-        final double HEAD_P1 = y + 4;
-        if (level instanceof ServerLevel server) {
-            switch (random) {
-                case 1 -> {
-                    server.sendParticles(DustParticleOptions.REDSTONE, x, HEAD_P1, z, 16, 0.1, 0.1, 0.1, 0);
-                    FlansStarForge.queueServerWork(4, () -> {
-                        this.trigger(this, server, "slash");
-                        FlansStarForge.queueServerWork(18, () -> Attacks.darkBurst(this, x, y, z, server));
-                    });
-                }
-                case 2 -> {
-                    server.sendParticles(ParticleTypes.END_ROD, x, HEAD_P1, z, 16, 0.1, 0.1, 0.1, 0);
-                    FlansStarForge.queueServerWork(4, () -> {
-                        this.trigger(this, level, "staff");
-                        FlansStarForge.queueServerWork(20, () -> Attacks.summonFollower(this, x, y, z, server));
-                    });
-                }
-                case 3 -> {
-                    FlansStarForge.queueServerWork(4, () -> {
-                        this.trigger(this, level, "hold");
-                    });
-                }
-                case 4 -> {
-                    FlansStarForge.queueServerWork(4, () -> {
-                        this.trigger(this, level, "up");
-                    });
-                }
-                case 5 -> {
-                    FlansStarForge.queueServerWork(4, () -> {
-                        this.trigger(this, level, "yeet");
-                    });
-                }
-                default -> this.addAttackPhase(40);
-            }
+     @Override
+    public void tick() {
+        if (this.getAttackCount() >= 0) {
+            this.addAttackCount(-1);
         }
+
+        if (this.getAttackCount() == 0) {
+            EndStellarAttackPhase attackPhase = EndStellarAttackPhases.ATTACK_PHASES.get(this.getAttackPhase());
+            attackPhase.onAttack(this, this.getTarget());
+
+            this.setAttackCount(-1);
+        }
+        super.tick();
     }
-     */
 
     /*GECKOLIB*/
 
@@ -287,19 +258,22 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        setAttackPhase(tag.getInt("AttackPhase"));
+        this.setAttackPhase(tag.getInt("AttackPhase"));
+        this.setAttackCount(tag.getInt("AttackCount"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("AttackPhase", getAttackPhase());
+        tag.putInt("AttackPhase", this.getAttackPhase());
+        tag.putInt("AttackCount", this.getAttackCount());
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ATTACK_PHASE, 0);
+        this.entityData.define(ATTACK_COUNT, -1);
     }
 
     public void setAttackPhase(int i) {
@@ -312,5 +286,17 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
 
     public int getAttackPhase() {
         return this.entityData.get(ATTACK_PHASE);
+    }
+
+    public void setAttackCount(int i) {
+        this.entityData.set(ATTACK_COUNT, i);
+    }
+
+    public int getAttackCount() {
+        return this.entityData.get(ATTACK_COUNT);
+    }
+
+    public void addAttackCount(int i) {
+        this.setAttackCount(this.getAttackCount() + i);
     }
 }
