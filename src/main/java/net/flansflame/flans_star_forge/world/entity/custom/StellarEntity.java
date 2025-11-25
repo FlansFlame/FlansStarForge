@@ -2,6 +2,8 @@ package net.flansflame.flans_star_forge.world.entity.custom;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.componet.ModComponentTags;
+import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
+import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhases;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackGoal;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhase;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhases;
@@ -44,10 +46,27 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
 
     public static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> ATTACK_PHASE = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
-
+    public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
 
     public StellarEntity(EntityType<? extends TamableAnimal> type, Level level) {
         super(type, level);
+    }
+
+
+    /*ATTACKS*/
+    @Override
+    public void tick() {
+        if (this.getAttackCount() >= 0) {
+            this.addAttackCount(-1);
+        }
+
+        if (this.getAttackCount() == 0) {
+            StellarAttackPhase attackPhase = StellarAttackPhases.ATTACK_PHASES.get(this.getAttackPhase());
+            attackPhase.onAttack(this, this.getTarget());
+
+            this.setAttackCount(-1);
+        }
+        super.tick();
     }
 
 
@@ -179,6 +198,7 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
         super.readAdditionalSaveData(tag);
         setAttackPhase(tag.getInt("AttackPhase"));
         setSitting(tag.getBoolean("isSitting"));
+        this.setAttackCount(tag.getInt("AttackCount"));
     }
 
     @Override
@@ -186,6 +206,7 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
         super.addAdditionalSaveData(tag);
         tag.putInt("AttackPhase", getAttackPhase());
         tag.putBoolean("isSitting", isSitting());
+        tag.putInt("AttackCount", this.getAttackCount());
     }
 
     @Override
@@ -193,6 +214,7 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
         super.defineSynchedData();
         this.entityData.define(ATTACK_PHASE, 0);
         this.entityData.define(SITTING, false);
+        this.entityData.define(ATTACK_COUNT, -1);
     }
 
     public void setAttackPhase(int i) {
@@ -218,6 +240,18 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
 
     public void triggerSitting() {
         setSitting(!isSitting());
+    }
+
+    public void setAttackCount(int i) {
+        this.entityData.set(ATTACK_COUNT, i);
+    }
+
+    public int getAttackCount() {
+        return this.entityData.get(ATTACK_COUNT);
+    }
+
+    public void addAttackCount(int i) {
+        this.setAttackCount(this.getAttackCount() + i);
     }
 
     /*CHUNK_LOADING*/

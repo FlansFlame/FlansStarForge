@@ -1,5 +1,6 @@
 package net.flansflame.flans_star_forge.world.ai.stellar;
 
+import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackGoal;
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -40,9 +41,16 @@ public class StellarAttackPhase {
         this.attackSound = attackSound;
     }
 
+    protected double getAttackReach(LivingEntity entity, LivingEntity target) {
+        return entity.getBbWidth() * 2 * entity.getBbWidth() * 2 + target.getBbWidth();
+    }
+
 
     /*Overrides*/
     public void onAttack(StellarEntity stellar, LivingEntity target) {
+
+        if (target == null || stellar.getPerceivedTargetDistanceSquareForMeleeAttack(target) > getAttackReach(stellar, target) * EndStellarAttackGoal.ATTACK_STAGE_RANGE_MULTIPLIER) return;
+
         stellar.swing(InteractionHand.MAIN_HAND);
         stellar.doHurtTarget(target);
 

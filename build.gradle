@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.8.5'
 }
 
 version = mod_version
@@ -118,6 +119,10 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    flatDir {
+        dir("libs")
+    }
+
     maven {
         url "https://cursemaven.com"
     }
@@ -165,7 +170,12 @@ dependencies {
 
     implementation fg.deobf("curse.maven:flansknowledgelib-1336263:7041257")
 
-    //implementation fg.deobf("curse.maven:re-avaritia-623969:6958116")
+    implementation fg.deobf("curse.maven:re-avaritia-623969:6958116")
+    implementation fg.deobf("curse.maven:eraser-1332266:7238219")
+}
+
+mixin {
+    config "${mod_id}.mixins.json"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -174,11 +184,11 @@ dependencies {
 // See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
-            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-            forge_version: forge_version, forge_version_range: forge_version_range,
+            minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+            forge_version       : forge_version, forge_version_range: forge_version_range,
             loader_version_range: loader_version_range,
-            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors: mod_authors, mod_description: mod_description,
+            mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors         : mod_authors, mod_description: mod_description,
     ]
     inputs.properties replaceProperties
 

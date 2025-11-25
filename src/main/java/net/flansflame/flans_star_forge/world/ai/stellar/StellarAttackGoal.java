@@ -28,9 +28,7 @@ public class StellarAttackGoal extends MeleeAttackGoal {
 
             attackPhase.beforeAttack(stellar, entity);
 
-            FlansStarForge.queueServerWork(ATTACK_START_TICK, () -> {
-                attackPhase.onAttack(stellar, entity);
-            });
+            stellar.setAttackCount(ATTACK_START_TICK);
         }
     }
 

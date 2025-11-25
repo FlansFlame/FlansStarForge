@@ -23,7 +23,7 @@ public class ModEntities {
     public static final RegistryObject<EntityType<StellarEntity>> STELLAR =
             ENTITIES.register("stellar",
                     () -> EntityType.Builder.of(StellarEntity::new, MobCategory.MISC)
-                            .sized(0.5f, 1.9f)
+                            .sized(0.5f, 2.6f)
                             .build(new ResourceLocation(FlansStarForge.MOD_ID, "stellar").toString()));
 
     public static final RegistryObject<EntityType<StarsClusterEntity>> STARS_CLUSTER =
@@ -36,7 +36,7 @@ public class ModEntities {
     public static final RegistryObject<EntityType<StellarEndStageEntity>> STELLAR_END_STAGE =
             ENTITIES.register("stellar_end_stage",
                     () -> EntityType.Builder.of(StellarEndStageEntity::new, MobCategory.MISC)
-                            .sized(0.5f, 1.9f)
+                            .sized(0.5f, 2.6f)
                             .build(new ResourceLocation(FlansStarForge.MOD_ID, "stellar_end_stage").toString()));
 
     public static void register(IEventBus eventBus){

@@ -1,4 +1,4 @@
-{
+ {
   "tab.flans_star_forge.star_forge": "Flans Star Forge",
 
   "item.flans_star_forge.stars_powerstone": "Stars PowerStone",
@@ -13,10 +13,10 @@
   "entity.flans_star_forge.stellar.failed_to_teleport": "[Teleport Stellar] Unable to fined your partner(´;ω;｀)",
   "entity.flans_star_forge.stars_cluster": "Stars Cluster",
 
-  "entity.flans_star_forge.stellar_end_stage": "§5Stellar",
+  "entity.flans_star_forge.stellar_end_stage": "§4Eunuz Stellar-af",
 
   "key.categories.flans_star_forge": "Flans Star Forge",
   "key.flans_star_forge.teleport_stellar" : "Teleport Stellar",
 
-  "flanaf-bau.flans_star_forge.stellar_on_spawn": "[Stellar] .Nausneu Ni Laz as %s-af"
+  "flanaf-bau.flans_star_forge.stellar_on_spawn": "[Stellar-af] .Nausneu Ni Laz as %s-af"
 }

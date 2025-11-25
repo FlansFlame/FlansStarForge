@@ -1,21 +1,21 @@
 package net.flansflame.flans_star_forge.world.entity.custom;
 
+import net.flansflame.flans_knowledge_lib.world.entity.IBossBar;
+import net.flansflame.flans_knowledge_lib.world.entity.IUnRemovable;
+import net.flansflame.flans_star_forge.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackGoal;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhases;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
+import net.flansflame.flans_star_forge.world.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -36,21 +36,22 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
-public class StellarEndStageEntity extends Monster implements GeoEntity, RangedAttackMob {
+public class StellarEndStageEntity extends Monster implements GeoEntity, RangedAttackMob, IBossBar, IUnRemovable {
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    private final ServerBossEvent bossInfo = createBossBar();
-
     public static final EntityDataAccessor<Integer> ATTACK_PHASE = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Float> EX_HP = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.FLOAT);
+
+    public static final float MAX_EX_HP = 4096f;
 
     public StellarEndStageEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
     }
 
     /*ATTACKS*/
-     @Override
+    @Override
     public void tick() {
         if (this.getAttackCount() >= 0) {
             this.addAttackCount(-1);
@@ -62,6 +63,26 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
 
             this.setAttackCount(-1);
         }
+
+        if (!this.isAlive() && this.isDeadOrDying()){
+            ++this.deathTime;
+            if (this.deathTime >= 20 && !this.isRemoved()) {
+                this.level().broadcastEntityEvent(this, (byte)60);
+                if (this.getRemovalReason() == null) {
+                    ((IEntityMixinAccessor) this).setRemovalReason(RemovalReason.KILLED);
+                }
+
+                if (this.getRemovalReason().shouldDestroy()) {
+                    this.stopRiding();
+                }
+
+                this.getPassengers().forEach(Entity::stopRiding);
+                ((IEntityMixinAccessor) this).getLevelCallback().onRemove(RemovalReason.KILLED);
+                this.invalidateCaps();
+                this.brain.clearMemories();
+            }
+        }
+
         super.tick();
     }
 
@@ -146,8 +167,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
 
     public static AttributeSupplier.Builder createAttributes() {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
-        builder.add(Attributes.MAX_HEALTH, 1024);
-        builder.add(Attributes.ARMOR, 64);
+        builder.add(Attributes.MAX_HEALTH, 4);
         builder.add(Attributes.MOVEMENT_SPEED, 0.3f);
         builder.add(Attributes.ATTACK_DAMAGE, 40);
         builder.add(Attributes.ATTACK_SPEED, 1.8);
@@ -228,29 +248,23 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
         return SoundEvents.WITHER_DEATH;
     }
 
-    /*BOSS_BARS*/
-
-    protected ServerBossEvent createBossBar() {
-        return new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.NOTCHED_6);
+    @Override
+    public String getTextureId() {
+        return "stellar_end_stage";
     }
 
     @Override
-    public void startSeenByPlayer(ServerPlayer player) {
-        super.startSeenByPlayer(player);
-        this.bossInfo.addPlayer(player);
+    public boolean useBarCover() {
+        return true;
     }
 
     @Override
-    public void stopSeenByPlayer(ServerPlayer player) {
-        super.stopSeenByPlayer(player);
-        this.bossInfo.removePlayer(player);
-    }
-
-    @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
-        this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
-        this.bossInfo.setName(Component.literal(this.getDisplayName().getString()));
+    public float getEntityHpPercentage(LivingEntity entity) {
+        if (entity instanceof StellarEndStageEntity stellarEndStage) {
+            return stellarEndStage.getExHp() / StellarEndStageEntity.MAX_EX_HP;
+        } else {
+            return 1f;
+        }
     }
 
     /*SYNCED_DATA*/
@@ -258,8 +272,9 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setAttackPhase(tag.getInt("AttackPhase"));
-        this.setAttackCount(tag.getInt("AttackCount"));
+        if (tag.contains("AttackPhase")) this.setAttackPhase(tag.getInt("AttackPhase")); else this.setAttackPhase(0);
+        if (tag.contains("AttackCount")) this.setAttackCount(tag.getInt("AttackCount"));else this.setAttackPhase(-1);
+        if (tag.contains("ExHp")) this.setExHp(tag.getFloat("ExHp"));else this.setExHp(MAX_EX_HP);
     }
 
     @Override
@@ -267,6 +282,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
         super.addAdditionalSaveData(tag);
         tag.putInt("AttackPhase", this.getAttackPhase());
         tag.putInt("AttackCount", this.getAttackCount());
+        tag.putFloat("ExHp", this.getExHp());
     }
 
     @Override
@@ -274,6 +290,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
         super.defineSynchedData();
         this.entityData.define(ATTACK_PHASE, 0);
         this.entityData.define(ATTACK_COUNT, -1);
+        this.entityData.define(EX_HP, MAX_EX_HP);
     }
 
     public void setAttackPhase(int i) {
@@ -298,5 +315,48 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
 
     public void addAttackCount(int i) {
         this.setAttackCount(this.getAttackCount() + i);
+    }
+
+    /*INVINCIBILITY*/
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        Entity entity = source.getEntity();
+        if (entity instanceof Player player && player.getMainHandItem().is(ModItems.FORGED_STARS_FRAGMENT.get())) {
+            this.addExHp(-amount);
+            return super.hurt(source, 0f);
+        }
+        return false;
+    }
+
+    @Override
+    public float getHealth() {
+        return this.getMaxHealth();
+    }
+
+    public void setExHp(float exHp) {
+        this.entityData.set(EX_HP, exHp);
+    }
+
+    public float getExHp() {
+        return this.entityData.get(EX_HP);
+    }
+
+    public void addExHp(float exHp) {
+        this.setExHp(this.getExHp() + exHp);
+    }
+
+    @Override
+    public void kill() {
+        return;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return !this.isRemoved() && this.getExHp() > 0.0F;
+    }
+
+    @Override
+    public boolean isDeadOrDying() {
+        return this.getExHp() <= 0.0F;
     }
 }
