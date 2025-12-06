@@ -15,13 +15,13 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, FlansStarForge.MOD_ID);
 
     public static final RegistryObject<Item> STARS_POWERSTONE = ITEMS.register("stars_powerstone",
-            () -> new StarsPowerStoneItem(new Item.Properties().rarity(Rarity.RARE)));
-
-    public static final RegistryObject<Item> FORGED_STARS_FRAGMENT = ITEMS.register("forged_stars_fragment",
-            () -> new ForgedStarsFragmentSword(8, 1.8f, new Item.Properties().rarity(Rarity.EPIC)));
+            () -> new StarsPowerStoneItem(new Item.Properties().rarity(Rarity.RARE).stacksTo(1)));
 
     public static final RegistryObject<Item> WITHERING_POWERSTONE = ITEMS.register("withering_powerstone",
             () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
+
+    public static final RegistryObject<Item> FORGED_STARS_FRAGMENT = ITEMS.register("forged_stars_fragment",
+            () -> new ForgedStarsFragmentSword(8, 1.8f, new Item.Properties().rarity(Rarity.EPIC)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

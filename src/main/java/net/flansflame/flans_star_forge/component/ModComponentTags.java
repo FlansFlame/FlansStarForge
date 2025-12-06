@@ -1,4 +1,4 @@
-package net.flansflame.flans_star_forge.componet;
+package net.flansflame.flans_star_forge.component;
 
 import net.flansflame.flans_knowledge_lib.component.StringTag;
 import net.flansflame.flans_knowledge_lib.component.TagRegisterer;

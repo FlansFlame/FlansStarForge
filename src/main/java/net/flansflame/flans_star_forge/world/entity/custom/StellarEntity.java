@@ -1,9 +1,7 @@
 package net.flansflame.flans_star_forge.world.entity.custom;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.componet.ModComponentTags;
-import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
-import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhases;
+import net.flansflame.flans_star_forge.component.ModComponentTags;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackGoal;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhase;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhases;
@@ -196,16 +194,16 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        setAttackPhase(tag.getInt("AttackPhase"));
-        setSitting(tag.getBoolean("isSitting"));
+        this.setAttackPhase(tag.getInt("AttackPhase"));
+        this.setSitting(tag.getBoolean("isSitting"));
         this.setAttackCount(tag.getInt("AttackCount"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("AttackPhase", getAttackPhase());
-        tag.putBoolean("isSitting", isSitting());
+        tag.putInt("AttackPhase", this.getAttackPhase());
+        tag.putBoolean("isSitting", this.isSitting());
         tag.putInt("AttackCount", this.getAttackCount());
     }
 
@@ -273,7 +271,6 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
         }
         super.remove(reason);
     }
-
 
 
     /*STARS_POWERSTONE STORING & SITTING*/

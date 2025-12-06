@@ -4,6 +4,8 @@
   "item.flans_star_forge.stars_powerstone": "Stars PowerStone",
   "item.flans_star_forge.withering_powerstone": "Withering PowerStone",
 
+   "item.flans_star_forge.forged_stars_fragment": "Forged Stars Fragment",
+
   "block.flans_star_forge.uni_stone": "Uni-Stone",
 
   "effect.flans_star_forge.stars_blessing" : "Stars Blessing",
@@ -18,5 +20,7 @@
   "key.categories.flans_star_forge": "Flans Star Forge",
   "key.flans_star_forge.teleport_stellar" : "Teleport Stellar",
 
-  "flanaf-bau.flans_star_forge.stellar_on_spawn": "[Stellar-af] .Nausneu Ni Laz as %s-af"
+  "flanaf-bau.flans_star_forge.stellar_on_spawn": "[Stellar-af] .Nausneu Ni Laz as %s-af",
+
+  "text.flans_star_forge.power_is_not_reliable": "§l§4Your power is not worth reliance..."
 }

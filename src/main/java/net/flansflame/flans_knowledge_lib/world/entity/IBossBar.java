@@ -1,6 +1,5 @@
 package net.flansflame.flans_knowledge_lib.world.entity;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 public interface IBossBar {

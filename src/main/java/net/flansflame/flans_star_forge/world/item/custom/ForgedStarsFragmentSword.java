@@ -7,10 +7,12 @@ import net.flansflame.flans_star_forge.world.item.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeTier;
@@ -29,5 +31,15 @@ public class ForgedStarsFragmentSword extends CustomSwordItem {
 
     public ForgedStarsFragmentSword(int attackDamage, float attackSpeed, Properties build) {
         super(TIER, attackDamage, attackSpeed, build, new CustomToolSets.Builder().build());
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack p_41456_) {
+        return false;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return false;
     }
 }

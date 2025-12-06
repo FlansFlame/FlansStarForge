@@ -15,5 +15,5 @@ public class EntityRenderer {
         event.registerEntityRenderer(ModEntities.STARS_CLUSTER.get(), renderManager -> new StarsClusterRenderer<>(renderManager, "null"));
 
         event.registerEntityRenderer(ModEntities.STELLAR_END_STAGE.get(), renderManager -> new StellarEndStageRenderer<>(renderManager, "stellar_end_stage"));
-    }
+        event.registerEntityRenderer(ModEntities.STARS_TEAR.get(), renderManager -> new StarsTearRenderer<>(renderManager, "stars_tear"));    }
 }

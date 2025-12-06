@@ -1,4 +1,4 @@
-package net.flansflame.flans_knowledge_lib.event;
+package net.flansflame.flans_knowledge_lib.client.event;
 
 import net.flansflame.flans_knowledge_lib.world.entity.IBossBar;
 import net.minecraft.client.Minecraft;
@@ -19,7 +19,6 @@ public class BossBarEvent {
 
     private static final int MAX_BOSS_BAR_COUNT = 3;
     private static final float TEXTURE_MULTIPLIER = 1.5f;
-    private static final int TEXTURE_OFFSET = 7;
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
@@ -28,7 +27,7 @@ public class BossBarEvent {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
 
-        if (minecraft.level == null || minecraft.player == null) return;
+        if (!(minecraft.level != null && minecraft.level.isClientSide) || minecraft.player == null) return;
 
         List<LivingEntity> entities = minecraft.level.getEntitiesOfClass(LivingEntity.class, minecraft.player.getBoundingBox().inflate(64)).stream().toList();
 

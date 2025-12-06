@@ -2,6 +2,7 @@ package net.flansflame.flans_star_forge.world.entity;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.world.entity.custom.StarsClusterEntity;
+import net.flansflame.flans_star_forge.world.entity.custom.StarsTearEntity;
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEndStageEntity;
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
 import net.minecraft.resources.ResourceLocation;
@@ -39,6 +40,12 @@ public class ModEntities {
                             .sized(0.5f, 2.6f)
                             .build(new ResourceLocation(FlansStarForge.MOD_ID, "stellar_end_stage").toString()));
 
+    public static final RegistryObject<EntityType<StarsTearEntity>> STARS_TEAR =
+            ENTITIES.register("stars_tear",
+                    () -> EntityType.Builder.of(StarsTearEntity::new, MobCategory.MISC)
+                            .sized(1f, 1f)
+                            .build(new ResourceLocation(FlansStarForge.MOD_ID, "stars_tear").toString()));
+
     public static void register(IEventBus eventBus){
         ENTITIES.register(eventBus);
     }
@@ -49,5 +56,6 @@ public class ModEntities {
         event.put(STARS_CLUSTER.get(), StarsClusterEntity.createAttributes().build());
 
         event.put(STELLAR_END_STAGE.get(), StellarEndStageEntity.createAttributes().build());
+        event.put(STARS_TEAR.get(), StarsTearEntity.createAttributes().build());
     }
 }

@@ -40,13 +40,11 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Mod(FlansStarForge.MOD_ID)
-public class FlansStarForge
-{
+public class FlansStarForge {
     public static final String MOD_ID = "flans_star_forge";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public FlansStarForge()
-    {
+    public FlansStarForge() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
 
@@ -59,7 +57,8 @@ public class FlansStarForge
 
         MinecraftForge.EVENT_BUS.register(this);
 
-        ForgeChunkManager.setForcedChunkLoadingCallback(MOD_ID, (tickets, world) -> {});
+        ForgeChunkManager.setForcedChunkLoadingCallback(MOD_ID, (tickets, world) -> {
+        });
 
         if (!FMLEnvironment.production) {
             GeckoLib.initialize();
@@ -98,13 +97,11 @@ public class FlansStarForge
         }
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
+    private void commonSetup(final FMLCommonSetupEvent event) {
         LOGGER.info("HELLO FROM COMMON SETUP");
     }
 
-    private void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
         /*
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
             event.accept(EXAMPLE_BLOCK_ITEM);
@@ -112,17 +109,14 @@ public class FlansStarForge
     }
 
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
+    public void onServerStarting(ServerStartingEvent event) {
         LOGGER.info("HELLO from server starting");
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents
-    {
+    public static class ClientModEvents {
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event)
-        {
+        public static void onClientSetup(FMLClientSetupEvent event) {
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }

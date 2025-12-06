@@ -1,14 +1,13 @@
 package net.flansflame.flans_star_forge.world.item.custom;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.componet.ModComponentTags;
+import net.flansflame.flans_star_forge.component.ModComponentTags;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
