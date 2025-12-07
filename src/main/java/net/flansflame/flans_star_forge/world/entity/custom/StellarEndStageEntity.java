@@ -5,6 +5,7 @@ import net.flansflame.flans_star_forge.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackGoal;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhases;
+import net.flansflame.flans_star_forge.world.damagesource.ModDamageTypes;
 import net.flansflame.flans_star_forge.world.entity.IOnRemoved;
 import net.flansflame.flans_star_forge.world.entity.IUnremovableByEndStellarProjectile;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
@@ -13,19 +14,20 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -39,7 +41,6 @@ import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.WitherSkull;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -525,7 +526,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
 
                     for (LivingEntity entity : entities) {
                         if (entity == null || entity == this) continue;
-                        entity.hurt(this.damageSources().magic(), 2f);
+                        entity.hurt(new DamageSource(server.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ModDamageTypes.MAGIC_WITH_COOLDOWN_BYPASS)), 0.5f);
                     }
                 }
             }
@@ -541,21 +542,11 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
 
 
     private void onPassiveSkill(Entity entity) {
-        //disable creativeMode & flying
+        //disable flying
         if (entity instanceof Player player) {
             if (player.getAbilities().flying) {
                 player.getAbilities().flying = false;
                 player.onUpdateAbilities();
-
-                if (player.level().isClientSide) {
-                    player.displayClientMessage(Component.translatable("text.flans_star_forge.power_is_not_reliable"), true);
-                }
-            }
-
-            if (player.isCreative()) {
-                if (player instanceof ServerPlayer serverPlayer) {
-                    serverPlayer.setGameMode(GameType.SURVIVAL);
-                }
 
                 if (player.level().isClientSide) {
                     player.displayClientMessage(Component.translatable("text.flans_star_forge.power_is_not_reliable"), true);
