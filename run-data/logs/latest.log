@@ -1,28 +1,35 @@
-[2511ŒŽ2025 12:58:06.619] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 5, --assetsDir, C:\Users\kai10\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 47.3.0, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --mod, flans_star_forge, --all, --output, C:\Users\kai10\main\forge\FlansStarForge\src\generated\resources, --existing, C:\Users\kai10\main\forge\FlansStarForge\src\main\resources]
-[2511ŒŽ2025 12:58:06.650] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.12 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
-[2511ŒŽ2025 12:58:07.103] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgedatauserdev
-[2511ŒŽ2025 12:58:07.146] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/kai10/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23128!/ Service=ModLauncher Env=CLIENT
-[2511ŒŽ2025 12:58:07.365] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\kai10\.gradle\caches\modules-2\files-2.1\net.minecraftforge\javafmllanguage\1.20.1-47.3.0\d7ebc62120f202109e300e084ca1a31a7b946a62\javafmllanguage-1.20.1-47.3.0.jar is missing mods.toml file
-[2511ŒŽ2025 12:58:07.368] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\kai10\.gradle\caches\modules-2\files-2.1\net.minecraftforge\lowcodelanguage\1.20.1-47.3.0\1bf3e845ea0ce750096da8c71c8364b188ab74d4\lowcodelanguage-1.20.1-47.3.0.jar is missing mods.toml file
-[2511ŒŽ2025 12:58:07.371] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\kai10\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mclanguage\1.20.1-47.3.0\6093682e943ddccbabf70539319d7f2fe64db2e7\mclanguage-1.20.1-47.3.0.jar is missing mods.toml file
-[2511ŒŽ2025 12:58:07.374] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\kai10\.gradle\caches\modules-2\files-2.1\net.minecraftforge\fmlcore\1.20.1-47.3.0\3b6be96aba3e323f3c918e8ef6a96312d82d76ad\fmlcore-1.20.1-47.3.0.jar is missing mods.toml file
-[2511ŒŽ2025 12:58:07.527] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: Found 1 dependencies adding them to mods collection
-[2511ŒŽ2025 12:58:08.828] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
-[2511ŒŽ2025 12:58:08.835] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, C:\Users\kai10\.gradle\caches\forge_gradle\assets, --assetIndex, 5, --mod, flans_star_forge, --all, --output, C:\Users\kai10\main\forge\FlansStarForge\src\generated\resources, --existing, C:\Users\kai10\main\forge\FlansStarForge\src\main\resources]
-[2511ŒŽ2025 12:58:09.268] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [flans_star_forge]
-[2511ŒŽ2025 12:58:12.300] [modloading-worker-0/INFO] [Collective/]: Loading Collective version 8.3.
-[2511ŒŽ2025 12:58:12.349] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.3.0, for MC 1.20.1 with MCP 20230612.114412
-[2511ŒŽ2025 12:58:12.350] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.3.0 Initialized
-[2511ŒŽ2025 12:58:12.469] [modloading-worker-0/WARN] [software.bernie.geckolib.GeckoLib/]: Minecraft.getInstance() was null, could not register reload listeners
-[2511ŒŽ2025 12:58:12.643] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager...
-[2511ŒŽ2025 12:58:12.653] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager took 7.496 ms
-[2511ŒŽ2025 12:58:14.094] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/kai10/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1-recomp.jar%23191!/assets/.mcassetsroot' uses unexpected schema
-[2511ŒŽ2025 12:58:14.094] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/kai10/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1-recomp.jar%23191!/data/.mcassetsroot' uses unexpected schema
-[2511ŒŽ2025 12:58:14.269] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
-[2511ŒŽ2025 12:58:14.280] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 10 ms
-[2511ŒŽ2025 12:58:14.280] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: flans_star_forge
-[2511ŒŽ2025 12:58:14.296] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: flans_star_forge finished after 15 ms
-[2511ŒŽ2025 12:58:14.296] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: flans_star_forge
-[2511ŒŽ2025 12:58:14.301] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: flans_star_forge finished after 4 ms
-[2511ŒŽ2025 12:58:14.301] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 32 ms
-[2511ŒŽ2025 12:58:14.308] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 9, old count: 8, new count: 10, removed stale: 0, written: 1
+[1612ŒŽ2025 19:05:05.474] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 5, --assetsDir, C:\Users\kai10\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 47.3.0, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --mod, flans_star_forge, --all, --output, C:\Users\kai10\main\forge\ReFlansStarForge\src\generated\resources, --existing, C:\Users\kai10\main\forge\ReFlansStarForge\src\main\resources, --mixin.config, flans_star_forge.mixins.json]
+[1612ŒŽ2025 19:05:05.483] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.12 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
+[1612ŒŽ2025 19:05:05.610] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgedatauserdev
+[1612ŒŽ2025 19:05:05.655] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/kai10/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23128!/ Service=ModLauncher Env=CLIENT
+[1612ŒŽ2025 19:05:05.884] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\kai10\.gradle\caches\modules-2\files-2.1\net.minecraftforge\javafmllanguage\1.20.1-47.3.0\d7ebc62120f202109e300e084ca1a31a7b946a62\javafmllanguage-1.20.1-47.3.0.jar is missing mods.toml file
+[1612ŒŽ2025 19:05:05.885] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\kai10\.gradle\caches\modules-2\files-2.1\net.minecraftforge\lowcodelanguage\1.20.1-47.3.0\1bf3e845ea0ce750096da8c71c8364b188ab74d4\lowcodelanguage-1.20.1-47.3.0.jar is missing mods.toml file
+[1612ŒŽ2025 19:05:05.888] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\kai10\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mclanguage\1.20.1-47.3.0\6093682e943ddccbabf70539319d7f2fe64db2e7\mclanguage-1.20.1-47.3.0.jar is missing mods.toml file
+[1612ŒŽ2025 19:05:05.888] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\kai10\.gradle\caches\modules-2\files-2.1\net.minecraftforge\fmlcore\1.20.1-47.3.0\3b6be96aba3e323f3c918e8ef6a96312d82d76ad\fmlcore-1.20.1-47.3.0.jar is missing mods.toml file
+[1612ŒŽ2025 19:05:06.068] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: Found 3 dependencies adding them to mods collection
+[1612ŒŽ2025 19:05:07.489] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[1612ŒŽ2025 19:05:07.489] [main/ERROR] [mixin/]: Mixin config flans_star_forge.mixins.json does not specify "minVersion" property
+[1612ŒŽ2025 19:05:07.508] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, C:\Users\kai10\.gradle\caches\forge_gradle\assets, --assetIndex, 5, --mod, flans_star_forge, --all, --output, C:\Users\kai10\main\forge\ReFlansStarForge\src\generated\resources, --existing, C:\Users\kai10\main\forge\ReFlansStarForge\src\main\resources]
+[1612ŒŽ2025 19:05:07.893] [main/INFO] [mixin/]: Remapping refMap fullbrightnesstoggle_forge.refmap.json using C:\Users\kai10\main\forge\ReFlansStarForge\build\createSrgToMcp\output.srg
+[1612ŒŽ2025 19:05:07.894] [main/INFO] [mixin/]: Remapping refMap avaritia.refmap.json using C:\Users\kai10\main\forge\ReFlansStarForge\build\createSrgToMcp\output.srg
+[1612ŒŽ2025 19:05:07.896] [main/INFO] [mixin/]: Remapping refMap jade.refmap.json using C:\Users\kai10\main\forge\ReFlansStarForge\build\createSrgToMcp\output.srg
+[1612ŒŽ2025 19:05:07.896] [main/INFO] [mixin/]: Remapping refMap geckolib.refmap.json using C:\Users\kai10\main\forge\ReFlansStarForge\build\createSrgToMcp\output.srg
+[1612ŒŽ2025 19:05:07.896] [main/INFO] [mixin/]: Remapping refMap collective_forge.refmap.json using C:\Users\kai10\main\forge\ReFlansStarForge\build\createSrgToMcp\output.srg
+[1612ŒŽ2025 19:05:08.270] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [flans_star_forge]
+[1612ŒŽ2025 19:05:08.384] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.4.1).
+[1612ŒŽ2025 19:05:11.285] [modloading-worker-0/INFO] [Collective/]: Loading Collective version 8.3.
+[1612ŒŽ2025 19:05:11.327] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.3.0, for MC 1.20.1 with MCP 20230612.114412
+[1612ŒŽ2025 19:05:11.328] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.3.0 Initialized
+[1612ŒŽ2025 19:05:11.396] [modloading-worker-0/WARN] [software.bernie.geckolib.GeckoLib/]: Minecraft.getInstance() was null, could not register reload listeners
+[1612ŒŽ2025 19:05:11.580] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager...
+[1612ŒŽ2025 19:05:11.591] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager took 6.787 ms
+[1612ŒŽ2025 19:05:13.059] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/kai10/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1-recomp.jar%23191!/assets/.mcassetsroot' uses unexpected schema
+[1612ŒŽ2025 19:05:13.059] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/kai10/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1-recomp.jar%23191!/data/.mcassetsroot' uses unexpected schema
+[1612ŒŽ2025 19:05:13.193] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
+[1612ŒŽ2025 19:05:13.206] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 15 ms
+[1612ŒŽ2025 19:05:13.206] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: flans_star_forge
+[1612ŒŽ2025 19:05:13.236] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: flans_star_forge finished after 26 ms
+[1612ŒŽ2025 19:05:13.236] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: flans_star_forge
+[1612ŒŽ2025 19:05:13.236] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: flans_star_forge finished after 2 ms
+[1612ŒŽ2025 19:05:13.236] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 46 ms
+[1612ŒŽ2025 19:05:13.245] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 10, old count: 9, new count: 11, removed stale: 0, written: 1

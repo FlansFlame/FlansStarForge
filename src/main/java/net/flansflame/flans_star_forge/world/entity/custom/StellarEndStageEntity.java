@@ -39,6 +39,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -309,7 +310,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
     @Override
     public boolean hurt(DamageSource source, float amount) {
         Entity entity = source.getEntity();
-        if (entity instanceof Player player && player.getMainHandItem().is(ModItems.FORGED_STARS_FRAGMENT.get())) {
+        if (entity instanceof Player player && isDamageableWeapon(player.getMainHandItem())) {
             if (this.hasMultiBarrier()) {
                 this.addMultiBarrier(-1);
 
@@ -323,6 +324,10 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             return super.hurt(this.damageSources().outOfBorder(), 0f);
         }
         return false;
+    }
+
+    public static boolean isDamageableWeapon(ItemStack itemStack){
+        return itemStack.is(ModItems.FORGED_STARS_FRAGMENT.get()) || itemStack.is(ModItems.STARS_FRAGMENT.get());
     }
 
     @Override
@@ -501,8 +506,15 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             if (projectile instanceof IUnremovableByEndStellarProjectile) {
             } else {
                 for (RemovalReason reason : RemovalReason.values()) {
-                    projectile.remove(reason);
-                    projectile.setRemoved(reason);
+                    ((IEntityMixinAccessor) projectile).setRemovalReason(reason);
+
+                    if (projectile.getRemovalReason().shouldDestroy()) {
+                        projectile.stopRiding();
+                    }
+
+                    projectile.getPassengers().forEach(Entity::stopRiding);
+                    ((IEntityMixinAccessor) projectile).getLevelCallback().onRemove(reason);
+                    projectile.invalidateCaps();
                 }
             }
         }

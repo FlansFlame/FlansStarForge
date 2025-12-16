@@ -23,18 +23,18 @@ import java.util.List;
 public class ForgedStarsFragmentSword extends CustomSwordItem {
 
     protected static final TagKey<Block> NEEDS_THIS_TOOL = BlockTags.create(new ResourceLocation(FlansStarForge.MOD_ID,
-            "needs_" + ModItems.FORGED_STARS_FRAGMENT.getId().getNamespace() + "_tool"));
+            "needs_" + ModItems.FORGED_STARS_FRAGMENT.getId().getPath() + "_tool"));
 
-    protected static final Tier TIER = TierSortingRegistry.registerTier(new ForgeTier(16, 2048, 0, 0.0F, 30, NEEDS_THIS_TOOL,
-            () -> Ingredient.of(Items.NETHERITE_INGOT)), new ResourceLocation(FlansStarForge.MOD_ID,
-            ModItems.FORGED_STARS_FRAGMENT.getId().getNamespace()), List.of(Tiers.NETHERITE), List.of());
+    protected static final Tier TIER = TierSortingRegistry.registerTier(new ForgeTier(16, 2048, 0, 0.0F, 0, NEEDS_THIS_TOOL,
+            () -> Ingredient.of(Items.NETHERITE_INGOT)), new ResourceLocation(
+                    ModItems.FORGED_STARS_FRAGMENT.getId().toString()), List.of(Tiers.NETHERITE), List.of());
 
     public ForgedStarsFragmentSword(int attackDamage, float attackSpeed, Properties build) {
         super(TIER, attackDamage, attackSpeed, build, new CustomToolSets.Builder().build());
     }
 
     @Override
-    public boolean isEnchantable(ItemStack p_41456_) {
+    public boolean isEnchantable(ItemStack itemStack) {
         return false;
     }
 
