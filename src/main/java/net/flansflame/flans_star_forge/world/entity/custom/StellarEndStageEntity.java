@@ -1,6 +1,7 @@
 package net.flansflame.flans_star_forge.world.entity.custom;
 
 import net.flansflame.flans_knowledge_lib.world.entity.IBossBar;
+import net.flansflame.flans_star_forge.Utils;
 import net.flansflame.flans_star_forge.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackGoal;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
@@ -27,7 +28,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -36,11 +36,9 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -54,7 +52,7 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.List;
 
-public class StellarEndStageEntity extends Monster implements GeoEntity, RangedAttackMob, IBossBar, IOnRemoved {
+public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBar, IOnRemoved {
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
@@ -80,7 +78,6 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
     public StellarEndStageEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
     }
-
 
     /*ATTACKS*/
     @Override
@@ -185,8 +182,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new EndStellarAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(3, new RangedAttackGoal(this, 1.0D, 40, 20.0F));
+        this.goalSelector.addGoal(2, new EndStellarAttackGoal(this, 2.0D));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomFlyingGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -205,61 +201,6 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
         builder.add(Attributes.ATTACK_DAMAGE, 40);
         builder.add(Attributes.ATTACK_SPEED, 1.8);
         return builder;
-    }
-
-    private void performRangedAttack(int p_31458_, LivingEntity p_31459_) {
-        this.performRangedAttack(p_31458_, p_31459_.getX(), p_31459_.getY() + (double) p_31459_.getEyeHeight() * 0.5D, p_31459_.getZ(), p_31458_ == 0 && this.random.nextFloat() < 0.001F);
-    }
-
-    private void performRangedAttack(int i, double pX, double pY, double pZ, boolean b) {
-        if (!this.isSilent()) {
-            this.level().levelEvent((Player) null, 1024, this.blockPosition(), 0);
-        }
-
-        double headX = this.getHeadX(i);
-        double headY = this.getHeadY(i) - 1;
-        double headZ = this.getHeadZ(i);
-        double x = pX - headX;
-        double y = pY - headY;
-        double z = pZ - headZ;
-
-        WitherSkull witherskull = new WitherSkull(this.level(), this, x, y, z);
-        witherskull.setOwner(this);
-        if (b) {
-            witherskull.setDangerous(true);
-        }
-
-        witherskull.setPosRaw(headX, headY, headZ);
-        this.level().addFreshEntity(witherskull);
-    }
-
-    @Override
-    public void performRangedAttack(LivingEntity entity, float v) {
-        this.performRangedAttack(0, entity);
-    }
-
-    private double getHeadX(int i) {
-        if (i <= 0) {
-            return this.getX();
-        } else {
-            float f = (this.yBodyRot + (float) (180 * (i - 1))) * ((float) Math.PI / 180F);
-            float f1 = Mth.cos(f);
-            return this.getX() + (double) f1 * 1.3D;
-        }
-    }
-
-    private double getHeadY(int i) {
-        return i <= 0 ? this.getY() + 3.0D : this.getY() + 2.2D;
-    }
-
-    private double getHeadZ(int i) {
-        if (i <= 0) {
-            return this.getZ();
-        } else {
-            float f = (this.yBodyRot + (float) (180 * (i - 1))) * ((float) Math.PI / 180F);
-            float f1 = Mth.sin(f);
-            return this.getZ() + (double) f1 * 1.3D;
-        }
     }
 
     @Override
@@ -455,12 +396,13 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
         if (this.deathTime >= 20 && !this.isRemoved()) {
 
             if (this.level() instanceof ServerLevel server) {
-                StarsTearEntity entityToSpawn = ModEntities.STARS_TEAR.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);
+                WitherBombEntity entityToSpawn = ModEntities.WITHER_BOMB.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);
                 if (entityToSpawn != null) {
                     entityToSpawn.setPos(this.blockPosition().getCenter());
                     entityToSpawn.setPos(new Vec3(entityToSpawn.getX(), entityToSpawn.getY() - 0.5, entityToSpawn.getZ()));
                     entityToSpawn.setXRot(0);
                     entityToSpawn.setYRot(0);
+                    entityToSpawn.powerup();
                 }
             }
 
@@ -526,7 +468,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, RangedA
 
                     for (LivingEntity entity : entities) {
                         if (entity == null || entity == this) continue;
-                        entity.hurt(new DamageSource(server.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ModDamageTypes.MAGIC_WITH_COOLDOWN_BYPASS)), 0.5f);
+                        entity.hurt(Utils.createDamageSource(server, ModDamageTypes.MAGIC_WITH_COOLDOWN_BYPASS, this), 0.5f);
                     }
                 }
             }

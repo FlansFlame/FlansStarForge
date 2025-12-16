@@ -26,8 +26,8 @@ public class SummonFollowerEndStellarAttack extends EndStellarAttackPhase {
     public static final int MAX_FOLLOWERS = 8;
     public static final int MAX_LOOPS = 20;
 
-    public SummonFollowerEndStellarAttack(String animationId, SoundEvent attackSound) {
-        super(animationId, attackSound);
+    public SummonFollowerEndStellarAttack(String animationId, SoundEvent attackSound, boolean activateEvenIfNotNear) {
+        super(animationId, attackSound, activateEvenIfNotNear);
     }
 
     @Override

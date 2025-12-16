@@ -8,16 +8,18 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 
 public class EndStellarAttackPhase {
-    private String animationId;
-    private SoundEvent attackSound;
+    private final String animationId;
+    private final SoundEvent attackSound;
+    private final boolean activateEvenIfNotNear;
 
-    public EndStellarAttackPhase(String animationId) {
-        this(animationId, null);
+    public EndStellarAttackPhase(String animationId, boolean activateEvenIfNotNear) {
+        this(animationId, null, activateEvenIfNotNear);
     }
 
-    public EndStellarAttackPhase(String animationId, SoundEvent attackSound) {
+    public EndStellarAttackPhase(String animationId, SoundEvent attackSound, boolean activateEvenIfNotNear) {
         this.animationId = animationId;
         this.attackSound = attackSound;
+        this.activateEvenIfNotNear = activateEvenIfNotNear;
     }
 
     public boolean isEmpty() {
@@ -28,16 +30,12 @@ public class EndStellarAttackPhase {
         return animationId;
     }
 
-    public void setAnimationId(String animationId) {
-        this.animationId = animationId;
-    }
-
     public SoundEvent getAttackSound() {
         return attackSound;
     }
 
-    public void setAttackSound(SoundEvent attackSound) {
-        this.attackSound = attackSound;
+    public boolean activateEvenIfNotNear() {
+        return activateEvenIfNotNear;
     }
 
     protected double getAttackReach(LivingEntity entity, LivingEntity target) {
@@ -47,7 +45,8 @@ public class EndStellarAttackPhase {
     /*Overrides*/
     public void onAttack(StellarEndStageEntity stellar, LivingEntity target) {
 
-        if (target == null || stellar.getPerceivedTargetDistanceSquareForMeleeAttack(target) > getAttackReach(stellar, target) * EndStellarAttackGoal.ATTACK_STAGE_RANGE_MULTIPLIER) return;
+        if (target == null || stellar.getPerceivedTargetDistanceSquareForMeleeAttack(target) > getAttackReach(stellar, target) * EndStellarAttackGoal.ATTACK_STAGE_RANGE_MULTIPLIER)
+            return;
 
         stellar.swing(InteractionHand.MAIN_HAND);
         stellar.doHurtTarget(target);

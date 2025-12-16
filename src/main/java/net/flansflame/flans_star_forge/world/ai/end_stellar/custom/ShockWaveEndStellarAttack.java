@@ -20,8 +20,8 @@ public class ShockWaveEndStellarAttack extends EndStellarAttackPhase {
     private static final int WAVE_RADIUS = 8;
     private static final int WAVE_DAMAGE = 40;
 
-    public ShockWaveEndStellarAttack(String animationId, SoundEvent attackSound) {
-        super(animationId, attackSound);
+    public ShockWaveEndStellarAttack(String animationId, SoundEvent attackSound, boolean activateEvenIfNotNear) {
+        super(animationId, attackSound, activateEvenIfNotNear);
     }
 
     @Override

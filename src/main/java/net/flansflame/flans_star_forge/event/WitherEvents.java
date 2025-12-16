@@ -25,10 +25,8 @@ public class WitherEvents {
     @SubscribeEvent
     public static void onDefeatWither(LivingDeathEvent event){
         if (event.getEntity() instanceof WitherBoss wither &&
-                event.getSource().getEntity() instanceof Player player &&
-                player.hasEffect(ModEffects.STARS_BLESSING.get())
+                event.getSource().getEntity() instanceof Player player
         ){
-
         }
     }
 

@@ -8,8 +8,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 
 public class StabEndStellarAttack extends EndStellarAttackPhase {
-    public StabEndStellarAttack(String animationId) {
-        super(animationId);
+
+    public StabEndStellarAttack(String animationId, boolean activateEvenIfNotNear) {
+        super(animationId, activateEvenIfNotNear);
     }
 
     @Override

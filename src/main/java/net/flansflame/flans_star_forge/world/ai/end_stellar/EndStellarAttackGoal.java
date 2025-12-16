@@ -14,22 +14,33 @@ public class EndStellarAttackGoal extends MeleeAttackGoal {
     public static final int ATTACK_START_TICK = 60;
     public static final int DELAY_TICK = 100;
 
-    public EndStellarAttackGoal(PathfinderMob mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
-        super(mob, speedModifier, followingTargetEvenIfNotSeen);
+    public EndStellarAttackGoal(PathfinderMob mob, double speedModifier) {
+        super(mob, speedModifier, true);
     }
 
     @Override
     protected void checkAndPerformAttack(LivingEntity entity, double targetDistance) {
         double attackRange = this.getAttackReachSqr(entity) * ATTACK_STAGE_RANGE_MULTIPLIER;
-        if (targetDistance <= attackRange && getTicksUntilNextAttack() <= 0 && this.mob instanceof StellarEndStageEntity stellar) {
-            this.resetAttackCooldown();
 
+        if (this.mob instanceof StellarEndStageEntity stellar && getTicksUntilNextAttack() <= 0) {
             stellar.setAttackPhase(Mth.nextInt(RandomSource.create(), 0, StellarAttackPhases.ATTACK_PHASES.size() - 1));
             EndStellarAttackPhase attackPhase = EndStellarAttackPhases.ATTACK_PHASES.get(stellar.getAttackPhase());
 
-            attackPhase.beforeAttack(stellar, entity);
+            if (attackPhase.activateEvenIfNotNear()) {
+                this.resetAttackCooldown();
 
-            stellar.setAttackCount(ATTACK_START_TICK);
+                attackPhase.beforeAttack(stellar, entity);
+
+                stellar.setAttackCount(ATTACK_START_TICK);
+            } else {
+                if (targetDistance <= attackRange) {
+                    this.resetAttackCooldown();
+
+                    attackPhase.beforeAttack(stellar, entity);
+
+                    stellar.setAttackCount(ATTACK_START_TICK);
+                }
+            }
         }
     }
 

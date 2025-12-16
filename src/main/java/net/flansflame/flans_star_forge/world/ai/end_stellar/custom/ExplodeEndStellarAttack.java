@@ -23,8 +23,8 @@ public class ExplodeEndStellarAttack extends EndStellarAttackPhase {
     private static final int EXPLOSION_DAMAGE = 80;
     private static final int EXPLOSION_RADIUS = 5;
 
-    public ExplodeEndStellarAttack(String animationId, SoundEvent attackSound) {
-        super(animationId, attackSound);
+    public ExplodeEndStellarAttack(String animationId, SoundEvent attackSound, boolean activateEvenIfNotNear) {
+        super(animationId, attackSound, activateEvenIfNotNear);
     }
 
     @Override

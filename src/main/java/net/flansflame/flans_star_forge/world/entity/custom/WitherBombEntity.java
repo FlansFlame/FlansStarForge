@@ -1,11 +1,16 @@
 package net.flansflame.flans_star_forge.world.entity.custom;
 
+import com.mojang.logging.LogUtils;
+import net.flansflame.flans_star_forge.Utils;
 import net.flansflame.flans_star_forge.event.MobStrengthenEvents;
 import net.flansflame.flans_star_forge.mixin_accesor.IEntityMixinAccessor;
+import net.flansflame.flans_star_forge.world.damagesource.ModDamageTypes;
 import net.flansflame.flans_star_forge.world.entity.IOnRemoved;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -33,20 +38,25 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
-public class StarsTearEntity extends Mob implements GeoEntity, IOnRemoved {
+public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public static final int DEFAULT_EXPLODE_TICK = 400;
     public static final int EXPLODE_RADIUS = 128;
     public static final int EXPLODE_DAMAGE = Integer.MAX_VALUE;
+    public static final int LAZER_RADIUS = 15;
+    public static final int LAZER_SEGMENTS = 60;
 
-    public static final EntityDataAccessor<Integer> EXPLODE_TICK = SynchedEntityData.defineId(StarsTearEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> EXPLODE_TICK = SynchedEntityData.defineId(WitherBombEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Boolean> POWERUP = SynchedEntityData.defineId(WitherBombEntity.class, EntityDataSerializers.BOOLEAN);
 
+    private float angle = 0;
     private boolean removed;
 
-    public StarsTearEntity(EntityType<? extends Mob> type, Level level) {
+    public WitherBombEntity(EntityType<? extends Mob> type, Level level) {
         super(type, level);
     }
 
@@ -59,10 +69,42 @@ public class StarsTearEntity extends Mob implements GeoEntity, IOnRemoved {
             if (this.getExplodeTick() == 50) {
                 this.trigger(this, this.level(), "shrink");
             }
+            if (this.activateLaser()) {
+                this.lazerTick();
+            }
             this.addExplodeTick(-1);
         }
 
         super.tick();
+    }
+
+    public boolean activateLaser() {
+        return this.isPowerup() && this.getExplodeTick() <= DEFAULT_EXPLODE_TICK / 2f;
+    }
+
+    private void lazerTick() {
+        angle += 12f;
+        if (angle >= 360f) angle -= 360f;
+
+        double rad = Math.toRadians(angle);
+        Vec3 origin = this.position().add(0, 0.5, 0);
+        Vec3 dir = new Vec3(Math.cos(rad), 0, Math.sin(rad));
+
+        for (int i = 0; i < LAZER_SEGMENTS; i++) {
+            double t = i / (double) LAZER_SEGMENTS;
+            Vec3 pos = origin.add(dir.scale(LAZER_RADIUS * t));
+
+            if (this.level() instanceof ClientLevel client) {
+                client.addParticle(DustParticleOptions.REDSTONE, pos.x, pos.y, pos.z, 0, 0, 0);
+            } else if (this.level() instanceof ServerLevel server) {
+                List<LivingEntity> entities = server.getEntitiesOfClass(LivingEntity.class, new AABB(BlockPos.containing(pos)).inflate(0.5f));
+
+                for (LivingEntity entity : entities) {
+                    if (entity == null || entity == this) continue;
+                    entity.hurt(Utils.createDamageSource(server, ModDamageTypes.MAGIC_WITH_COOLDOWN_BYPASS, this), 0.5f);
+                }
+            }
+        }
     }
 
     private void explode() {
@@ -77,30 +119,41 @@ public class StarsTearEntity extends Mob implements GeoEntity, IOnRemoved {
             for (LivingEntity entity : _entfound) {
                 if (entity != this) {
 
-                    boolean destroyArmor = false;
+                    if (this.isPowerup()) {
+                        //removeOrBreakAllArmors
+                        boolean destroyArmor = false;
 
-                    for (ItemStack armor : entity.getArmorSlots()) {
-                        if (armor.isEmpty()) continue;
+                        for (ItemStack armor : entity.getArmorSlots()) {
+                            if (armor.isEmpty()) continue;
 
-                        if (armor.isDamageableItem()) {
-                            armor.setDamageValue(armor.getMaxDamage());
+                            if (armor.isDamageableItem()) {
+                                armor.setDamageValue(armor.getMaxDamage());
+                            }
+                            armor.setCount(0);
+
+                            destroyArmor = true;
                         }
-                        armor.setCount(0);
 
-                        destroyArmor = true;
+                        //playDestroySoundsIfArmorHasBeenRemoved
+                        if (destroyArmor && entity instanceof Player player) {
+                            player.playSound(SoundEvents.ITEM_BREAK);
+                        }
+
+                        //removeAllEffects
+                        entity.removeAllEffects();
                     }
 
-                    entity.removeAllEffects();
+                    //damageEntity
+                    DamageSource damageSource = Utils.createDamageSource(server, this.isPowerup() ? ModDamageTypes.SONIC_BOOM_WITH_COOLDOWN_BYPASS : DamageTypes.SONIC_BOOM);
+                    entity.hurt(damageSource, EXPLODE_DAMAGE * MobStrengthenEvents.BLESSING_ATTACK_MULTIPLIER);
 
-                    if (destroyArmor && entity instanceof Player player) {
-                        player.playSound(SoundEvents.ITEM_BREAK);
-                    }
-
-                    entity.hurt(new DamageSource(server.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.SONIC_BOOM)), EXPLODE_DAMAGE * MobStrengthenEvents.BLESSING_ATTACK_MULTIPLIER);
+                    //sendExplosionParticlesOnEntities
                     server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, entity.getX(), entity.getY() + 0.5, entity.getZ(), 8, 1, 1, 1, 0);
                 }
             }
+            //sendExplosionParticles
             server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, x, y + 0.5, x, 8, 0, 0, 0, 0);
+            //sendExplosionSounds
             server.playSound(null, this.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE);
         }
     }
@@ -116,8 +169,8 @@ public class StarsTearEntity extends Mob implements GeoEntity, IOnRemoved {
                 .triggerableAnim(id, RawAnimation.begin().then(id, loopType)));
     }
 
-    public void trigger(StarsTearEntity starsTearEntity, Level level, String id) {
-        if (level instanceof ServerLevel) starsTearEntity.triggerAnim(id + "_controller", id);
+    public void trigger(WitherBombEntity witherBombEntity, Level level, String id) {
+        if (level instanceof ServerLevel) witherBombEntity.triggerAnim(id + "_controller", id);
     }
 
     @Override
@@ -190,13 +243,14 @@ public class StarsTearEntity extends Mob implements GeoEntity, IOnRemoved {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         if (tag.contains("ExplodeTick")) this.setExplodeTick(tag.getInt("ExplodeTick"));
-
+        if (tag.contains("Powerup")) this.setExplodeTick(tag.getInt("Powerup"));
         super.readAdditionalSaveData(tag);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         tag.putInt("ExplodeTick", this.getExplodeTick());
+        tag.putInt("Powerup", this.getExplodeTick());
 
         super.addAdditionalSaveData(tag);
     }
@@ -204,8 +258,21 @@ public class StarsTearEntity extends Mob implements GeoEntity, IOnRemoved {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(EXPLODE_TICK, DEFAULT_EXPLODE_TICK);
+        this.entityData.define(POWERUP, false);
 
         super.defineSynchedData();
+    }
+
+    public void powerup() {
+        this.entityData.set(POWERUP, true);
+    }
+
+    public void setPowerup(boolean powerup) {
+        this.entityData.set(POWERUP, powerup);
+    }
+
+    public boolean isPowerup() {
+        return this.entityData.get(POWERUP);
     }
 
     public void setExplodeTick(int tick) {
@@ -246,7 +313,12 @@ public class StarsTearEntity extends Mob implements GeoEntity, IOnRemoved {
     public void onRemove() {
         if (!removed) {
             if (this.level() instanceof ServerLevel server) {
-                StarsTearEntity entityToSpawn = ModEntities.STARS_TEAR.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);
+                try {
+                    Objects.requireNonNull(ModEntities.WITHER_BOMB.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND)).extend(this);
+                } catch (NullPointerException ignored) {
+                    LogUtils.getLogger().warn("Could not spawn WITHER_BOMB for null.");
+                }
+                /*
                 if (entityToSpawn != null) {
                     entityToSpawn.setUUID(this.getUUID());
                     entityToSpawn.setYRot(this.getYRot());
@@ -254,9 +326,19 @@ public class StarsTearEntity extends Mob implements GeoEntity, IOnRemoved {
                     entityToSpawn.setPos(new Vec3(this.getX(), this.getY(), this.getZ()));
                     entityToSpawn.setExplodeTick(this.getExplodeTick());
                 }
+                 */
             }
             removed = true;
         }
+    }
+
+    public void extend(WitherBombEntity entity) {
+        this.setUUID(entity.getUUID());
+        this.setYRot(entity.getYRot());
+        this.setYHeadRot(entity.getYHeadRot());
+        this.setPos(new Vec3(entity.getX(), entity.getY(), entity.getZ()));
+        this.setExplodeTick(entity.getExplodeTick());
+        this.setPowerup(entity.isPowerup());
     }
 
     private void exRemove() {
