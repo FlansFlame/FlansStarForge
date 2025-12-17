@@ -14,11 +14,11 @@ public class StabEndStellarAttack extends EndStellarAttackPhase {
     }
 
     @Override
-    public void onAttack(StellarEndStageEntity stellar, LivingEntity target) {
+    public void onAttack(StellarEndStageEntity stellar, LivingEntity target, float amount) {
 
         if (target == null || stellar.getPerceivedTargetDistanceSquareForMeleeAttack(target) > getAttackReach(stellar, target) * EndStellarAttackGoal.ATTACK_STAGE_RANGE_MULTIPLIER) return;
 
-        super.onAttack(stellar, target);
+        super.onAttack(stellar, target, amount);
         target.addEffect(new MobEffectInstance(MobEffects.WITHER, 200, 9));
     }
 }

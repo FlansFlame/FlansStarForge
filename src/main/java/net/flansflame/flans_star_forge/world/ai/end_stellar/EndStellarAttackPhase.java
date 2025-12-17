@@ -1,5 +1,7 @@
 package net.flansflame.flans_star_forge.world.ai.end_stellar;
 
+import net.flansflame.flans_star_forge.Utils;
+import net.flansflame.flans_star_forge.world.damagesource.ModDamageTypes;
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEndStageEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -43,16 +45,18 @@ public class EndStellarAttackPhase {
     }
 
     /*Overrides*/
-    public void onAttack(StellarEndStageEntity stellar, LivingEntity target) {
+    public void onAttack(StellarEndStageEntity stellar, LivingEntity target, float amount) {
 
         if (target == null || stellar.getPerceivedTargetDistanceSquareForMeleeAttack(target) > getAttackReach(stellar, target) * EndStellarAttackGoal.ATTACK_STAGE_RANGE_MULTIPLIER)
             return;
 
         stellar.swing(InteractionHand.MAIN_HAND);
-        stellar.doHurtTarget(target);
+        if (stellar.level() instanceof ServerLevel server) {
+            target.hurt(Utils.createDamageSource(server, ModDamageTypes.MOB_ATTACK_WITH_ALL_BYPASS, stellar), amount);
 
-        if (stellar.level() instanceof ServerLevel server && this.getAttackSound() != null) {
-            server.playSound(null, stellar.blockPosition(), this.getAttackSound(), SoundSource.HOSTILE);
+            if (this.getAttackSound() != null) {
+                server.playSound(null, stellar.blockPosition(), this.getAttackSound(), SoundSource.HOSTILE);
+            }
         }
     }
 

@@ -6,7 +6,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageType;
 
-public class ModDamageTypes {
-    public static final ResourceKey<DamageType> MAGIC_WITH_COOLDOWN_BYPASS = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(FlansStarForge.MOD_ID, "magic_with_cooldown_bypass"));
-    public static final ResourceKey<DamageType> SONIC_BOOM_WITH_COOLDOWN_BYPASS = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(FlansStarForge.MOD_ID, "sonic_boom_with_cooldown_bypass"));
+public interface ModDamageTypes {
+    ResourceKey<DamageType> MAGIC_WITH_ALL_BYPASS = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(FlansStarForge.MOD_ID, "magic_with_all_bypass"));
+    ResourceKey<DamageType> SONIC_BOOM_WITH_ALL_BYPASS = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(FlansStarForge.MOD_ID, "sonic_boom_with_all_bypass"));
+    ResourceKey<DamageType> MOB_ATTACK_WITH_ALL_BYPASS = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(FlansStarForge.MOD_ID, "mob_attack_with_all_bypass"));
+    ResourceKey<DamageType> EXPLOSION_WITH_ALL_BYPASS = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(FlansStarForge.MOD_ID, "explosion_with_all_bypass"));
 }

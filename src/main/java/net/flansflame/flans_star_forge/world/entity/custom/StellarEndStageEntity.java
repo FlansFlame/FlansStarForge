@@ -2,6 +2,7 @@ package net.flansflame.flans_star_forge.world.entity.custom;
 
 import net.flansflame.flans_knowledge_lib.world.entity.IBossBar;
 import net.flansflame.flans_star_forge.Utils;
+import net.flansflame.flans_star_forge.config.CommonConfig;
 import net.flansflame.flans_star_forge.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackGoal;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
@@ -11,11 +12,11 @@ import net.flansflame.flans_star_forge.world.entity.IOnRemoved;
 import net.flansflame.flans_star_forge.world.entity.IUnremovableByEndStellarProjectile;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.flansflame.flans_star_forge.world.item.ModItems;
+import net.flansflame.flans_star_forge.world.tag.ModTags;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,9 +31,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -62,22 +67,30 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
     public static final EntityDataAccessor<Float> EX_HP = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Integer> MULTI_BARRIER = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> MULTI_BARRIER_COUNT = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> LAZER_COUNT = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> LASER_COUNT = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
 
-    public static final float MAX_EX_HP = 4096f;
+    public static float MAX_EX_HP = 4096f;
+    public static float ATTACK_DAMAGE = 40f;
+
     public static final int MAX_MULTI_BARRIER = 4;
     public static final int MULTI_BARRIER_ACTIVATE_COUNT = 4;
     public static final float TICK_HEAL_AMOUNT = 2f;
-    public static final int DEFAULT_LAZER_ACTIVATE_COUNT = 200;
-    public static final int LAZER_WARN_COUNT = 40;
-    public static final int LAZER_ACTIVATE_COUNT = 20;
-    public static final int LAZER_RADIUS = 15;
-    public static final int LAZER_SEGMENTS = 60;
+    public static final int DEFAULT_LASER_ACTIVATE_COUNT = 200;
+    public static final float LASER_DAMAGE_DIVIDER = 80f;
+    public static final int LASER_WARN_COUNT = 40;
+    public static final int LASER_ACTIVATE_COUNT = 20;
+    public static final int LASER_RADIUS = 15;
+    public static final int LAsER_SEGMENTS = 60;
 
     private float angle = 0;
 
     public StellarEndStageEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
+
+        AttributeInstance attackAttribute = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (attackAttribute != null){
+            attackAttribute.setBaseValue(ATTACK_DAMAGE);
+        }
     }
 
     /*ATTACKS*/
@@ -89,7 +102,8 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
 
         if (this.getAttackCount() == 0) {
             EndStellarAttackPhase attackPhase = EndStellarAttackPhases.ATTACK_PHASES.get(this.getAttackPhase());
-            attackPhase.onAttack(this, this.getTarget());
+
+            attackPhase.onAttack(this, this.getTarget(), this.getAttackDamage());
 
             this.addMultiBarrierCount(1);
             if (this.getMultiBarrierCount() >= MULTI_BARRIER_ACTIVATE_COUNT) {
@@ -104,6 +118,10 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             this.exDeath();
         } else {
             this.unsetRemoved();
+        }
+
+        if (this.getExHp() > MAX_EX_HP){
+            this.setExHp(MAX_EX_HP);
         }
 
         List<Entity> entities = this.level().getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(PASSIVE_SKILL_RADIUS)).stream().toList();
@@ -199,9 +217,14 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
         builder.add(Attributes.MAX_HEALTH, 4);
         builder.add(Attributes.MOVEMENT_SPEED, 0.3f);
-        builder.add(Attributes.ATTACK_DAMAGE, 40);
+        builder.add(Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE);
         builder.add(Attributes.ATTACK_SPEED, 1.8);
         return builder;
+    }
+
+    public float getAttackDamage() {
+        AttributeInstance attackAttribute = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        return attackAttribute != null ? (float) attackAttribute.getValue() : 0f;
     }
 
     @Override
@@ -236,7 +259,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
     @Override
     public float getEntityHpPercentage(LivingEntity entity) {
         if (entity instanceof StellarEndStageEntity stellarEndStage) {
-            return stellarEndStage.getExHp() / StellarEndStageEntity.MAX_EX_HP;
+            return stellarEndStage.getExHp() / MAX_EX_HP;
         } else {
             return 1f;
         }
@@ -256,7 +279,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
         if (tag.contains("MultiBarrierCount")) this.setMultiBarrierCount(tag.getInt("MultiBarrierCount"));
         else this.setMultiBarrierCount(0);
         if (tag.contains("LazerCount")) this.setLazerCount(tag.getInt("LazerCount"));
-        else this.setLazerCount(DEFAULT_LAZER_ACTIVATE_COUNT);
+        else this.setLazerCount(DEFAULT_LASER_ACTIVATE_COUNT);
     }
 
     @Override
@@ -278,7 +301,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
         this.entityData.define(EX_HP, MAX_EX_HP);
         this.entityData.define(MULTI_BARRIER, MAX_MULTI_BARRIER);
         this.entityData.define(MULTI_BARRIER_COUNT, 0);
-        this.entityData.define(LAZER_COUNT, DEFAULT_LAZER_ACTIVATE_COUNT);
+        this.entityData.define(LASER_COUNT, DEFAULT_LASER_ACTIVATE_COUNT);
     }
 
     public void setAttackPhase(int i) {
@@ -319,20 +342,29 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
                     server.playSound(null, this.blockPosition(), sound, SoundSource.MASTER);
                 }
             } else {
-                this.addExHp(-amount);
+                this.damageExHp(amount);
             }
             return super.hurt(this.damageSources().outOfBorder(), 0f);
         }
         return false;
     }
 
-    public static boolean isDamageableWeapon(ItemStack itemStack){
-        return itemStack.is(ModItems.FORGED_STARS_FRAGMENT.get()) || itemStack.is(ModItems.STARS_FRAGMENT.get());
+    public static boolean isDamageableWeapon(ItemStack itemStack) {
+        if (CommonConfig.LIGHT_MODE.get()) {
+            return itemStack.is(ModTags.Items.WEAPON_WITH_BLESSING);
+        } else {
+            return itemStack.is(ModItems.FORGED_STARS_FRAGMENT.get()) || itemStack.is(ModItems.STARS_FRAGMENT.get());
+        }
     }
 
     @Override
     public float getHealth() {
         return this.getMaxHealth();
+    }
+
+    @Override
+    public void setHealth(float amount) {
+        super.setHealth(MAX_EX_HP);
     }
 
     public void setExHp(float exHp) {
@@ -345,6 +377,14 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
 
     public void addExHp(float exHp) {
         this.setExHp(this.getExHp() + exHp);
+    }
+
+    public void damageExHp(float exHp){
+        float modExHp = exHp;
+        if (this.getExHp() - exHp < 0){
+            modExHp += this.getExHp() - exHp;
+        }
+        this.addExHp(-modExHp);
     }
 
     @Override
@@ -446,25 +486,25 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
     }
 
     private void lazerTick() {
-        if (this.getLazerCount() == LAZER_WARN_COUNT) {
+        if (this.getLazerCount() == LASER_WARN_COUNT) {
             //warn
             if (this.level() instanceof ServerLevel server) {
                 //server.sendParticles(DustParticleOptions.REDSTONE,)
             }
             //count down by 1
             this.addLazerCount(-1);
-        } else if (this.getLazerCount() <= LAZER_ACTIVATE_COUNT) {
+        } else if (this.getLazerCount() <= LASER_ACTIVATE_COUNT) {
             //spawn
-            angle += 360f / (float) LAZER_ACTIVATE_COUNT;
+            angle += 360f / (float) LASER_ACTIVATE_COUNT;
             if (angle >= 360f) angle -= 360f;
 
             double rad = Math.toRadians(angle);
             Vec3 origin = this.position().add(0, 1, 0); // raise beam if needed
             Vec3 dir = new Vec3(Math.cos(rad), 0, Math.sin(rad));
 
-            for (int i = 0; i < LAZER_SEGMENTS; i++) {
-                double t = i / (double) LAZER_SEGMENTS;
-                Vec3 pos = origin.add(dir.scale(LAZER_RADIUS * t));
+            for (int i = 0; i < LAsER_SEGMENTS; i++) {
+                double t = i / (double) LAsER_SEGMENTS;
+                Vec3 pos = origin.add(dir.scale(LASER_RADIUS * t));
 
                 if (this.level() instanceof ClientLevel client) {
                     client.addParticle(DustParticleOptions.REDSTONE, pos.x, pos.y, pos.z, 0, 0, 0);
@@ -473,14 +513,14 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
 
                     for (LivingEntity entity : entities) {
                         if (entity == null || entity == this) continue;
-                        entity.hurt(Utils.createDamageSource(server, ModDamageTypes.MAGIC_WITH_COOLDOWN_BYPASS, this), 0.5f);
+                        entity.hurt(Utils.createDamageSource(server, ModDamageTypes.MAGIC_WITH_ALL_BYPASS, this), this.getAttackDamage() / LASER_DAMAGE_DIVIDER);
                     }
                 }
             }
             //reset
             if (this.getLazerCount() <= 0) {
-                int twoThirdOfDefaultCount = (DEFAULT_LAZER_ACTIVATE_COUNT / 3) * 2;
-                this.setLazerCount(DEFAULT_LAZER_ACTIVATE_COUNT + Mth.nextInt(RandomSource.create(), -twoThirdOfDefaultCount, twoThirdOfDefaultCount));
+                int twoThirdOfDefaultCount = (DEFAULT_LASER_ACTIVATE_COUNT / 3) * 2;
+                this.setLazerCount(DEFAULT_LASER_ACTIVATE_COUNT + Mth.nextInt(RandomSource.create(), -twoThirdOfDefaultCount, twoThirdOfDefaultCount));
             }
         }
         //count down by 1
@@ -550,11 +590,11 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
     }
 
     public void setLazerCount(int count) {
-        this.entityData.set(LAZER_COUNT, count);
+        this.entityData.set(LASER_COUNT, count);
     }
 
     public int getLazerCount() {
-        return this.entityData.get(LAZER_COUNT);
+        return this.entityData.get(LASER_COUNT);
     }
 
     public void addLazerCount(int count) {

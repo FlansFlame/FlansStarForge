@@ -1,6 +1,7 @@
 package net.flansflame.flans_star_forge;
 
 import com.mojang.logging.LogUtils;
+import net.flansflame.flans_star_forge.config.CommonConfig;
 import net.flansflame.flans_star_forge.world.block.ModBlocks;
 import net.flansflame.flans_star_forge.world.effect.ModEffects;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
@@ -18,7 +19,9 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -56,6 +59,8 @@ public class FlansStarForge {
         ModParticles.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
 
         ForgeChunkManager.setForcedChunkLoadingCallback(MOD_ID, (tickets, world) -> {
         });

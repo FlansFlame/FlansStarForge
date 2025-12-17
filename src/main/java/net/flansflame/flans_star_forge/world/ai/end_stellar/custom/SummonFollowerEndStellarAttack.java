@@ -1,7 +1,6 @@
 package net.flansflame.flans_star_forge.world.ai.end_stellar.custom;
 
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
-import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEndStageEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,7 +30,7 @@ public class SummonFollowerEndStellarAttack extends EndStellarAttackPhase {
     }
 
     @Override
-    public void onAttack(StellarEndStageEntity stellar, LivingEntity target) {
+    public void onAttack(StellarEndStageEntity stellar, LivingEntity target, float amount) {
         double x = stellar.getX();
         double y = stellar.getY();
         double z = stellar.getZ();
@@ -81,6 +80,6 @@ public class SummonFollowerEndStellarAttack extends EndStellarAttackPhase {
                 }
             }
         }
-        super.onAttack(stellar, target);
+        super.onAttack(stellar, target, amount);
     }
 }

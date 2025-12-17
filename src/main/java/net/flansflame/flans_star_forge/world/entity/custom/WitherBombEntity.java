@@ -101,7 +101,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
 
                 for (LivingEntity entity : entities) {
                     if (entity == null || entity == this) continue;
-                    entity.hurt(Utils.createDamageSource(server, ModDamageTypes.MAGIC_WITH_COOLDOWN_BYPASS, this), 0.5f);
+                    entity.hurt(Utils.createDamageSource(server, ModDamageTypes.MAGIC_WITH_ALL_BYPASS, this), 0.5f);
                 }
             }
         }
@@ -144,7 +144,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
                     }
 
                     //damageEntity
-                    DamageSource damageSource = Utils.createDamageSource(server, this.isPowerup() ? ModDamageTypes.SONIC_BOOM_WITH_COOLDOWN_BYPASS : DamageTypes.SONIC_BOOM);
+                    DamageSource damageSource = Utils.createDamageSource(server, this.isPowerup() ? ModDamageTypes.SONIC_BOOM_WITH_ALL_BYPASS : DamageTypes.SONIC_BOOM);
                     entity.hurt(damageSource, EXPLODE_DAMAGE * MobStrengthenEvents.BLESSING_ATTACK_MULTIPLIER);
 
                     //sendExplosionParticlesOnEntities
@@ -313,12 +313,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
     public void onRemove() {
         if (!removed) {
             if (this.level() instanceof ServerLevel server) {
-                try {
-                    Objects.requireNonNull(ModEntities.WITHER_BOMB.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND)).extend(this);
-                } catch (NullPointerException ignored) {
-                    LogUtils.getLogger().warn("Could not spawn WITHER_BOMB for null.");
-                }
-                /*
+                WitherBombEntity entityToSpawn = ModEntities.WITHER_BOMB.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);
                 if (entityToSpawn != null) {
                     entityToSpawn.setUUID(this.getUUID());
                     entityToSpawn.setYRot(this.getYRot());
@@ -326,19 +321,9 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
                     entityToSpawn.setPos(new Vec3(this.getX(), this.getY(), this.getZ()));
                     entityToSpawn.setExplodeTick(this.getExplodeTick());
                 }
-                 */
             }
             removed = true;
         }
-    }
-
-    public void extend(WitherBombEntity entity) {
-        this.setUUID(entity.getUUID());
-        this.setYRot(entity.getYRot());
-        this.setYHeadRot(entity.getYHeadRot());
-        this.setPos(new Vec3(entity.getX(), entity.getY(), entity.getZ()));
-        this.setExplodeTick(entity.getExplodeTick());
-        this.setPowerup(entity.isPowerup());
     }
 
     private void exRemove() {
