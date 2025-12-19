@@ -80,7 +80,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
     public static final int LASER_WARN_COUNT = 40;
     public static final int LASER_ACTIVATE_COUNT = 20;
     public static final int LASER_RADIUS = 15;
-    public static final int LAsER_SEGMENTS = 60;
+    public static final int LASER_SEGMENTS = 60;
 
     private float angle = 0;
 
@@ -88,7 +88,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
         super(type, level);
 
         AttributeInstance attackAttribute = this.getAttribute(Attributes.ATTACK_DAMAGE);
-        if (attackAttribute != null){
+        if (attackAttribute != null) {
             attackAttribute.setBaseValue(ATTACK_DAMAGE);
         }
     }
@@ -105,11 +105,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
 
             attackPhase.onAttack(this, this.getTarget(), this.getAttackDamage());
 
-            this.addMultiBarrierCount(1);
-            if (this.getMultiBarrierCount() >= MULTI_BARRIER_ACTIVATE_COUNT) {
-                this.setMultiBarrier(MAX_MULTI_BARRIER);
-                this.setMultiBarrierCount(0);
-            }
+            this.countUpAndActivateBarrier();
 
             this.setAttackCount(-1);
         }
@@ -120,7 +116,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             this.unsetRemoved();
         }
 
-        if (this.getExHp() > MAX_EX_HP){
+        if (this.getExHp() > MAX_EX_HP) {
             this.setExHp(MAX_EX_HP);
         }
 
@@ -364,7 +360,12 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
 
     @Override
     public void setHealth(float amount) {
-        super.setHealth(MAX_EX_HP);
+        return;
+    }
+
+    @Override
+    public void heal(float amount) {
+        return;
     }
 
     public void setExHp(float exHp) {
@@ -379,12 +380,21 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
         this.setExHp(this.getExHp() + exHp);
     }
 
-    public void damageExHp(float exHp){
+    public void damageExHp(float exHp) {
         float modExHp = exHp;
-        if (this.getExHp() - exHp < 0){
+        if (this.getExHp() - exHp < 0) {
             modExHp += this.getExHp() - exHp;
         }
         this.addExHp(-modExHp);
+    }
+
+    public void exHeal(float amount) {
+        if (amount <= 0f) return;
+
+        float exHealth = this.getHealth();
+        if (exHealth > 0f) {
+            this.setHealth(this.getExHp() + amount);
+        }
     }
 
     @Override
@@ -470,7 +480,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
 
 
     /*PASSIVE_SKILL*/
-    private static final int PASSIVE_SKILL_RADIUS = 64;
+    public static final int PASSIVE_SKILL_RADIUS = 64;
 
     private void asPassiveSkill() {
         //heal when near witherSkeletons
@@ -502,8 +512,8 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             Vec3 origin = this.position().add(0, 1, 0); // raise beam if needed
             Vec3 dir = new Vec3(Math.cos(rad), 0, Math.sin(rad));
 
-            for (int i = 0; i < LAsER_SEGMENTS; i++) {
-                double t = i / (double) LAsER_SEGMENTS;
+            for (int i = 0; i < LASER_SEGMENTS; i++) {
+                double t = i / (double) LASER_SEGMENTS;
                 Vec3 pos = origin.add(dir.scale(LASER_RADIUS * t));
 
                 if (this.level() instanceof ClientLevel client) {
@@ -521,6 +531,8 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             if (this.getLazerCount() <= 0) {
                 int twoThirdOfDefaultCount = (DEFAULT_LASER_ACTIVATE_COUNT / 3) * 2;
                 this.setLazerCount(DEFAULT_LASER_ACTIVATE_COUNT + Mth.nextInt(RandomSource.create(), -twoThirdOfDefaultCount, twoThirdOfDefaultCount));
+
+                this.countUpAndActivateBarrier();
             }
         }
         //count down by 1
@@ -587,6 +599,14 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
 
     public void addMultiBarrierCount(int count) {
         this.setMultiBarrierCount(this.getMultiBarrierCount() + count);
+    }
+
+    public void countUpAndActivateBarrier() {
+        this.addMultiBarrierCount(1);
+        if (this.getMultiBarrierCount() >= MULTI_BARRIER_ACTIVATE_COUNT) {
+            this.setMultiBarrier(MAX_MULTI_BARRIER);
+            this.setMultiBarrierCount(0);
+        }
     }
 
     public void setLazerCount(int count) {

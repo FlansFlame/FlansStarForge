@@ -23,7 +23,7 @@ public class EndStellarAttackGoal extends MeleeAttackGoal {
         double attackRange = this.getAttackReachSqr(entity) * ATTACK_STAGE_RANGE_MULTIPLIER;
 
         if (this.mob instanceof StellarEndStageEntity stellar && getTicksUntilNextAttack() <= 0) {
-            stellar.setAttackPhase(Mth.nextInt(RandomSource.create(), 0, StellarAttackPhases.ATTACK_PHASES.size() - 1));
+            stellar.setAttackPhase(Mth.nextInt(RandomSource.create(), 0, StellarAttackPhases.ATTACK_PHASES.size()));
             EndStellarAttackPhase attackPhase = EndStellarAttackPhases.ATTACK_PHASES.get(stellar.getAttackPhase());
 
             if (attackPhase.activateEvenIfNotNear()) {

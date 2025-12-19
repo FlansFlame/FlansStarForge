@@ -2,9 +2,12 @@ package net.flansflame.flans_star_forge.world.entity.custom;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.component.ModComponentTags;
+import net.flansflame.flans_star_forge.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackGoal;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhase;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhases;
+import net.flansflame.flans_star_forge.world.entity.IOnRemoved;
+import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.flansflame.flans_star_forge.world.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -16,7 +19,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -28,6 +30,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -38,7 +41,7 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
-public class StellarEntity extends TamableAnimal implements GeoEntity {
+public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemoved {
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
@@ -46,10 +49,11 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
     public static final EntityDataAccessor<Integer> ATTACK_PHASE = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
 
+    private boolean removed;
+
     public StellarEntity(EntityType<? extends TamableAnimal> type, Level level) {
         super(type, level);
     }
-
 
     /*ATTACKS*/
     @Override
@@ -157,14 +161,6 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float damage) {
-        if (!source.is(DamageTypes.GENERIC_KILL) || this.isTame()) {
-            return false;
-        }
-        return super.hurt(source, damage);
-    }
-
-    @Override
     public void checkDespawn() {
     }
 
@@ -263,16 +259,6 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
         }
     }
 
-    @Override
-    public void remove(RemovalReason reason) {
-        if (!level().isClientSide) {
-            ChunkPos chunkPos = new ChunkPos(this.blockPosition());
-            ForgeChunkManager.forceChunk((ServerLevel) level(), FlansStarForge.MOD_ID, this.getUUID(), chunkPos.x, chunkPos.z, false, true);
-        }
-        super.remove(reason);
-    }
-
-
     /*STARS_POWERSTONE STORING & SITTING*/
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -281,7 +267,7 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
             if (itemStack.is(ModItems.STARS_POWERSTONE.get())) {
                 if (ModComponentTags.OWNER_UUID.get(itemStack).isEmpty()) {
                     ModComponentTags.OWNER_UUID.set(itemStack, player.getStringUUID());
-                    this.discard();
+                    this.exDiscard();
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.PASS;
@@ -291,5 +277,71 @@ public class StellarEntity extends TamableAnimal implements GeoEntity {
             }
         }
         return InteractionResult.PASS;
+    }
+
+
+    /*INVINCIBILITY*/
+    @Override
+    public boolean hurt(DamageSource source, float damage) {
+        if (this.isTame()) {
+            return false;
+        }
+        return super.hurt(source, damage);
+    }
+
+    @Override
+    public float getHealth() {
+        return this.getMaxHealth();
+    }
+
+    @Override
+    public void setHealth(float amount) {
+        super.setHealth(this.getMaxHealth());
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        return;
+    }
+
+    private void exDiscard() {
+        ((IEntityMixinAccessor) this).setRemovalReason(RemovalReason.DISCARDED);
+
+        if (this.getRemovalReason().shouldDestroy()) {
+            this.stopRiding();
+        }
+
+        this.getPassengers().forEach(Entity::stopRiding);
+        ((IEntityMixinAccessor) this).getLevelCallback().onRemove(RemovalReason.DISCARDED);
+        this.invalidateCaps();
+        this.brain.clearMemories();
+
+        if (!level().isClientSide) {
+            ChunkPos chunkPos = new ChunkPos(this.blockPosition());
+            ForgeChunkManager.forceChunk((ServerLevel) level(), FlansStarForge.MOD_ID, this.getUUID(), chunkPos.x, chunkPos.z, false, true);
+        }
+    }
+
+    @Override
+    public void onRemove() {
+        if (!removed) {
+            if (this.level() instanceof ServerLevel server) {
+                StellarEntity entityToSpawn = ModEntities.STELLAR.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);
+                if (entityToSpawn != null) {
+                    entityToSpawn.setUUID(this.getUUID());
+                    entityToSpawn.setYRot(this.getYRot());
+                    entityToSpawn.setYHeadRot(this.getYHeadRot());
+                    entityToSpawn.setPos(new Vec3(this.getX(), this.getY(), this.getZ()));
+                    entityToSpawn.setSitting(this.isSitting());
+                    entityToSpawn.tame((Player) this.getOwner());
+                }
+            }
+            removed = true;
+        }
+    }
+
+    @Override
+    public void kill() {
+        return;
     }
 }
