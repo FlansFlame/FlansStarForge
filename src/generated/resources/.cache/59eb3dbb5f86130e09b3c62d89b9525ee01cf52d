@@ -1,1 +1,6 @@
-// 1.20.1	2025-10-05T13:40:39.9097029	Loot Tables
+// 1.20.1	2025-12-20T18:15:02.109184	Loot Tables
+50a1a865bee7e781f59f68c61bb4fb735fea1724 data/flans_star_forge/loot_tables/blocks/activated_extreme_soul_core.json
+652ed96a45ffd8129a2700801600eb83c0b43bba data/flans_star_forge/loot_tables/blocks/basic_soul_core.json
+76ba27610c1a8e09326b4a569ceff3e6620e1699 data/flans_star_forge/loot_tables/blocks/extreme_soul_core.json
+5f2622db4e131111a9756fb43981a511f2598df2 data/flans_star_forge/loot_tables/blocks/reinforced_soul_core.json
+9e9981d4add020da03ed7cb0c4be4db1a446e6ad data/flans_star_forge/loot_tables/blocks/ultimate_soul_core.json

@@ -419,7 +419,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
     private boolean removed;
 
     @Override
-    public void onRemove() {
+    public void flansStarForge$onRemoved() {
         if (!removed) {
             if (this.level() instanceof ServerLevel server) {
                 StellarEndStageEntity entityToSpawn = ModEntities.STELLAR_END_STAGE.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);
@@ -464,7 +464,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             this.level().broadcastEntityEvent(this, (byte) 60);
 
             if (this.getRemovalReason() == null) {
-                ((IEntityMixinAccessor) this).setRemovalReason(RemovalReason.KILLED);
+                ((IEntityMixinAccessor) this).flansStarForge$setRemovalReason(RemovalReason.KILLED);
             }
 
             if (this.getRemovalReason().shouldDestroy()) {
@@ -472,7 +472,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             }
 
             this.getPassengers().forEach(Entity::stopRiding);
-            ((IEntityMixinAccessor) this).getLevelCallback().onRemove(RemovalReason.KILLED);
+            ((IEntityMixinAccessor) this).flansStarForge$getLevelCallback().onRemove(RemovalReason.KILLED);
             this.invalidateCaps();
             this.brain.clearMemories();
         }
@@ -558,14 +558,14 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             if (projectile instanceof IUnremovableByEndStellarProjectile) {
             } else {
                 for (RemovalReason reason : RemovalReason.values()) {
-                    ((IEntityMixinAccessor) projectile).setRemovalReason(reason);
+                    ((IEntityMixinAccessor) projectile).flansStarForge$setRemovalReason(reason);
 
                     if (projectile.getRemovalReason().shouldDestroy()) {
                         projectile.stopRiding();
                     }
 
                     projectile.getPassengers().forEach(Entity::stopRiding);
-                    ((IEntityMixinAccessor) projectile).getLevelCallback().onRemove(reason);
+                    ((IEntityMixinAccessor) projectile).flansStarForge$getLevelCallback().onRemove(reason);
                     projectile.invalidateCaps();
                 }
             }

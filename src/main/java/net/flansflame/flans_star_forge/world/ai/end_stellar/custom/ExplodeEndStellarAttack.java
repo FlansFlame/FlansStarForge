@@ -41,7 +41,7 @@ public class ExplodeEndStellarAttack extends EndStellarAttackPhase {
                     .inflate(EXPLOSION_RADIUS), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
             for (LivingEntity entity : _entfound) {
                 if (entity != stellar) {
-                    entity.hurt(Utils.createDamageSource(server, ModDamageTypes.EXPLOSION_WITH_ALL_BYPASS, stellar), amount / EXPLOSION_DAMAGE_DIVIDER * MobStrengthenEvents.BLESSING_ATTACK_MULTIPLIER);
+                    entity.hurt(Utils.createDamageSource(server, ModDamageTypes.WITHERING_WITH_ALL_WITHOUT_COOLDOWN_BYPASS, stellar), amount / EXPLOSION_DAMAGE_DIVIDER * MobStrengthenEvents.BLESSING_ATTACK_MULTIPLIER);
                 }
             }
             server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, stellar.getX(), stellar.getY() + 0.5, stellar.getZ(), 4, 3, 0, 3, 0);

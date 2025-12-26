@@ -305,14 +305,14 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
     }
 
     private void exDiscard() {
-        ((IEntityMixinAccessor) this).setRemovalReason(RemovalReason.DISCARDED);
+        ((IEntityMixinAccessor) this).flansStarForge$setRemovalReason(RemovalReason.DISCARDED);
 
         if (this.getRemovalReason().shouldDestroy()) {
             this.stopRiding();
         }
 
         this.getPassengers().forEach(Entity::stopRiding);
-        ((IEntityMixinAccessor) this).getLevelCallback().onRemove(RemovalReason.DISCARDED);
+        ((IEntityMixinAccessor) this).flansStarForge$getLevelCallback().onRemove(RemovalReason.DISCARDED);
         this.invalidateCaps();
         this.brain.clearMemories();
 
@@ -323,7 +323,7 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
     }
 
     @Override
-    public void onRemove() {
+    public void flansStarForge$onRemoved() {
         if (!removed) {
             if (this.level() instanceof ServerLevel server) {
                 StellarEntity entityToSpawn = ModEntities.STELLAR.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);

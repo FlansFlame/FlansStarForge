@@ -20,12 +20,12 @@ public abstract class EntityMixin implements IEntityMixinAccessor {
     private EntityInLevelCallback levelCallback;
 
     @Override
-    public void setRemovalReason(Entity.RemovalReason value) {
+    public void flansStarForge$setRemovalReason(Entity.RemovalReason value) {
         this.removalReason = value;
     }
 
     @Override
-    public EntityInLevelCallback getLevelCallback() {
+    public EntityInLevelCallback flansStarForge$getLevelCallback() {
         return levelCallback;
     }
 
@@ -33,7 +33,7 @@ public abstract class EntityMixin implements IEntityMixinAccessor {
     public void onSetRemoved(Entity.RemovalReason reason, CallbackInfo ci) {
         Entity self = (Entity) (Object) this;
         if (self instanceof IOnRemoved) {
-            ((IOnRemoved) self).onRemove();
+            ((IOnRemoved) self).flansStarForge$onRemoved();
         }
     }
 }

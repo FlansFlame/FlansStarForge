@@ -2,10 +2,16 @@
   "tab.flans_star_forge.star_forge": "Flans Star Forge",
 
   "item.flans_star_forge.stars_powerstone": "Stars PowerStone",
+  "item.flans_star_forge.stars_powerstone.desc": "§8Be aware that this item & Stellar will be crucial to this mod.\nThese will not be redistributed again.(Unless you spawn them or do /flans_star_forge re_drop_meteor)\nSo don't lose this or her.",
   "item.flans_star_forge.withering_powerstone": "Withering PowerStone",
   "item.flans_star_forge.forged_stars_fragment": "Forged Stars Fragment",
   "item.flans_star_forge.stars_fragment": "Stars Fragment",
 
+  "block.flans_star_forge.basic_soul_core": "Basic Soul Core",
+  "block.flans_star_forge.reinforced_soul_core": "Reinforced Soul Core",
+  "block.flans_star_forge.extreme_soul_core": "Extreme Soul Core",
+  "block.flans_star_forge.activated_extreme_soul_core": "Activated Extreme Soul Core",
+  "block.flans_star_forge.ultimate_soul_core": "Ultimate Soul Core",
   "block.flans_star_forge.uni_stone": "Uni-Stone",
 
   "effect.flans_star_forge.stars_blessing": "Stars Blessing",
@@ -20,8 +26,11 @@
 
   "key.categories.flans_star_forge": "Flans Star Forge",
   "key.flans_star_forge.teleport_stellar": "Teleport Stellar",
+  "key.flans_star_forge.toggle_emotions": "Toggle Emotions",
 
-  "flanaf-bau.flans_star_forge.stellar_on_spawn": "[Stellar-af] .Nausneu Ni Laz as %s-af",
+  "cmd.flans_star_forge.re_drop_meteor.fail": "§cFail to execute 're_drop_meteor'",
+
+  "flanaf-bau.flans_star_forge.stellar_on_spawn": "<Stellar-af> .Nausneu Ni Laz as %s-af",
 
   "text.flans_star_forge.power_is_not_reliable": "§l§4Your power is not worth reliance..."
 }

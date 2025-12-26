@@ -16,15 +16,15 @@ public class ModLootTableSubProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        /*
         ArrayList<RegistryObject<Block>> registries = new ArrayList<>();
 
         registries.addAll(ModBlocks.BLOCKS.getEntries());
+        registries.remove(ModBlocks.METEOR);
+        registries.remove(ModBlocks.UNI_STONE);
 
         for (RegistryObject<Block> registry : registries) {
             this.dropSelf(registry.get());
         }
-         */
     }
 
 

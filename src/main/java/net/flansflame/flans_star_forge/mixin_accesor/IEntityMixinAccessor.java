@@ -4,7 +4,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.entity.EntityInLevelCallback;
 
 public interface IEntityMixinAccessor {
-    void setRemovalReason(Entity.RemovalReason value);
+    void flansStarForge$setRemovalReason(Entity.RemovalReason value);
 
-    EntityInLevelCallback getLevelCallback();
+    EntityInLevelCallback flansStarForge$getLevelCallback();
 }

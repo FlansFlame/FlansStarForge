@@ -1,6 +1,7 @@
 package net.flansflame.flans_star_forge.variable;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
+import net.flansflame.flans_star_forge.emotion.EmotionStats;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -30,18 +31,21 @@ public class ModVariables {
     public static boolean hasLoggedIn(Player player) {
         return player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()).hasLoggedIn;
     }
-    public static void hasLoggedIn(Player player, boolean b){
+
+    public static void hasLoggedIn(Player player, boolean b) {
         player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
             capability.hasLoggedIn = b;
             capability.syncPlayerVariables(player);
         });
     }
+
     public static boolean starsBlessing(Player player) {
         return player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()).starsBlessing;
     }
-    public static void starsBlessing(Player player, boolean b){
+
+    public static void starsBlessing(Player player, boolean starsBlessing) {
         player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-            capability.starsBlessing = b;
+            capability.starsBlessing = starsBlessing;
             capability.syncPlayerVariables(player);
         });
     }
@@ -109,8 +113,6 @@ public class ModVariables {
             PlayerVariables clone = ((PlayerVariables) event.getEntity().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
             clone.hasLoggedIn = original.hasLoggedIn;
             clone.starsBlessing = original.starsBlessing;
-            if (!event.isWasDeath()) {
-            }
         }
     }
 

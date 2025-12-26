@@ -1,6 +1,7 @@
 package net.flansflame.flans_star_forge;
 
 import com.mojang.logging.LogUtils;
+import net.flansflame.flans_star_forge.config.ClientConfig;
 import net.flansflame.flans_star_forge.config.CommonConfig;
 import net.flansflame.flans_star_forge.world.block.ModBlocks;
 import net.flansflame.flans_star_forge.world.effect.ModEffects;
@@ -61,6 +62,7 @@ public class FlansStarForge {
         MinecraftForge.EVENT_BUS.register(this);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
 
         ForgeChunkManager.setForcedChunkLoadingCallback(MOD_ID, (tickets, world) -> {
         });

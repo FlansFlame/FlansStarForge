@@ -1,5 +1,6 @@
 package net.flansflame.flans_star_forge.client.entity;
 
+import net.flansflame.flans_star_forge.command.ModCommands;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;

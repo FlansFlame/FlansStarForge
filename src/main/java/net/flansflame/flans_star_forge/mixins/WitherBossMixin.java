@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 public class WitherBossMixin implements IOnRemoved {
 
     @Override
-    public void onRemove() {
+    public void flansStarForge$onRemoved() {
         WitherBoss self = (WitherBoss) (Object) this;
         if (self.level() instanceof ServerLevel server){
             WitherBombEntity entityToSpawn = ModEntities.WITHER_BOMB.get().spawn(server, self.blockPosition(), MobSpawnType.COMMAND);

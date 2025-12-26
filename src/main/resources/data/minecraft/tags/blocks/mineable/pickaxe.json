@@ -1,5 +1,9 @@
 {
   "values": [
+    "flans_star_forge:basic_soul_core",
+    "flans_star_forge:reinforced_soul_core",
+    "flans_star_forge:extreme_soul_core",
+    "flans_star_forge:ultimate_soul_core",
     "flans_star_forge:uni_stone"
   ]
 }

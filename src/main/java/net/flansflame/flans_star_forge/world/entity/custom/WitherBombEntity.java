@@ -1,6 +1,5 @@
 package net.flansflame.flans_star_forge.world.entity.custom;
 
-import com.mojang.logging.LogUtils;
 import net.flansflame.flans_star_forge.Utils;
 import net.flansflame.flans_star_forge.event.MobStrengthenEvents;
 import net.flansflame.flans_star_forge.mixin_accesor.IEntityMixinAccessor;
@@ -38,7 +37,6 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
 
@@ -310,7 +308,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
     }
 
     @Override
-    public void onRemove() {
+    public void flansStarForge$onRemoved() {
         if (!removed) {
             if (this.level() instanceof ServerLevel server) {
                 WitherBombEntity entityToSpawn = ModEntities.WITHER_BOMB.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);
@@ -328,7 +326,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
 
     private void exRemove() {
         if (this.getRemovalReason() == null) {
-            ((IEntityMixinAccessor) this).setRemovalReason(RemovalReason.DISCARDED);
+            ((IEntityMixinAccessor) this).flansStarForge$setRemovalReason(RemovalReason.DISCARDED);
         }
 
         if (this.getRemovalReason().shouldDestroy()) {
@@ -336,7 +334,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
         }
 
         this.getPassengers().forEach(Entity::stopRiding);
-        ((IEntityMixinAccessor) this).getLevelCallback().onRemove(RemovalReason.DISCARDED);
+        ((IEntityMixinAccessor) this).flansStarForge$getLevelCallback().onRemove(RemovalReason.DISCARDED);
         this.invalidateCaps();
         this.brain.clearMemories();
     }

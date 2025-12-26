@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 
 public interface ModTags {
     interface Blocks{
-        //TagKey<Block> TAG_KEY = tag("tag_key");
+        TagKey<Block> ACTIVE_SOUL_CORE = tag("active_soul_core");
 
         static TagKey<Block> tag(String name){
             return BlockTags.create(new ResourceLocation(FlansStarForge.MOD_ID, name));
