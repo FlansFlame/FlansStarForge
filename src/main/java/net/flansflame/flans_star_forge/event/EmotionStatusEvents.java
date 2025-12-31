@@ -4,8 +4,9 @@ import net.flansflame.flans_star_forge.Utils;
 import net.flansflame.flans_star_forge.emotion.EmotionBehaviorRates;
 import net.flansflame.flans_star_forge.emotion.EmotionStats;
 import net.flansflame.flans_star_forge.emotion.Emotions;
-import net.flansflame.flans_star_forge.mixin_accesor.IPlayerMixinAccessor;
 import net.flansflame.flans_star_forge.world.damagesource.ModDamageTypes;
+import net.flansflame.flans_star_forge.world.entity.IHasEmotion;
+import net.flansflame.flans_star_forge.world.entity.IUnremovableByEndStellarProjectile;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -27,28 +28,28 @@ public class EmotionStatusEvents {
     @SubscribeEvent
     public static void onKillVillager(LivingDeathEvent event) {
         Entity sourceEntity = event.getSource().getEntity();
-        if (event.getEntity() instanceof Villager && sourceEntity instanceof IPlayerMixinAccessor iPlayer) {
+        if (event.getEntity() instanceof Villager && sourceEntity instanceof IHasEmotion iPlayer) {
             iPlayer.addSanity(EmotionStats.behaviorRates2Amount(EmotionBehaviorRates.OUTLAW));
         }
     }
 
     @SubscribeEvent
     public static void onBreakBlockWithFist(BlockEvent.BreakEvent event) {
-        if (event.getPlayer() != null && !event.getPlayer().getMainHandItem().is(Tags.Items.TOOLS) && event.getPlayer() instanceof IPlayerMixinAccessor iPlayer) {
+        if (event.getPlayer() != null && !event.getPlayer().getMainHandItem().is(Tags.Items.TOOLS) && event.getPlayer() instanceof IHasEmotion iPlayer) {
             iPlayer.addFatigue(EmotionStats.behaviorRates2Amount(EmotionBehaviorRates.NOT_COOl));
         }
     }
 
     @SubscribeEvent
     public static void onRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        if (event.getEntity() != null && event.getEntity() instanceof IPlayerMixinAccessor iPlayer) {
+        if (event.getEntity() != null && event.getEntity() instanceof IHasEmotion iPlayer) {
             iPlayer.addSanity(-5);
         }
     }
 
     @SubscribeEvent
     public static void onFall(LivingFallEvent event) {
-        if (event.getEntity() != null && event.getEntity() instanceof IPlayerMixinAccessor iPlayer && event.getDistance() >= 6) {
+        if (event.getEntity() != null && event.getEntity() instanceof IHasEmotion iPlayer && event.getDistance() >= 6) {
             iPlayer.addFatigue(EmotionStats.behaviorRates2Amount(EmotionBehaviorRates.NOT_COOl));
             iPlayer.addMotivation(EmotionStats.behaviorRates2Amount(EmotionBehaviorRates.TOUGH));
         }
@@ -59,7 +60,7 @@ public class EmotionStatusEvents {
 
     @SubscribeEvent
     public static void inDimension(TickEvent.PlayerTickEvent event) {
-        if (event.player instanceof IPlayerMixinAccessor iPlayer) {
+        if (event.player instanceof IHasEmotion iPlayer) {
             if (inDimension$tick >= inDimension$DAMAGE_TICK) {
                 ResourceKey<Level> dimension = event.player.level().dimension();
                 if (dimension.equals(Level.NETHER)) {
@@ -82,7 +83,7 @@ public class EmotionStatusEvents {
     @SubscribeEvent
     public static void damageOnInsanity(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
-        if (player instanceof IPlayerMixinAccessor iPlayer && Emotions.status2Emotion(iPlayer.flansStarForge$getStats()).is(Emotions.INSANE)) {
+        if (player instanceof IHasEmotion iPlayer && Emotions.status2Emotion(iPlayer.flansStarForge$getStats()).is(Emotions.INSANE)) {
             if (player.level() instanceof ServerLevel server) {
                 if (damageOnInsanity$tick >= damageOnInsanity$DAMAGE_TICK) {
                     player.hurt(Utils.createDamageSource(server, ModDamageTypes.WITHERING_WITH_ALL_WITHOUT_COOLDOWN_BYPASS), (player.getMaxHealth()) / 10f);

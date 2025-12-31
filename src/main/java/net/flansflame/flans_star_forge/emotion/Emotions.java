@@ -1,8 +1,7 @@
 package net.flansflame.flans_star_forge.emotion;
 
-import net.flansflame.flans_star_forge.mixin_accesor.IPlayerMixinAccessor;
+import net.flansflame.flans_star_forge.world.entity.IHasEmotion;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 
 public enum Emotions {
     OMNIPOTENT("command_block_side"),
@@ -23,8 +22,8 @@ public enum Emotions {
         return this == emotions;
     }
 
-    public static Emotions getEmotions(Player player) {
-        return status2Emotion(((IPlayerMixinAccessor) player).flansStarForge$getStats());
+    public static <T extends IHasEmotion> Emotions getEmotions(T emotionEntity) {
+        return status2Emotion(emotionEntity.flansStarForge$getStats());
     }
 
     public static Emotions status2Emotion(int[] status) {

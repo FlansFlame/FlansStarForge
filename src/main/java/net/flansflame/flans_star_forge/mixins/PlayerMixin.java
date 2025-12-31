@@ -2,7 +2,8 @@ package net.flansflame.flans_star_forge.mixins;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.emotion.EmotionStats;
-import net.flansflame.flans_star_forge.mixin_accesor.IPlayerMixinAccessor;
+import net.flansflame.flans_star_forge.world.entity.IHasEmotion;
+import net.flansflame.flans_star_forge.world.entity.IUnremovableByEndStellarProjectile;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin({Player.class})
-public abstract class PlayerMixin implements IPlayerMixinAccessor {
+public abstract class PlayerMixin implements IHasEmotion {
     @Unique
     private static final EntityDataAccessor<Integer> flansStarForge$SANITY = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
     @Unique

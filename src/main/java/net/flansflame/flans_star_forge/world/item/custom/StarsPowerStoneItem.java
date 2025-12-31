@@ -1,10 +1,8 @@
 package net.flansflame.flans_star_forge.world.item.custom;
 
-import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.component.ModComponentTags;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -41,21 +39,28 @@ public class StarsPowerStoneItem extends Item {
         ItemStack itemStack = player.getItemInHand(hand);
 
         if (ModComponentTags.OWNER_UUID.get(itemStack).equals(player.getStringUUID())) {
-            if (level instanceof ServerLevel server) {
-                StellarEntity entityToSpawn = ModEntities.STELLAR.get().spawn(server, player.getOnPos().above(), MobSpawnType.COMMAND);
-                if (entityToSpawn != null) {
-                    entityToSpawn.tame(player);
-                    entityToSpawn.setYRot(server.getRandom().nextFloat() * 360F);
-                    entityToSpawn.setSitting(true);
+            if (level.dimension() == Level.OVERWORLD) {
+                if (level instanceof ServerLevel server) {
+                    StellarEntity entityToSpawn = ModEntities.STELLAR.get().spawn(server, player.getOnPos().above(), MobSpawnType.COMMAND);
+                    if (entityToSpawn != null) {
+                        entityToSpawn.tame(player);
+                        entityToSpawn.setYRot(server.getRandom().nextFloat() * 360F);
+                        entityToSpawn.setSitting(true);
+                    }
                 }
-            }
 
-            if (level.isClientSide) {
-                player.displayClientMessage(Component.translatable("flanaf-bau." + FlansStarForge.MOD_ID + ".stellar_on_spawn", player.getName()), false);
-            }
+                if (level.isClientSide) {
+                    player.displayClientMessage(Component.translatable("flanaf-bau.flans_star_forge.stellar_on_spawn", player.getName()), false);
+                }
 
-            ModComponentTags.OWNER_UUID.set(itemStack);
-            return InteractionResult.SUCCESS;
+                ModComponentTags.OWNER_UUID.set(itemStack);
+                return InteractionResult.SUCCESS;
+            } else {
+                if (level.isClientSide) {
+                    player.displayClientMessage(Component.translatable("flanaf-bau.flans_star_forge.stellar_deny_spawn"), false);
+                }
+                return InteractionResult.FAIL;
+            }
         }
         return super.useOn(context);
     }

@@ -1,6 +1,6 @@
-package net.flansflame.flans_star_forge.mixin_accesor;
+package net.flansflame.flans_star_forge.world.entity;
 
-public interface IPlayerMixinAccessor {
+public interface IHasEmotion {
     default int[] flansStarForge$getStats() {
         return new int[]{this.flansStarForge$getSanity(), this.flansStarForge$getFatigue(), this.flansStarForge$getMotivation()};
     }

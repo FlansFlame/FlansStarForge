@@ -64,7 +64,7 @@ public class ModKeyBindMessage {
                         }
                     }
 
-                    if (!foundStellar && !player.level().isClientSide) {
+                    if (!foundStellar) {
                         player.displayClientMessage(Component.translatable("entity.flans_star_forge.stellar.failed_to_teleport"), false);
                     }
                 }

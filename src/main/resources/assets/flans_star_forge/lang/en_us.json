@@ -31,6 +31,7 @@
   "cmd.flans_star_forge.re_drop_meteor.fail": "§cFail to execute 're_drop_meteor'",
 
   "flanaf-bau.flans_star_forge.stellar_on_spawn": "<Stellar-af> .Nausneu Ni Laz as %s-af",
+  "flanaf-bau.flans_star_forge.stellar_deny_spawn": "<Stellar-af> .Neul as Vae-neu Baulv-ceu",
 
   "text.flans_star_forge.power_is_not_reliable": "§l§4Your power is not worth reliance..."
 }
