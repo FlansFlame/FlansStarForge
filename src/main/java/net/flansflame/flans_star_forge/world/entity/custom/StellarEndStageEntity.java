@@ -1,14 +1,14 @@
 package net.flansflame.flans_star_forge.world.entity.custom;
 
+import net.flansflame.flans_knowledge_lib.Utils;
+import net.flansflame.flans_knowledge_lib.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_knowledge_lib.world.entity.IBossBar;
-import net.flansflame.flans_star_forge.Utils;
+import net.flansflame.flans_knowledge_lib.world.entity.IOnRemoved;
 import net.flansflame.flans_star_forge.config.CommonConfig;
-import net.flansflame.flans_star_forge.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackGoal;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhases;
 import net.flansflame.flans_star_forge.world.damagesource.ModDamageTypes;
-import net.flansflame.flans_star_forge.world.entity.IOnRemoved;
 import net.flansflame.flans_star_forge.world.entity.IUnremovableByEndStellarProjectile;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.flansflame.flans_star_forge.world.item.ModItems;
@@ -419,7 +419,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
     private boolean removed;
 
     @Override
-    public void flansStarForge$onRemoved() {
+    public void flansKnowledgeLib$onRemoved() {
         if (!removed) {
             if (this.level() instanceof ServerLevel server) {
                 StellarEndStageEntity entityToSpawn = ModEntities.STELLAR_END_STAGE.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);
@@ -464,7 +464,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             this.level().broadcastEntityEvent(this, (byte) 60);
 
             if (this.getRemovalReason() == null) {
-                ((IEntityMixinAccessor) this).flansStarForge$setRemovalReason(RemovalReason.KILLED);
+                ((IEntityMixinAccessor) this).flansKnowledgeLib$setRemovalReason(RemovalReason.KILLED);
             }
 
             if (this.getRemovalReason().shouldDestroy()) {
@@ -472,7 +472,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             }
 
             this.getPassengers().forEach(Entity::stopRiding);
-            ((IEntityMixinAccessor) this).flansStarForge$getLevelCallback().onRemove(RemovalReason.KILLED);
+            ((IEntityMixinAccessor) this).flansKnowledgeLib$getLevelCallback().onRemove(RemovalReason.KILLED);
             this.invalidateCaps();
             this.brain.clearMemories();
         }
@@ -558,14 +558,14 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
             if (projectile instanceof IUnremovableByEndStellarProjectile) {
             } else {
                 for (RemovalReason reason : RemovalReason.values()) {
-                    ((IEntityMixinAccessor) projectile).flansStarForge$setRemovalReason(reason);
+                    ((IEntityMixinAccessor) projectile).flansKnowledgeLib$setRemovalReason(reason);
 
                     if (projectile.getRemovalReason().shouldDestroy()) {
                         projectile.stopRiding();
                     }
 
                     projectile.getPassengers().forEach(Entity::stopRiding);
-                    ((IEntityMixinAccessor) projectile).flansStarForge$getLevelCallback().onRemove(reason);
+                    ((IEntityMixinAccessor) projectile).flansKnowledgeLib$getLevelCallback().onRemove(reason);
                     projectile.invalidateCaps();
                 }
             }

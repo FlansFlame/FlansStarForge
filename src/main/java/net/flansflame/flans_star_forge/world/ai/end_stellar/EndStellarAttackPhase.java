@@ -1,6 +1,6 @@
 package net.flansflame.flans_star_forge.world.ai.end_stellar;
 
-import net.flansflame.flans_star_forge.Utils;
+import net.flansflame.flans_knowledge_lib.Utils;
 import net.flansflame.flans_star_forge.world.damagesource.ModDamageTypes;
 import net.flansflame.flans_star_forge.world.entity.custom.StellarEndStageEntity;
 import net.minecraft.server.level.ServerLevel;

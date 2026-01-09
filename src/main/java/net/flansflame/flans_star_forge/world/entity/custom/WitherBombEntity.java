@@ -1,10 +1,10 @@
 package net.flansflame.flans_star_forge.world.entity.custom;
 
-import net.flansflame.flans_star_forge.Utils;
+import net.flansflame.flans_knowledge_lib.Utils;
+import net.flansflame.flans_knowledge_lib.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.event.MobStrengthenEvents;
-import net.flansflame.flans_star_forge.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.world.damagesource.ModDamageTypes;
-import net.flansflame.flans_star_forge.world.entity.IOnRemoved;
+import net.flansflame.flans_knowledge_lib.world.entity.IOnRemoved;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -308,7 +308,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
     }
 
     @Override
-    public void flansStarForge$onRemoved() {
+    public void flansKnowledgeLib$onRemoved() {
         if (!removed) {
             if (this.level() instanceof ServerLevel server) {
                 WitherBombEntity entityToSpawn = ModEntities.WITHER_BOMB.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);
@@ -326,7 +326,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
 
     private void exRemove() {
         if (this.getRemovalReason() == null) {
-            ((IEntityMixinAccessor) this).flansStarForge$setRemovalReason(RemovalReason.DISCARDED);
+            ((IEntityMixinAccessor) this).flansKnowledgeLib$setRemovalReason(RemovalReason.DISCARDED);
         }
 
         if (this.getRemovalReason().shouldDestroy()) {
@@ -334,7 +334,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
         }
 
         this.getPassengers().forEach(Entity::stopRiding);
-        ((IEntityMixinAccessor) this).flansStarForge$getLevelCallback().onRemove(RemovalReason.DISCARDED);
+        ((IEntityMixinAccessor) this).flansKnowledgeLib$getLevelCallback().onRemove(RemovalReason.DISCARDED);
         this.invalidateCaps();
         this.brain.clearMemories();
     }

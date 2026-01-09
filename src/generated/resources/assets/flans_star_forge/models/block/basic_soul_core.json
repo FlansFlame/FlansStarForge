@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "flans_star_forge:block/basic_soul_core"
-  }
-}

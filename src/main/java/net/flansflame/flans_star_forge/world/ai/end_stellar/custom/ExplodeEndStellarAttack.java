@@ -1,6 +1,6 @@
 package net.flansflame.flans_star_forge.world.ai.end_stellar.custom;
 
-import net.flansflame.flans_star_forge.Utils;
+import net.flansflame.flans_knowledge_lib.Utils;
 import net.flansflame.flans_star_forge.event.MobStrengthenEvents;
 import net.flansflame.flans_star_forge.world.ai.end_stellar.EndStellarAttackPhase;
 import net.flansflame.flans_star_forge.world.damagesource.ModDamageTypes;

@@ -28,17 +28,6 @@ public class ModBlocks {
     public static final DeferredRegister<Item> NULL_ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, FlansStarForge.MOD_ID);
 
-    public static final RegistryObject<Block> BASIC_SOUL_CORE = register("basic_soul_core",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK).requiresCorrectToolForDrops().mapColor(MapColor.COLOR_GREEN)));
-    public static final RegistryObject<Block> REINFORCED_SOUL_CORE = register("reinforced_soul_core",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK).requiresCorrectToolForDrops().mapColor(MapColor.GOLD)));
-    public static final RegistryObject<Block> EXTREME_SOUL_CORE = register("extreme_soul_core",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK).requiresCorrectToolForDrops().mapColor(DyeColor.CYAN)));
-    public static final RegistryObject<Block> ACTIVATED_EXTREME_SOUL_CORE = registerNull("activated_extreme_soul_core",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.CYAN).noLootTable().strength(-1f, 3600000f)));
-    public static final RegistryObject<Block> ULTIMATE_SOUL_CORE = register("ultimate_soul_core",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK).requiresCorrectToolForDrops().mapColor(DyeColor.PURPLE)));
-
     public static final RegistryObject<Block> METEOR = registerNull("meteor",
             () -> new MeteorBlock(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN).mapColor(MapColor.COLOR_LIGHT_BLUE).noLootTable()));
 

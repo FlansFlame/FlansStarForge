@@ -3,12 +3,13 @@ package net.flansflame.flans_star_forge.world.entity.custom;
 import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.component.ModComponentTags;
 import net.flansflame.flans_star_forge.emotion.EmotionStats;
-import net.flansflame.flans_star_forge.mixin_accesor.IEntityMixinAccessor;
+import net.flansflame.flans_knowledge_lib.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackGoal;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhase;
 import net.flansflame.flans_star_forge.world.ai.stellar.StellarAttackPhases;
+import net.flansflame.flans_star_forge.world.damagesource.ModDamageTypes;
 import net.flansflame.flans_star_forge.world.entity.IHasEmotion;
-import net.flansflame.flans_star_forge.world.entity.IOnRemoved;
+import net.flansflame.flans_knowledge_lib.world.entity.IOnRemoved;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
 import net.flansflame.flans_star_forge.world.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
@@ -36,7 +37,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Unique;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -77,12 +77,12 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
             this.setAttackCount(-1);
         }
 
-        if (this.level().dimension() != Level.OVERWORLD){
+        if (this.level().dimension() != Level.OVERWORLD) {
             this.exDiscard();
         }
         super.tick();
     }
-    
+
     /*GECKOLIB*/
     public void create(AnimatableManager.ControllerRegistrar controller, String id) {
         controller.add(new AnimationController<>(this, id + "_controller", state -> PlayState.STOP)
@@ -308,11 +308,10 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
     }
 
 
-
     @Override
     public void stopSeenByPlayer(ServerPlayer pServerPlayer) {
-        if (this.getOwner() instanceof ServerPlayer serverPlayer && serverPlayer == pServerPlayer){
-            this.setPos(serverPlayer.getX(),serverPlayer.getY(),serverPlayer.getZ());
+        if (this.getOwner() instanceof ServerPlayer serverPlayer && serverPlayer == pServerPlayer) {
+            this.setPos(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ());
         }
     }
 
@@ -320,6 +319,9 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
     @Override
     public boolean hurt(DamageSource source, float damage) {
         if (this.isTame()) {
+            if (source.is(ModDamageTypes.STELLAR_INSANITY_DAMAGE)) {
+                return super.hurt(source, 0);
+            }
             return false;
         }
         return super.hurt(source, damage);
@@ -340,15 +342,15 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
         return;
     }
 
-    private void exDiscard() {
-        ((IEntityMixinAccessor) this).flansStarForge$setRemovalReason(RemovalReason.DISCARDED);
+    public void exDiscard() {
+        ((IEntityMixinAccessor) this).flansKnowledgeLib$setRemovalReason(RemovalReason.DISCARDED);
 
         if (this.getRemovalReason().shouldDestroy()) {
             this.stopRiding();
         }
 
         this.getPassengers().forEach(Entity::stopRiding);
-        ((IEntityMixinAccessor) this).flansStarForge$getLevelCallback().onRemove(RemovalReason.DISCARDED);
+        ((IEntityMixinAccessor) this).flansKnowledgeLib$getLevelCallback().onRemove(RemovalReason.DISCARDED);
         this.invalidateCaps();
         this.brain.clearMemories();
 
@@ -359,7 +361,7 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
     }
 
     @Override
-    public void flansStarForge$onRemoved() {
+    public void flansKnowledgeLib$onRemoved() {
         if (!removed) {
             if (this.level() instanceof ServerLevel server) {
                 StellarEntity entityToSpawn = ModEntities.STELLAR.get().spawn(server, this.blockPosition(), MobSpawnType.COMMAND);

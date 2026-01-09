@@ -1,10 +1,7 @@
 package net.flansflame.flans_star_forge.world.entity;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.world.entity.custom.StarsClusterEntity;
-import net.flansflame.flans_star_forge.world.entity.custom.WitherBombEntity;
-import net.flansflame.flans_star_forge.world.entity.custom.StellarEndStageEntity;
-import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
+import net.flansflame.flans_star_forge.world.entity.custom.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -20,6 +17,14 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, FlansStarForge.MOD_ID);
+
+
+    public static final RegistryObject<EntityType<FailedNovaEntity>> FAILED_NOVA =
+            ENTITIES.register("failed_nova",
+                    () -> EntityType.Builder.of(FailedNovaEntity::new, MobCategory.MISC)
+                            .sized(0.8f, 3.8f)
+                            .build(new ResourceLocation(FlansStarForge.MOD_ID, "failed_nova").toString()));
+
 
     public static final RegistryObject<EntityType<StellarEntity>> STELLAR =
             ENTITIES.register("stellar",
@@ -52,6 +57,8 @@ public class ModEntities {
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event){
+        event.put(FAILED_NOVA.get(), FailedNovaEntity.createAttributes().build());
+
         event.put(STELLAR.get(), StellarEntity.createAttributes().build());
         event.put(STARS_CLUSTER.get(), StarsClusterEntity.createAttributes().build());
 

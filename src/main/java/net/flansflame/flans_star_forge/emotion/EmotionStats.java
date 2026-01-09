@@ -6,6 +6,7 @@ import net.minecraft.util.RandomSource;
 public class EmotionStats {
     public static final int MAX_STATS = 8;
     public static final int DEFAULT_STATS = 6;
+    public static final int MIN_STATS = 0;
 
     public static int behaviorRates2Amount(EmotionBehaviorRates behaviorRates){
         int amount = 0;
@@ -19,8 +20,8 @@ public class EmotionStats {
     public static int makeValid(int status){
         int modStatus = status;
 
-        if (modStatus < 0){
-            modStatus = 0;
+        if (modStatus < MIN_STATS){
+            modStatus = MIN_STATS;
         } else if (modStatus > EmotionStats.MAX_STATS) {
             modStatus = EmotionStats.MAX_STATS;
         }

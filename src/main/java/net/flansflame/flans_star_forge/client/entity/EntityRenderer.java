@@ -2,6 +2,7 @@ package net.flansflame.flans_star_forge.client.entity;
 
 import net.flansflame.flans_star_forge.command.ModCommands;
 import net.flansflame.flans_star_forge.world.entity.ModEntities;
+import net.flansflame.flans_star_forge.world.entity.custom.FailedNovaEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,6 +13,8 @@ public class EntityRenderer {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event){
+        event.registerEntityRenderer(ModEntities.FAILED_NOVA.get(), renderManager -> new FailedNovaRenderer<>(renderManager,"the_failed_nova"));
+
         event.registerEntityRenderer(ModEntities.STELLAR.get(), renderManager -> new StellarRenderer<>(renderManager, "stellar"));
         event.registerEntityRenderer(ModEntities.STARS_CLUSTER.get(), renderManager -> new StarsClusterRenderer<>(renderManager, "null"));
 

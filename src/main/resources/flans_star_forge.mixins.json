@@ -3,9 +3,6 @@
   "package": "net.flansflame.flans_star_forge.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "EntityMixin",
-    "PlayerMixin",
-    "WitherBossMixin",
-    "WitherSkullBlockMixin"
+    "PlayerMixin"
   ]
 }
