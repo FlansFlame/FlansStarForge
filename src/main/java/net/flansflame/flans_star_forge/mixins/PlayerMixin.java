@@ -2,8 +2,7 @@ package net.flansflame.flans_star_forge.mixins;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.emotion.EmotionStats;
-import net.flansflame.flans_star_forge.world.entity.IHasEmotion;
-import net.flansflame.flans_star_forge.world.entity.IUnremovableByEndStellarProjectile;
+import net.flansflame.flans_star_forge.entities.IHasEmotion;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

@@ -1,7 +1,7 @@
 package net.flansflame.flans_star_forge.event;
 
 import net.flansflame.flans_star_forge.variable.ModVariables;
-import net.flansflame.flans_star_forge.world.block.ModBlocks;
+import net.flansflame.flans_star_forge.blocks.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;

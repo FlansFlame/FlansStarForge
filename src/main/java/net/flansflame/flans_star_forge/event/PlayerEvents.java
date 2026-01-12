@@ -1,25 +1,18 @@
 package net.flansflame.flans_star_forge.event;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.client.event.DisplayEmotionsEvents;
-import net.flansflame.flans_star_forge.client.keys.ModKeyBindings;
+import net.flansflame.flans_star_forge.key.ModKeyBindings;
 import net.flansflame.flans_star_forge.network.ModKeyBindMessage;
-import net.flansflame.flans_star_forge.world.effect.ModEffects;
-import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
-import net.flansflame.flans_star_forge.world.item.ModItems;
+import net.flansflame.flans_star_forge.effects.ModEffects;
+import net.flansflame.flans_star_forge.entities.entity.StellarEntity;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 

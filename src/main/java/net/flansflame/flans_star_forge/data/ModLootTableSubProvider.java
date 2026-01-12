@@ -1,6 +1,6 @@
 package net.flansflame.flans_star_forge.data;
 
-import net.flansflame.flans_star_forge.world.block.ModBlocks;
+import net.flansflame.flans_star_forge.blocks.ModBlocks;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;

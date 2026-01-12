@@ -1,8 +1,8 @@
 package net.flansflame.flans_star_forge.event;
 
-import net.flansflame.flans_star_forge.world.effect.ModEffects;
-import net.flansflame.flans_star_forge.world.entity.custom.StarsClusterEntity;
-import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
+import net.flansflame.flans_star_forge.effects.ModEffects;
+import net.flansflame.flans_star_forge.entities.entity.StarsClusterEntity;
+import net.flansflame.flans_star_forge.entities.entity.StellarEntity;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;

@@ -1,0 +1,44 @@
+package net.flansflame.flans_star_forge.items.item;
+
+import net.flansflame.flans_knowledge_lib.tool_set.CustomSwordItem;
+import net.flansflame.flans_knowledge_lib.tool_set.CustomToolSets;
+import net.flansflame.flans_star_forge.FlansStarForge;
+import net.flansflame.flans_star_forge.items.ModItems;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.ForgeTier;
+import net.minecraftforge.common.TierSortingRegistry;
+
+import java.util.List;
+
+public class ForgedStarsFragmentSword extends CustomSwordItem {
+
+    protected static final TagKey<Block> NEEDS_THIS_TOOL = BlockTags.create(new ResourceLocation(FlansStarForge.MOD_ID,
+            "needs_" + ModItems.FORGED_STARS_FRAGMENT.getId().getPath() + "_tool"));
+
+    protected static final Tier TIER = TierSortingRegistry.registerTier(new ForgeTier(16, 2048, 0, 0.0F, 0, NEEDS_THIS_TOOL,
+            () -> Ingredient.of(Items.NETHERITE_INGOT)), new ResourceLocation(
+                    ModItems.FORGED_STARS_FRAGMENT.getId().toString()), List.of(Tiers.NETHERITE), List.of());
+
+    public ForgedStarsFragmentSword(int attackDamage, float attackSpeed, Properties build) {
+        super(TIER, attackDamage, attackSpeed, build, new CustomToolSets.Builder().build());
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack itemStack) {
+        return false;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return false;
+    }
+}

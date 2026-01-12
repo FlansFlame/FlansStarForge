@@ -1,13 +1,11 @@
 package net.flansflame.flans_star_forge.config;
 
-import com.mojang.logging.LogUtils;
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.world.entity.custom.StellarEndStageEntity;
+import net.flansflame.flans_star_forge.entities.entity.StellarEndStageEntity;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
-import org.slf4j.Logger;
 
 @Mod.EventBusSubscriber(modid = FlansStarForge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonConfig {

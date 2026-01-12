@@ -3,12 +3,14 @@ package net.flansflame.flans_star_forge;
 import com.mojang.logging.LogUtils;
 import net.flansflame.flans_star_forge.config.ClientConfig;
 import net.flansflame.flans_star_forge.config.CommonConfig;
-import net.flansflame.flans_star_forge.world.block.ModBlocks;
-import net.flansflame.flans_star_forge.world.effect.ModEffects;
-import net.flansflame.flans_star_forge.world.entity.ModEntities;
-import net.flansflame.flans_star_forge.world.item.ModCreativeModeTabs;
-import net.flansflame.flans_star_forge.world.item.ModItems;
-import net.flansflame.flans_star_forge.world.particle.ModParticles;
+import net.flansflame.flans_star_forge.blocks.ModBlockEntities;
+import net.flansflame.flans_star_forge.blocks.ModBlocks;
+import net.flansflame.flans_star_forge.effects.ModEffects;
+import net.flansflame.flans_star_forge.entities.ModEntities;
+import net.flansflame.flans_star_forge.items.ModCreativeModeTabs;
+import net.flansflame.flans_star_forge.items.ModItems;
+import net.flansflame.flans_star_forge.particle.ModParticles;
+import net.flansflame.flans_star_forge.screens.ModMenuTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -58,6 +60,8 @@ public class FlansStarForge {
         ModBlocks.register(modEventBus);
         ModEffects.register(modEventBus);
         ModParticles.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
 

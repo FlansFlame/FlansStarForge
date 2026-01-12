@@ -1,7 +1,7 @@
 package net.flansflame.flans_star_forge.data;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.world.item.ModItems;
+import net.flansflame.flans_star_forge.items.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -43,7 +43,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         ArrayList<RegistryObject<Item>> registries = new ArrayList<>();
 
-        registries.addAll(ModItems.ITEMS.getEntries());
+        registries.addAll(ModItems.ITEMS.getEntries().stream().toList());
 
         for (RegistryObject<Item> registry : registries) {
             if (registry.get() instanceof SwordItem || registry.get() instanceof PickaxeItem || registry.get() instanceof AxeItem || registry.get() instanceof ShovelItem || registry.get() instanceof HoeItem) {

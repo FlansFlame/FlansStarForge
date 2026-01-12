@@ -1,8 +1,7 @@
 package net.flansflame.flans_star_forge.network;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.variable.ModVariables;
-import net.flansflame.flans_star_forge.world.entity.custom.StellarEntity;
+import net.flansflame.flans_star_forge.entities.entity.StellarEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;

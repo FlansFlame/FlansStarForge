@@ -1,6 +1,6 @@
 package net.flansflame.flans_star_forge.emotion;
 
-import net.flansflame.flans_star_forge.world.entity.IHasEmotion;
+import net.flansflame.flans_star_forge.entities.IHasEmotion;
 import net.minecraft.resources.ResourceLocation;
 
 public enum Emotions {

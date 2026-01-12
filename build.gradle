@@ -110,7 +110,6 @@ minecraft {
 
             property 'mixin.debug.export', 'false'
             property 'geckolib.disable', 'true'
-            property 'nbt-autocomplete.disable', 'true'
         }
     }
 }
