@@ -10,6 +10,7 @@ import net.flansflame.flans_star_forge.entities.ModEntities;
 import net.flansflame.flans_star_forge.items.ModCreativeModeTabs;
 import net.flansflame.flans_star_forge.items.ModItems;
 import net.flansflame.flans_star_forge.particle.ModParticles;
+import net.flansflame.flans_star_forge.recipes.ModRecipes;
 import net.flansflame.flans_star_forge.screens.ModMenuTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -62,6 +63,7 @@ public class FlansStarForge {
         ModParticles.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        ModRecipes.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
 

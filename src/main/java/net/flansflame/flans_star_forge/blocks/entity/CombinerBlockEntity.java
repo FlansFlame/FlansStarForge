@@ -2,6 +2,7 @@ package net.flansflame.flans_star_forge.blocks.entity;
 
 import net.flansflame.flans_star_forge.blocks.ModBlockEntities;
 import net.flansflame.flans_star_forge.items.ModItems;
+import net.flansflame.flans_star_forge.recipes.recipe.CombinerRecipe;
 import net.flansflame.flans_star_forge.screens.menu.CombinerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +28,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -148,7 +151,7 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
             this.progress++;
             setChanged(level, pos, state);
 
-            if (this.progress >= this.maxProgress){
+            if (this.progress >= this.maxProgress) {
                 this.craftItem();
                 progress = 0;
             }
@@ -158,18 +161,33 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private void craftItem() {
+        Optional<CombinerRecipe> recipe = this.getCurrentRecipe();
+
+        if (recipe.isEmpty()) return;
+        ItemStack resultItem = recipe.get().getResultItem(null);
+
         this.itemHandler.extractItem(INPUT_1_SLOT, 1, false);
         this.itemHandler.extractItem(INPUT_2_SLOT, 1, false);
 
-        this.itemHandler.setStackInSlot(OUTPUT_SLOT, new ItemStack(ModItems.MYSTERIOUS_MECHANISM.get(), this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() + 1));
+        this.itemHandler.setStackInSlot(OUTPUT_SLOT, new ItemStack(resultItem.getItem(), this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() + resultItem.getCount()));
     }
 
     private boolean hasRecipe() {
-        return this.canInsertAmountInToOutputSlot(1) && this.canInsertItemIntoOutputSlot(ModItems.MYSTERIOUS_MECHANISM.get()) && this.hasRecipeItemInInputSlot();
+        Optional<CombinerRecipe> recipe = this.getCurrentRecipe();
+
+        if (recipe.isEmpty()) return false;
+        ItemStack resultItem = recipe.get().getResultItem(null);
+
+        return this.canInsertAmountInToOutputSlot(resultItem.getCount()) && this.canInsertItemIntoOutputSlot(resultItem.getItem());
     }
 
-    private boolean hasRecipeItemInInputSlot() {
-        return this.itemHandler.getStackInSlot(INPUT_1_SLOT).is(Items.IRON_INGOT) && this.itemHandler.getStackInSlot(INPUT_2_SLOT).is(Items.REDSTONE);
+    private Optional<CombinerRecipe> getCurrentRecipe() {
+        SimpleContainer inventory = new SimpleContainer(this.itemHandler.getSlots());
+        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, this.itemHandler.getStackInSlot(i));
+        }
+
+        return this.level.getRecipeManager().getRecipeFor(CombinerRecipe.Type.INSTANCE, inventory, level);
     }
 
     private boolean canInsertItemIntoOutputSlot(Item item) {

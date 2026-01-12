@@ -1,0 +1,12 @@
+{
+  "type": "flans_star_forge:combining",
+  "ingredient_a": {
+    "item": "minecraft:iron_ingot"
+  },
+  "ingredient_b": {
+    "item": "minecraft:redstone"
+  },
+  "result": {
+    "item": "flans_star_forge:mysterious_mechanism"
+  }
+}
