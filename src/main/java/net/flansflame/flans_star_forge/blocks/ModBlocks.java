@@ -3,7 +3,7 @@ package net.flansflame.flans_star_forge.blocks;
 import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.blocks.block.MeteorBlock;
 import net.flansflame.flans_star_forge.blocks.block.UniStoneBlock;
-import net.flansflame.flans_star_forge.blocks.block.CombinerBlock;
+import net.flansflame.flans_star_forge.blocks.machine.CombinerBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;

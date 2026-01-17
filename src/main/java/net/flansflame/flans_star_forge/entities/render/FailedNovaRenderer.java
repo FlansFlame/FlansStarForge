@@ -1,4 +1,4 @@
-package net.flansflame.flans_star_forge.renderers.entity;
+package net.flansflame.flans_star_forge.entities.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

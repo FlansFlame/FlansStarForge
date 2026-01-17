@@ -48,12 +48,11 @@ public class CombinerMenu extends AbstractContainerMenu {
         return this.data.get(0) > 0;
     }
 
-    public int getScaledProgress() {
+    public int getScaledProgress(int height) {
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);
-        final int progressArrowSize = 21;
 
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+        return maxProgress != 0 && progress != 0 ? progress * height / maxProgress : 0;
     }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons

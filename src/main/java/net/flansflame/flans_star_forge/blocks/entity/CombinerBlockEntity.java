@@ -1,12 +1,23 @@
 package net.flansflame.flans_star_forge.blocks.entity;
 
 import net.flansflame.flans_star_forge.blocks.ModBlockEntities;
-import net.flansflame.flans_star_forge.items.ModItems;
+import net.flansflame.flans_star_forge.blocks.machine.CombinerBlock;
+import net.flansflame.flans_star_forge.blocks.util.InventoryDirectionEntry;
+import net.flansflame.flans_star_forge.blocks.util.InventoryDirectionWrapper;
+import net.flansflame.flans_star_forge.blocks.util.WrappedHandler;
+import net.flansflame.flans_star_forge.energy.QuintLong;
+import net.flansflame.flans_star_forge.energy.QuintLongValue;
+import net.flansflame.flans_star_forge.energy.StarDustEnergyStorage;
 import net.flansflame.flans_star_forge.recipes.recipe.CombinerRecipe;
 import net.flansflame.flans_star_forge.screens.menu.CombinerMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -16,7 +27,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -24,11 +34,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
@@ -57,10 +69,28 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
     public static final int UPGRADE_SLOT = 4;
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
+            new InventoryDirectionWrapper(itemHandler,
+                    new InventoryDirectionEntry(Direction.UP, INPUT_1_SLOT, true),
+                    new InventoryDirectionEntry(Direction.DOWN, OUTPUT_SLOT, false),
+                    new InventoryDirectionEntry(Direction.NORTH, INPUT_2_SLOT, true),
+                    new InventoryDirectionEntry(Direction.SOUTH, INPUT_1_SLOT, true),
+                    new InventoryDirectionEntry(Direction.EAST, OUTPUT_SLOT, false),
+                    new InventoryDirectionEntry(Direction.WEST, INPUT_2_SLOT, true)
+            ).directionMap;
+    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
 
     protected final ContainerData data;
     private int progress = 0;
     private int maxProgress = 60;
+
+    private final StarDustEnergyStorage ENERGY_STORAGE = new StarDustEnergyStorage(QuintLongValue.OCTILLION.copy()) {
+        @Override
+        public void onEnergyChanged() {
+            CombinerBlockEntity.this.setChanged();
+            CombinerBlockEntity.this.getLevel().sendBlockUpdated(CombinerBlockEntity.this.getBlockPos(), CombinerBlockEntity.this.getBlockState(), CombinerBlockEntity.this.getBlockState(), 3);
+        }
+    };
 
     public CombinerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.COMBINER.get(), pos, state);
@@ -89,6 +119,10 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
         };
     }
 
+    public StarDustEnergyStorage getEnergyStorage() {
+        return ENERGY_STORAGE;
+    }
+
     public void drops() {
         if (this.level == null) return;
 
@@ -106,12 +140,33 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side) {
+        if (capability == ForgeCapabilities.ENERGY) {
+            return lazyEnergyHandler.cast();
         }
 
-        return super.getCapability(cap);
+        if (capability == ForgeCapabilities.ITEM_HANDLER) {
+            if (side == null) {
+                return lazyItemHandler.cast();
+            }
+
+            if (directionWrappedHandlerMap.containsKey(side)) {
+                Direction localDirection = this.getBlockState().getValue(CombinerBlock.FACING);
+
+                if (side == Direction.DOWN || side == Direction.UP) {
+                    return directionWrappedHandlerMap.get(side).cast();
+                }
+
+                return switch (localDirection) {
+                    default -> directionWrappedHandlerMap.get(side.getOpposite()).cast();
+                    case EAST -> directionWrappedHandlerMap.get(side.getClockWise()).cast();
+                    case SOUTH -> directionWrappedHandlerMap.get(side).cast();
+                    case WEST -> directionWrappedHandlerMap.get(side.getCounterClockWise()).cast();
+                };
+            }
+        }
+
+        return super.getCapability(capability, side);
     }
 
     @Nullable
@@ -124,17 +179,22 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        lazyEnergyHandler.invalidate();
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
-        tag.put("inventory", itemHandler.serializeNBT());
+        tag.put("inventory", this.itemHandler.serializeNBT());
+        tag.putInt("progress", this.progress);
+
+        this.ENERGY_STORAGE.serializeNBT(tag);
 
         super.saveAdditional(tag);
     }
@@ -143,21 +203,58 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
     public void load(CompoundTag tag) {
         super.load(tag);
 
-        itemHandler.deserializeNBT(tag.getCompound("inventory"));
+        this.itemHandler.deserializeNBT(tag.getCompound("inventory"));
+        this.progress = tag.getInt("progress");
+
+        this.ENERGY_STORAGE.deserializeNBT(tag);
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {
-        if (this.isOutputSlotReceivable() && this.hasRecipe()) {
+        boolean changed = false;
+        boolean lit = this.isLit();
+
+        if (this.hasEnergyItem()) {
+            this.ENERGY_STORAGE.receiveEnergy(100, false);
+        }
+
+        if (this.isLit()) {
             this.progress++;
-            setChanged(level, pos, state);
+            this.ENERGY_STORAGE.extractEnergy(20, false);
 
             if (this.progress >= this.maxProgress) {
                 this.craftItem();
                 progress = 0;
             }
+
+            changed = true;
         } else {
             progress = 0;
         }
+
+        if (lit != this.isLit()) {
+            state = state.setValue(CombinerBlock.LIT, this.isLit());
+            level.setBlock(pos, state, 3);
+            changed = true;
+        }
+
+        if (changed) {
+            setChanged(level, pos, state);
+        }
+    }
+
+    private boolean hasEnergyItem() {
+        ItemStack itemStack = this.itemHandler.getStackInSlot(ENERGY_SLOT);
+        if (itemStack.isEmpty()) return false;
+
+        return itemStack.is(Blocks.COAL_BLOCK.asItem());
+    }
+
+    private boolean isLit() {
+        return this.isOutputSlotReceivable() && this.hasRecipe() && this.hasEnergy();
+    }
+
+    private boolean hasEnergy() {
+        return this.ENERGY_STORAGE.getEnergyStored() >= 20 * maxProgress;
     }
 
     private void craftItem() {
@@ -200,5 +297,21 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
 
     private boolean isOutputSlotReceivable() {
         return this.itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() || this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() < this.itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        return this.saveWithFullMetadata();
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
     }
 }

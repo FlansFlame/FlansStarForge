@@ -86,8 +86,10 @@ minecraft {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', mod_id
 
+            /*
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+             */
         }
 
         server {
@@ -141,25 +143,37 @@ repositories {
             includeGroup("com.eliotlash.mclib")
         }
     }
+
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("curse.maven:jei-238222:6075247")
+    /*
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+    */
+    implementation fg.deobf("curse.maven:jei-238222:7391695")
+
     implementation fg.deobf("curse.maven:jade-324717:6106101")
     implementation fg.deobf("curse.maven:appleskin-248787:4770828")
-    implementation fg.deobf("curse.maven:nbt-autocomplete-813557:5957924")
+    //implementation fg.deobf("curse.maven:nbt-autocomplete-813557:5957924")
     implementation fg.deobf("curse.maven:collective-342584:6429218")
     implementation fg.deobf("curse.maven:full-brightness-toggle-391656:6185948")
 
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     implementation("com.eliotlash.mclib:mclib:20")
 
-    ///*
+    /*
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:6145747")
     implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:5889471")
-    //*/
+    */
 
     implementation fg.deobf("curse.maven:mekanism-268560:6552911")
 

@@ -1,7 +1,6 @@
-package net.flansflame.flans_star_forge.renderers;
+package net.flansflame.flans_star_forge.entities;
 
-import net.flansflame.flans_star_forge.entities.ModEntities;
-import net.flansflame.flans_star_forge.renderers.entity.*;
+import net.flansflame.flans_star_forge.entities.render.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

@@ -1,9 +1,9 @@
-package net.flansflame.flans_star_forge.renderers.entity;
+package net.flansflame.flans_star_forge.entities.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.entities.entity.StellarEntity;
+import net.flansflame.flans_star_forge.entities.entity.WitherBombEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -11,11 +11,11 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class StellarRenderer<T extends StellarEntity> extends GeoEntityRenderer<T> {
+public class WitherBombRenderer<T extends WitherBombEntity> extends GeoEntityRenderer<T> {
 
     private static String ID;
 
-    public StellarRenderer(EntityRendererProvider.Context renderManager, String id) {
+    public WitherBombRenderer(EntityRendererProvider.Context renderManager, String id) {
         super(renderManager, new Model<>());
         ID = id;
     }
@@ -33,7 +33,7 @@ public class StellarRenderer<T extends StellarEntity> extends GeoEntityRenderer<
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
-    public static class Model<T extends StellarEntity> extends GeoModel<T> {
+    public static class Model<T extends WitherBombEntity> extends GeoModel<T> {
         @Override
         public ResourceLocation getModelResource(T animatable) {
             return new ResourceLocation(FlansStarForge.MOD_ID, "geo/entity/" + ID + ".geo.json");

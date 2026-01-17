@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "bottom": "flans_star_forge:block/machine_frame_bottom",
-    "side": "flans_star_forge:block/machine_frame_side",
-    "top": "flans_star_forge:block/machine_frame_top"
+    "bottom": "flans_star_forge:block/machine_bottom",
+    "side": "flans_star_forge:block/machine_frame",
+    "top": "flans_star_forge:block/machine_top"
   }
 }
