@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -33,10 +34,21 @@ public class StarsClusterEntity extends TamableAnimal implements GeoEntity {
 
     public static final EntityDataAccessor<Integer> DEATH_TIME = SynchedEntityData.defineId(StarsClusterEntity.class, EntityDataSerializers.INT);
 
-    public static final int DEATH_TICK = 600;
+    public static float ATTACK_DAMAGE = 100f;
+    public static float MOVEMENT_SPEED = 0.6f;
+    public static int DEATH_TICK = 600;
 
     public StarsClusterEntity(EntityType<? extends TamableAnimal> type, Level level) {
         super(type, level);
+
+        AttributeInstance attackAttribute = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (attackAttribute != null) {
+            attackAttribute.setBaseValue(ATTACK_DAMAGE);
+        }
+        AttributeInstance movementAttribute = this.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (movementAttribute != null) {
+            movementAttribute.setBaseValue(MOVEMENT_SPEED);
+        }
     }
 
 
@@ -110,8 +122,8 @@ public class StarsClusterEntity extends TamableAnimal implements GeoEntity {
     public static AttributeSupplier.Builder createAttributes() {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
         builder.add(Attributes.MAX_HEALTH, 4);
-        builder.add(Attributes.MOVEMENT_SPEED, 0.6f);
-        builder.add(Attributes.ATTACK_DAMAGE, 100);
+        builder.add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED);
+        builder.add(Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE);
         builder.add(Attributes.ATTACK_SPEED, 1.8f);
         return builder;
     }

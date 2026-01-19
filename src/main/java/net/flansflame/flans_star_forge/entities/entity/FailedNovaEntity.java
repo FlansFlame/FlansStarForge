@@ -5,11 +5,11 @@ import net.flansflame.flans_knowledge_lib.world.entity.IOnRemoved;
 import net.flansflame.flans_knowledge_lib.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.config.CommonConfig;
 import net.flansflame.flans_star_forge.entities.ModEntities;
-import net.flansflame.flans_star_forge.entities.ai.failed_nova.active.FailedNovaActiveSkill;
-import net.flansflame.flans_star_forge.entities.ai.failed_nova.active.FailedNovaActiveSkills;
-import net.flansflame.flans_star_forge.entities.ai.failed_nova.active.FailedNovaGoal;
-import net.flansflame.flans_star_forge.entities.ai.failed_nova.passive.FailedNovaPassiveSkill;
-import net.flansflame.flans_star_forge.entities.ai.failed_nova.passive.FailedNovaPassiveSkills;
+import net.flansflame.flans_star_forge.entities.ai.failed_nova.actives.FailedNovaActiveSkill;
+import net.flansflame.flans_star_forge.entities.ai.failed_nova.actives.FailedNovaActiveSkills;
+import net.flansflame.flans_star_forge.entities.ai.failed_nova.actives.FailedNovaGoal;
+import net.flansflame.flans_star_forge.entities.ai.failed_nova.passives.FailedNovaPassiveSkill;
+import net.flansflame.flans_star_forge.entities.ai.failed_nova.passives.FailedNovaPassiveSkills;
 import net.flansflame.flans_star_forge.items.ModItems;
 import net.flansflame.flans_star_forge.tag.ModTags;
 import net.minecraft.core.particles.ParticleTypes;
@@ -61,6 +61,11 @@ public class FailedNovaEntity extends Monster implements GeoEntity, IBossBar, IO
 
     public FailedNovaEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
+
+        AttributeInstance attackAttribute = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (attackAttribute != null) {
+            attackAttribute.setBaseValue(ATTACK_DAMAGE);
+        }
     }
 
 

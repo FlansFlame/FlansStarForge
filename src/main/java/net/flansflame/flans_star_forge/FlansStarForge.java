@@ -1,8 +1,7 @@
 package net.flansflame.flans_star_forge;
 
 import com.mojang.logging.LogUtils;
-import net.flansflame.flans_star_forge.config.ClientConfig;
-import net.flansflame.flans_star_forge.config.CommonConfig;
+import net.flansflame.flans_star_forge.config.*;
 import net.flansflame.flans_star_forge.blocks.ModBlockEntities;
 import net.flansflame.flans_star_forge.blocks.ModBlocks;
 import net.flansflame.flans_star_forge.effects.ModEffects;
@@ -67,8 +66,12 @@ public class FlansStarForge {
 
         MinecraftForge.EVENT_BUS.register(this);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, FlansStarForge.MOD_ID + "/common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EndStellarConfig.SPEC, FlansStarForge.MOD_ID + "/stellar_end_stage.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StellarConfig.SPEC, FlansStarForge.MOD_ID + "/stellar.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FailedNovaConfig.SPEC, FlansStarForge.MOD_ID + "/failed_nova.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StarsClusterConfig.SPEC, FlansStarForge.MOD_ID + "/stars_cluster.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, WitherBombConfig.SPEC, FlansStarForge.MOD_ID + "/wither_bomb.toml");
 
         ForgeChunkManager.setForcedChunkLoadingCallback(MOD_ID, (tickets, world) -> {
         });

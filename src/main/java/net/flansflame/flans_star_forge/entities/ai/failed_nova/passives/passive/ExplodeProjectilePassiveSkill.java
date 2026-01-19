@@ -1,7 +1,7 @@
-package net.flansflame.flans_star_forge.entities.ai.failed_nova.passive.custom;
+package net.flansflame.flans_star_forge.entities.ai.failed_nova.passives.passive;
 
 import net.flansflame.flans_star_forge.Utils;
-import net.flansflame.flans_star_forge.entities.ai.failed_nova.passive.FailedNovaPassiveSkill;
+import net.flansflame.flans_star_forge.entities.ai.failed_nova.passives.FailedNovaPassiveSkill;
 import net.flansflame.flans_star_forge.entities.IUnremovableByFSFEntityProjectile;
 import net.flansflame.flans_star_forge.entities.entity.FailedNovaEntity;
 import net.minecraft.core.particles.ParticleTypes;

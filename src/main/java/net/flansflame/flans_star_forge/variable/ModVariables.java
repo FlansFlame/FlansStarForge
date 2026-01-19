@@ -1,7 +1,6 @@
 package net.flansflame.flans_star_forge.variable;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.emotion.EmotionStats;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

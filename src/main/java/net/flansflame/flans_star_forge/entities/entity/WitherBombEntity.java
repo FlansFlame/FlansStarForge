@@ -43,10 +43,11 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public static final int DEFAULT_EXPLODE_TICK = 400;
-    public static final int EXPLODE_RADIUS = 128;
     public static final int EXPLODE_DAMAGE = Integer.MAX_VALUE;
     public static final int LAZER_RADIUS = 15;
     public static final int LAZER_SEGMENTS = 60;
+
+    public static float EXPLOSION_RADIUS = 128f;
 
     public static final EntityDataAccessor<Integer> EXPLODE_TICK = SynchedEntityData.defineId(WitherBombEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> POWERUP = SynchedEntityData.defineId(WitherBombEntity.class, EntityDataSerializers.BOOLEAN);
@@ -113,7 +114,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
         if (this.level() instanceof ServerLevel server) {
             final Vec3 _center = new Vec3(x, y, z);
             List<LivingEntity> _entfound = server.getEntitiesOfClass(LivingEntity.class, new AABB(_center, _center)
-                    .inflate(EXPLODE_RADIUS), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
+                    .inflate(EXPLOSION_RADIUS), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
             for (LivingEntity entity : _entfound) {
                 if (entity != this) {
 

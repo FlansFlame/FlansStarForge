@@ -25,6 +25,12 @@ public class ModEntities {
                             .sized(0.8f, 3.8f)
                             .build(new ResourceLocation(FlansStarForge.MOD_ID, "failed_nova").toString()));
 
+    public static final RegistryObject<EntityType<FriendEntity>> FRIEND =
+            ENTITIES.register("friend",
+                    () -> EntityType.Builder.of(FriendEntity::new, MobCategory.MISC)
+                            .sized(0.8f, 0.5f)
+                            .build(new ResourceLocation(FlansStarForge.MOD_ID, "friend").toString()));
+
 
     public static final RegistryObject<EntityType<StellarEntity>> STELLAR =
             ENTITIES.register("stellar",
@@ -58,6 +64,7 @@ public class ModEntities {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(FAILED_NOVA.get(), FailedNovaEntity.createAttributes().build());
+        event.put(FRIEND.get(), FriendEntity.createAttributes().build());
 
         event.put(STELLAR.get(), StellarEntity.createAttributes().build());
         event.put(STARS_CLUSTER.get(), StarsClusterEntity.createAttributes().build());

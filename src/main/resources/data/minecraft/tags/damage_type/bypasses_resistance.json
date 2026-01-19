@@ -3,7 +3,6 @@
     "flans_star_forge:magic_with_all_bypass",
     "flans_star_forge:sonic_boom_with_all_bypass",
     "flans_star_forge:mob_attack_with_all_bypass",
-    "flans_star_forge:explosion_with_all_bypass",
-    "flans_star_forge:withering_with_all_without_cooldown_bypass"
+    "flans_star_forge:explosion_with_all_bypass"
   ]
 }

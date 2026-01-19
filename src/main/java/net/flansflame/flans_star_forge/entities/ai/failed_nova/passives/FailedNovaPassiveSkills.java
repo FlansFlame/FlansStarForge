@@ -1,6 +1,6 @@
-package net.flansflame.flans_star_forge.entities.ai.failed_nova.passive;
+package net.flansflame.flans_star_forge.entities.ai.failed_nova.passives;
 
-import net.flansflame.flans_star_forge.entities.ai.failed_nova.passive.custom.ExplodeProjectilePassiveSkill;
+import net.flansflame.flans_star_forge.entities.ai.failed_nova.passives.passive.ExplodeProjectilePassiveSkill;
 
 import java.util.ArrayList;
 

@@ -5,8 +5,6 @@ import net.flansflame.flans_knowledge_lib.world.entity.IOnRemoved;
 import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.component.ModComponentTags;
 import net.flansflame.flans_star_forge.damagesource.ModDamageTypes;
-import net.flansflame.flans_star_forge.emotion.EmotionStats;
-import net.flansflame.flans_star_forge.entities.IHasEmotion;
 import net.flansflame.flans_star_forge.entities.ModEntities;
 import net.flansflame.flans_star_forge.entities.ai.stellar.StellarAttackGoal;
 import net.flansflame.flans_star_forge.entities.ai.stellar.StellarAttackPhase;
@@ -24,6 +22,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -45,7 +44,7 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
-public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemoved, IHasEmotion {
+public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemoved {
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
@@ -57,10 +56,17 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
     private static final EntityDataAccessor<Integer> FATIGUE = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MOTIVATION = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
 
+    public static float ATTACK_DAMAGE = 12f;
+
     private boolean removed;
 
     public StellarEntity(EntityType<? extends TamableAnimal> type, Level level) {
         super(type, level);
+
+        AttributeInstance attackAttribute = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (attackAttribute != null) {
+            attackAttribute.setBaseValue(ATTACK_DAMAGE);
+        }
     }
 
     /*ATTACKS*/
@@ -166,7 +172,7 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
         builder.add(Attributes.MAX_HEALTH, 20);
         builder.add(Attributes.MOVEMENT_SPEED, 0.6f);
-        builder.add(Attributes.ATTACK_DAMAGE, 12);
+        builder.add(Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE);
         builder.add(Attributes.ATTACK_SPEED, 1.8f);
         return builder;
     }
@@ -204,15 +210,6 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
         this.setAttackPhase(tag.getInt("AttackPhase"));
         this.setSitting(tag.getBoolean("isSitting"));
         this.setAttackCount(tag.getInt("AttackCount"));
-
-
-        if (tag.contains(FlansStarForge.MOD_ID + "-" + "sanity") && tag.contains(FlansStarForge.MOD_ID + "-" + "fatigue") && tag.contains(FlansStarForge.MOD_ID + "-" + "motivation")) {
-            this.flansStarForge$setStats(new int[]{
-                    tag.getInt(FlansStarForge.MOD_ID + "-" + "sanity"),
-                    tag.getInt(FlansStarForge.MOD_ID + "-" + "fatigue"),
-                    tag.getInt(FlansStarForge.MOD_ID + "-" + "motivation")
-            });
-        }
     }
 
     @Override
@@ -221,10 +218,6 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
         tag.putInt("AttackPhase", this.getAttackPhase());
         tag.putBoolean("isSitting", this.isSitting());
         tag.putInt("AttackCount", this.getAttackCount());
-
-        tag.putInt(FlansStarForge.MOD_ID + "-" + "sanity", this.flansStarForge$getSanity());
-        tag.putInt(FlansStarForge.MOD_ID + "-" + "fatigue", this.flansStarForge$getFatigue());
-        tag.putInt(FlansStarForge.MOD_ID + "-" + "motivation", this.flansStarForge$getMotivation());
     }
 
     @Override
@@ -233,10 +226,6 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
         this.entityData.define(ATTACK_PHASE, 0);
         this.entityData.define(SITTING, false);
         this.entityData.define(ATTACK_COUNT, -1);
-
-        this.getEntityData().define(SANITY, EmotionStats.DEFAULT_STATS);
-        this.getEntityData().define(FATIGUE, EmotionStats.DEFAULT_STATS);
-        this.getEntityData().define(MOTIVATION, EmotionStats.DEFAULT_STATS);
     }
 
     public void setAttackPhase(int i) {
@@ -383,37 +372,5 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
     @Override
     public void kill() {
         return;
-    }
-
-
-    /*3STATS*/
-    @Override
-    public int flansStarForge$getSanity() {
-        return EmotionStats.makeValid(this.getEntityData().get(SANITY));
-    }
-
-    @Override
-    public int flansStarForge$getFatigue() {
-        return EmotionStats.makeValid(this.getEntityData().get(FATIGUE));
-    }
-
-    @Override
-    public int flansStarForge$getMotivation() {
-        return EmotionStats.makeValid(this.getEntityData().get(MOTIVATION));
-    }
-
-    @Override
-    public void flansStarForge$setSanity(int sanity) {
-        this.getEntityData().set(SANITY, EmotionStats.makeValid(sanity));
-    }
-
-    @Override
-    public void flansStarForge$setFatigue(int fatigue) {
-        this.getEntityData().set(FATIGUE, EmotionStats.makeValid(fatigue));
-    }
-
-    @Override
-    public void flansStarForge$setMotivation(int motivation) {
-        this.getEntityData().set(MOTIVATION, EmotionStats.makeValid(motivation));
     }
 }

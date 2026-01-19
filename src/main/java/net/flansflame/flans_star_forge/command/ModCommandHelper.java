@@ -1,7 +1,7 @@
 package net.flansflame.flans_star_forge.command;
 
-import net.flansflame.flans_star_forge.variable.ModVariables;
 import net.flansflame.flans_star_forge.blocks.ModBlocks;
+import net.flansflame.flans_star_forge.variable.ModVariables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;

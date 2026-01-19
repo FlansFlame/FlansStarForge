@@ -10,15 +10,15 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
     protected QuintLong maxExtract;
 
     public StarDustEnergyStorage(QuintLong capacity) {
-        this(capacity, capacity, capacity, QuintLongValue.ZERO.copy());
+        this(capacity, capacity, capacity, QuintLongValue.ZERO.get());
     }
 
     public StarDustEnergyStorage(QuintLong capacity, QuintLong maxTransfer) {
-        this(capacity, maxTransfer, maxTransfer, QuintLongValue.ZERO.copy());
+        this(capacity, maxTransfer, maxTransfer, QuintLongValue.ZERO.get());
     }
 
     public StarDustEnergyStorage(QuintLong capacity, QuintLong maxReceive, QuintLong maxExtract) {
-        this(capacity, maxReceive, maxExtract, QuintLongValue.ZERO.copy());
+        this(capacity, maxReceive, maxExtract, QuintLongValue.ZERO.get());
     }
 
     public StarDustEnergyStorage(QuintLong capacity, QuintLong maxReceive, QuintLong maxExtract, QuintLong energy) {
@@ -46,14 +46,14 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
             this.energy.add(received);
         }
 
-        if (received.isGreaterThan(QuintLongValue.ZERO.copy())) {
+        if (received.isGreaterThan(QuintLongValue.ZERO.get())) {
             this.onEnergyChanged();
         }
         return received.toInteger();
     }
 
     public QuintLong receiveEnergy(QuintLong maxReceive, boolean simulate) {
-        if (!this.canReceive()) return QuintLongValue.ZERO.copy();
+        if (!this.canReceive()) return QuintLongValue.ZERO.get();
 
         QuintLong realCapacity = capacity.copy().remove(energy);
 
@@ -64,7 +64,7 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
             this.energy.add(maxReceive);
         }
 
-        if (maxReceive.isGreaterThan(QuintLongValue.ZERO.copy())) {
+        if (maxReceive.isGreaterThan(QuintLongValue.ZERO.get())) {
             this.onEnergyChanged();
         }
         return maxReceive;
@@ -83,7 +83,7 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
             this.energy.remove(extract);
         }
 
-        if (extract.isGreaterThan(QuintLongValue.ZERO.copy())) {
+        if (extract.isGreaterThan(QuintLongValue.ZERO.get())) {
             this.onEnergyChanged();
         }
 
@@ -91,7 +91,7 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
     }
 
     public QuintLong extractEnergy(QuintLong maxExtract, boolean simulate) {
-        if (!this.canExtract()) return QuintLongValue.ZERO.copy();
+        if (!this.canExtract()) return QuintLongValue.ZERO.get();
 
         if (maxExtract.isGreaterThan(this.maxExtract)) maxExtract.set(this.maxExtract);
         if (maxExtract.isGreaterThan(this.energy)) maxExtract.set(this.energy);
@@ -100,7 +100,7 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
             this.energy.remove(maxExtract);
         }
 
-        if (maxExtract.isGreaterThan(QuintLongValue.ZERO)) {
+        if (maxExtract.isGreaterThan(QuintLongValue.ZERO.get())) {
             this.onEnergyChanged();
         }
 
@@ -126,12 +126,12 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
 
     @Override
     public boolean canExtract() {
-        return this.maxExtract.isGreaterThan(QuintLongValue.ZERO);
+        return this.maxExtract.isGreaterThan(QuintLongValue.ZERO.get());
     }
 
     @Override
     public boolean canReceive() {
-        return this.maxReceive.isGreaterThan(QuintLongValue.ZERO);
+        return this.maxReceive.isGreaterThan(QuintLongValue.ZERO.get());
     }
 
     public void serializeNBT(CompoundTag tag) {

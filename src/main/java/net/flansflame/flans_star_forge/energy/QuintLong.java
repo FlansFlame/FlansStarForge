@@ -204,7 +204,7 @@ public final class QuintLong {
             long removed = this.value[layer] - remove;
             if (removed < 0) {
                 if (this.removeLayer(layer - 1)) {
-                    this.set(QuintLongValue.ZERO.copy());
+                    this.set(QuintLongValue.ZERO.get());
                     return false;
                 }
                 removed += V1_V4_MAX_VALUE + 1;

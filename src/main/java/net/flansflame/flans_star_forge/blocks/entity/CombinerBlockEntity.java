@@ -5,7 +5,6 @@ import net.flansflame.flans_star_forge.blocks.machine.CombinerBlock;
 import net.flansflame.flans_star_forge.blocks.util.InventoryDirectionEntry;
 import net.flansflame.flans_star_forge.blocks.util.InventoryDirectionWrapper;
 import net.flansflame.flans_star_forge.blocks.util.WrappedHandler;
-import net.flansflame.flans_star_forge.energy.QuintLong;
 import net.flansflame.flans_star_forge.energy.QuintLongValue;
 import net.flansflame.flans_star_forge.energy.StarDustEnergyStorage;
 import net.flansflame.flans_star_forge.recipes.recipe.CombinerRecipe;
@@ -84,7 +83,7 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
     private int progress = 0;
     private int maxProgress = 60;
 
-    private final StarDustEnergyStorage ENERGY_STORAGE = new StarDustEnergyStorage(QuintLongValue.OCTILLION.copy()) {
+    private final StarDustEnergyStorage ENERGY_STORAGE = new StarDustEnergyStorage(QuintLongValue.OCTILLION.get()) {
         @Override
         public void onEnergyChanged() {
             CombinerBlockEntity.this.setChanged();

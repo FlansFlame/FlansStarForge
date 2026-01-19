@@ -1,4 +1,4 @@
-package net.flansflame.flans_star_forge.entities.ai.failed_nova.passive;
+package net.flansflame.flans_star_forge.entities.ai.failed_nova.passives;
 
 import net.flansflame.flans_star_forge.entities.entity.FailedNovaEntity;
 import net.minecraft.world.entity.Entity;
