@@ -39,7 +39,7 @@ public class ExplodeStellarAttack extends StellarAttackPhase {
                     .inflate(EXPLOSION_RADIUS), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
             for (LivingEntity entity : _entfound) {
                 if (entity != stellar && !stellar.isOwnedBy(entity)) {
-                    entity.hurt(new DamageSource(server.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.EXPLOSION)), EXPLOSION_DAMAGE * MobStrengthenEvents.BLESSING_ATTACK_MULTIPLIER);
+                    entity.hurt(new DamageSource(server.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.EXPLOSION)), EXPLOSION_DAMAGE);
                 }
             }
             server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, stellar.getX(), stellar.getY() + 0.5, stellar.getZ(), 4, 3, 0, 3, 0);
@@ -59,7 +59,7 @@ public class ExplodeStellarAttack extends StellarAttackPhase {
                     .inflate(EXPLOSION_RADIUS), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
             for (LivingEntity entity : _entfound) {
                 if (entity != stellar && !stellar.isOwnedBy(entity)) {
-                    entity.hurt(new DamageSource(server.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.CRAMMING)), EXPLODING_OMEN_DAMAGE * MobStrengthenEvents.BLESSING_ATTACK_MULTIPLIER);
+                    entity.hurt(new DamageSource(server.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.CRAMMING)), EXPLODING_OMEN_DAMAGE);
                 }
             }
         }

@@ -36,7 +36,7 @@ public class EnergyDisplayTooltipArea {
     }
 
     private List<Component> getTooltips() {
-        return List.of(Component.literal(energy.exGetEnergyStored() + " /"), Component.literal(energy.exGetMaxEnergyStored() + " FE"));
+        return List.of(Component.literal(energy.exGetEnergyStored() + " /"), Component.literal(energy.exGetMaxEnergyStored() + " SdE"));
     }
 
     public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {

@@ -77,7 +77,7 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
                     new InventoryDirectionEntry(Direction.EAST, OUTPUT_SLOT, false),
                     new InventoryDirectionEntry(Direction.WEST, INPUT_2_SLOT, true)
             ).directionMap;
-    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    private LazyOptional<StarDustEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
 
     protected final ContainerData data;
     private int progress = 0;
@@ -140,7 +140,7 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side) {
-        if (capability == ForgeCapabilities.ENERGY) {
+        if (capability == StarDustEnergyStorage.CAPABILITY) {
             return lazyEnergyHandler.cast();
         }
 
@@ -212,8 +212,9 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
         boolean changed = false;
         boolean lit = this.isLit();
 
-        if (this.hasEnergyItem()) {
-            this.ENERGY_STORAGE.receiveEnergy(100, false);
+        if (this.hasEnergyItem() && this.ENERGY_STORAGE.exGetMaxEnergyStored().copy().remove(this.ENERGY_STORAGE.exGetEnergyStored()).isGreaterOrSameThan(QuintLongValue.SEPTILLION.get())) {
+            this.ENERGY_STORAGE.receiveEnergy(QuintLongValue.SEPTILLION.get(), false);
+            this.itemHandler.getStackInSlot(ENERGY_SLOT).shrink(1);
         }
 
         if (this.isLit()) {
@@ -253,7 +254,7 @@ public class CombinerBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private boolean hasEnergy() {
-        return this.ENERGY_STORAGE.getEnergyStored() >= 20 * maxProgress;
+        return this.ENERGY_STORAGE.exGetEnergyStored().isGreaterOrSameThan(20L * maxProgress);
     }
 
     private void craftItem() {

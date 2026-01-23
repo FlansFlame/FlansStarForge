@@ -1,4 +1,4 @@
-package net.flansflame.flans_star_forge.entities.ai;
+package net.flansflame.flans_star_forge.entities.ai.stars_cluster;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;

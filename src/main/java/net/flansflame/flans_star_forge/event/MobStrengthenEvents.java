@@ -1,11 +1,9 @@
 package net.flansflame.flans_star_forge.event;
 
 import net.flansflame.flans_star_forge.effects.ModEffects;
-import net.flansflame.flans_star_forge.entities.entity.StarsClusterEntity;
-import net.flansflame.flans_star_forge.entities.entity.StellarEntity;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,40 +12,34 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class MobStrengthenEvents {
 
-    private static final float BLESSING_BARRIER_MULTIPLIER = 0.75f;
-    private static final float NON_BLESSING_BARRIER_MULTIPLIER = 1.75f;
-    private static final int NON_BLESSING_WITHER_MULTIPLIER = 4;
-
-    private static final int MAX_EFFECT_AMPLIFIER = 255;
-
-    public static final float BLESSING_ATTACK_MULTIPLIER = 1.125f;
-    private static final float NON_BLESSING_ATTACK_MULTIPLIER = 0.125f;
+    public static float DEFAULT_ATTACK_MULTIPLIER = 0.25f;
+    public static float DEFAULT_ATTACKED_MULTIPLIER = 1.75f;
+    public static float BLESSED_ATTACK_MULTIPLIER = 1.25f;
+    public static float BLESSED_ATTACKED_MULTIPLIER = 0.75f;
 
     @SubscribeEvent
     public static void onMobDamage(LivingHurtEvent event) {
         float amount = event.getAmount();
+        DamageSource source = event.getSource();
+        LivingEntity target = event.getEntity();
 
-        if (event.getEntity() instanceof Player player) {
-            if (player.hasEffect(ModEffects.STARS_BLESSING.get())) {
-                event.setAmount(amount * BLESSING_BARRIER_MULTIPLIER);
-            } else {
-                MobEffectInstance instance = player.getEffect(MobEffects.WITHER);
-                if (instance != null && instance.getAmplifier() == MAX_EFFECT_AMPLIFIER) {
-                    event.setAmount(amount * NON_BLESSING_BARRIER_MULTIPLIER);
-                } else {
-                    event.setAmount(amount * NON_BLESSING_WITHER_MULTIPLIER);
-                }
+        if (target == null) return;
+
+        if (source.getEntity() instanceof LivingEntity entity) {
+
+            if (entity instanceof Player && target instanceof Player) return;
+
+            if (entity instanceof Player player){
+                amount *= player.hasEffect(ModEffects.STARS_BLESSING.get()) ? BLESSED_ATTACK_MULTIPLIER : DEFAULT_ATTACK_MULTIPLIER;
             }
-        } else {
-            MobEffectInstance instance = event.getEntity().getEffect(MobEffects.WITHER);
-            if ( instance == null || instance.getAmplifier() != MAX_EFFECT_AMPLIFIER) {
-                Entity sourceEntity = event.getSource().getEntity();
-                if ((sourceEntity instanceof Player sourcePlayer && sourcePlayer.hasEffect(ModEffects.STARS_BLESSING.get())) || sourceEntity instanceof StellarEntity || sourceEntity instanceof StarsClusterEntity) {
-                    event.setAmount(amount * BLESSING_ATTACK_MULTIPLIER);
-                } else {
-                    event.setAmount(amount * NON_BLESSING_ATTACK_MULTIPLIER);
-                }
+
+            if (target instanceof Player player){
+                amount *= player.hasEffect(ModEffects.STARS_BLESSING.get()) ? BLESSED_ATTACKED_MULTIPLIER : DEFAULT_ATTACKED_MULTIPLIER;
             }
+        }
+
+        if (amount != event.getAmount()) {
+            event.setAmount(amount);
         }
     }
 }

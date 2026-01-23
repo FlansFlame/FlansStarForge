@@ -1,11 +1,11 @@
 package net.flansflame.flans_star_forge.blocks.block;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.variable.ModVariables;
 import net.flansflame.flans_star_forge.blocks.ModBlocks;
 import net.flansflame.flans_star_forge.entities.ModEntities;
 import net.flansflame.flans_star_forge.entities.entity.StellarEntity;
 import net.flansflame.flans_star_forge.items.ModItems;
+import net.flansflame.flans_star_forge.variable.ModVariables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -53,21 +53,31 @@ public class UniStoneBlock extends Block {
 
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        if (level instanceof ServerLevel server){
-            StellarEntity entityToSpawn = ModEntities.STELLAR.get().spawn(server, pos, MobSpawnType.COMMAND);
-            if (entityToSpawn != null) {
-                entityToSpawn.tame(player);
-                entityToSpawn.setYRot(server.getRandom().nextFloat() * 360F);
-                entityToSpawn.setSitting(true);
+
+        boolean toReturn = super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+
+        if (!ModVariables.starsBlessing(player)) {
+            if (level instanceof ServerLevel server) {
+                StellarEntity entityToSpawn = ModEntities.STELLAR.get().spawn(server, pos, MobSpawnType.COMMAND);
+                if (entityToSpawn != null) {
+                    entityToSpawn.tame(player);
+                    entityToSpawn.setYRot(server.getRandom().nextFloat() * 360F);
+                    entityToSpawn.setSitting(true);
+                }
+            }
+            player.addItem(new ItemStack(ModItems.STARS_POWERSTONE.get()));
+            player.addItem(new ItemStack(ModItems.MYSTERIOUS_MECHANISM.get()));
+            player.addItem(new ItemStack(ModBlocks.MACHINE_FRAME.get()));
+            ModVariables.starsBlessing(player, true);
+
+            if (level.isClientSide) {
+                player.displayClientMessage(Component.translatable("flanaf-bau." + FlansStarForge.MOD_ID + ".stellar_on_spawn", player.getName()), false);
+            }
+        } else {
+            if (player.level() instanceof ServerLevel server){
+                server.setBlock(pos, state, 0);
             }
         }
-        player.addItem(new ItemStack(ModItems.STARS_POWERSTONE.get()));
-        ModVariables.starsBlessing(player, true);
-
-        if (level.isClientSide){
-            player.displayClientMessage(Component.translatable("flanaf-bau." + FlansStarForge.MOD_ID + ".stellar_on_spawn", player.getName()), false);
-        }
-
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+        return toReturn;
     }
 }

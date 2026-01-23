@@ -72,6 +72,7 @@ public class FlansStarForge {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FailedNovaConfig.SPEC, FlansStarForge.MOD_ID + "/failed_nova.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StarsClusterConfig.SPEC, FlansStarForge.MOD_ID + "/stars_cluster.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, WitherBombConfig.SPEC, FlansStarForge.MOD_ID + "/wither_bomb.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StarsBlessingConfig.SPEC, FlansStarForge.MOD_ID + "/stars_blessing.toml");
 
         ForgeChunkManager.setForcedChunkLoadingCallback(MOD_ID, (tickets, world) -> {
         });

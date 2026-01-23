@@ -68,7 +68,7 @@ public final class QuintLong {
     }
 
     public QuintLong add(@NotNull QuintLong quintLong) {
-        for (int i = 0; i < quintLong.value.length; i++) {
+        for (int i = 0; i < this.value.length; i++) {
             this.addLayer(i, quintLong.value[i]);
         }
         return this;
@@ -83,7 +83,7 @@ public final class QuintLong {
     }
 
     public QuintLong remove(@NotNull QuintLong quintLong) {
-        for (int i = 4; i >= 0; i--) {
+        for (int i = 0; i < this.value.length; i++) {
             this.removeLayer(i, quintLong.value[i]);
         }
         return this;
@@ -93,32 +93,32 @@ public final class QuintLong {
         return this.remove(new QuintLong(l));
     }
 
-    public QuintLong remove(){
+    public QuintLong remove() {
         return this.remove(new QuintLong(1));
     }
 
-    public QuintLong divide(@NotNull QuintLong quintLong){
+    public QuintLong divide(@NotNull QuintLong quintLong) {
         for (int i = 4; i >= 0; i--) {
-            this.divideLayer(i, quintLong.value[i]);
+            this.divideLayer(i, quintLong);
         }
         return this;
     }
 
-    public QuintLong divide(long l){
+    public QuintLong divide(long l) {
         return this.divide(new QuintLong(l));
     }
 
-    public float divideAndGetFloat(@NotNull QuintLong quintLong){
+    public float divideAndGetFloat(@NotNull QuintLong quintLong) {
         for (int i = 0; i < this.value.length; i++) {
-            if (quintLong.value[i] != 0){
-                return this.divideLayerAndGetFloat(i, quintLong.value[i]);
+            if (quintLong.value[i] != 0) {
+                return this.divideLayerAndGetFloat(i, quintLong);
             }
         }
 
         throw new InvalidValueException("Cannot divide with a zero.");
     }
 
-    public float divideAndGetFloat(long l){
+    public float divideAndGetFloat(long l) {
         return this.divideAndGetFloat(new QuintLong(l));
     }
 
@@ -193,24 +193,24 @@ public final class QuintLong {
             }
         }
 
-        if (layer == this.value.length - 1) {
-            if (this.value[layer] - remove < 0) {
-                this.setLayer(layer, 0);
+        long removed = this.value[layer] - remove;
+
+        if (layer == 0) {
+            if (removed < 0) {
+                this.value[layer] = 0;
                 return false;
-            } else {
-                this.value[layer] -= remove;
             }
         } else {
-            long removed = this.value[layer] - remove;
             if (removed < 0) {
-                if (this.removeLayer(layer - 1)) {
-                    this.set(QuintLongValue.ZERO.get());
+                if (!this.removeLayer(layer - 1)) {
+                    this.value[layer] = 0;
                     return false;
                 }
-                removed += V1_V4_MAX_VALUE + 1;
+                removed += (V1_V4_MAX_VALUE + 1) / 10;
             }
-            this.value[layer] = removed;
         }
+
+        this.value[layer] = removed;
         return true;
     }
 
@@ -218,30 +218,21 @@ public final class QuintLong {
         return this.removeLayer(layer, 1);
     }
 
-    public void divideLayer(int layer, long divide) {
+    public void divideLayer(int layer, QuintLong divide) {
 
-        if (divide == 0) {
+        if (divide.is(QuintLongValue.ZERO.get())) {
             throw new InvalidValueException("Cannot divide with a zero.");
         }
 
         if (layer > this.value.length - 1 || layer < 0) {
             throw new InvalidValueException("layer has to be in between " + 0 + " and " + (this.value.length - 1) + ". That value is invalid.");
         }
-        if (layer != 0) {
-            if (divide > V1_V4_MAX_VALUE || divide < 0) {
-                throw new InvalidValueException("value" + layer + " has to be in between " + MIN_VALUE + " and " + V1_V4_MAX_VALUE + ". That value is invalid.");
-            }
-        } else {
-            if (divide < 0) {
-                throw new InvalidValueException("value" + layer + " has to be in between " + MIN_VALUE + " and " + V0_MAX_VALUE + ". That value is invalid.");
-            }
-        }
 
-        if (layer == this.value.length - 1){
-            this.value[layer] /= divide;
+        if (layer == this.value.length - 1) {
+            this.value[layer] = (long) this.divideAndGetFloat(divide);
         } else {
-            float divided = (float) this.value[layer] / divide;
-            if (this.value[layer] % divide == 0 || divided >= 1){
+            float divided = (long) this.divideAndGetFloat(divide);
+            if (divided >= 1) {
                 this.value[layer] = (long) divided;
             } else {
                 long modDivided = (long) (divided * ((float) (V1_V4_MAX_VALUE + 1) / 10));
@@ -250,25 +241,32 @@ public final class QuintLong {
         }
     }
 
-    public float divideLayerAndGetFloat(int layer, long divide) {
-        if (divide == 0) {
+    public void divideLayer(int layer, long divide) {
+        this.divideLayer(layer, new QuintLong(divide));
+    }
+
+    public float divideLayerAndGetFloat(int layer, QuintLong divide) {
+        if (divide.is(QuintLongValue.ZERO.get())) {
             throw new InvalidValueException("Cannot divide with a zero.");
         }
 
         if (layer > this.value.length - 1 || layer < 0) {
             throw new InvalidValueException("layer has to be in between " + 0 + " and " + (this.value.length - 1) + ". That value is invalid.");
         }
-        if (layer != 0) {
-            if (divide > V1_V4_MAX_VALUE || divide < 0) {
-                throw new InvalidValueException("value" + layer + " has to be in between " + MIN_VALUE + " and " + V1_V4_MAX_VALUE + ". That value is invalid.");
-            }
-        } else {
-            if (divide < 0) {
-                throw new InvalidValueException("value" + layer + " has to be in between " + MIN_VALUE + " and " + V0_MAX_VALUE + ". That value is invalid.");
-            }
+
+        float value = this.value[layer];
+
+        for (long l : divide.value) {
+            if (l == 0) continue;
+
+            value /= l;
         }
 
-        return (float) this.value[layer] / divide;
+        return value;
+    }
+
+    public float divideLayerAndGetFloat(int layer, long divide) {
+        return this.divideLayerAndGetFloat(layer, new QuintLong(divide));
     }
 
     public boolean is(@NotNull QuintLong quad) {
@@ -340,7 +338,7 @@ public final class QuintLong {
             layers[0] = toString(this.value[0]);
         }
 
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < this.value.length; i++) {
             if (this.value[i] != 0) {
                 if (layers[i - 1].isEmpty()) {
                     layers[i] = toString(this.value[i]);

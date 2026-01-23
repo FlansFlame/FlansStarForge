@@ -144,7 +144,7 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
 
                     //damageEntity
                     DamageSource damageSource = Utils.createDamageSource(server, this.isPowerup() ? ModDamageTypes.SONIC_BOOM_WITH_ALL_BYPASS : DamageTypes.SONIC_BOOM);
-                    entity.hurt(damageSource, EXPLODE_DAMAGE * MobStrengthenEvents.BLESSING_ATTACK_MULTIPLIER);
+                    entity.hurt(damageSource, EXPLODE_DAMAGE);
 
                     //sendExplosionParticlesOnEntities
                     server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, entity.getX(), entity.getY() + 0.5, entity.getZ(), 8, 1, 1, 1, 0);

@@ -25,12 +25,12 @@ public class EatActiveSkill extends FailedNovaActiveSkill {
 
         if (nova.level() instanceof ServerLevel server) {
             Vec3 look = nova.getLookAngle();
-            Vec3 origin = nova.position().add(0, 1.0, 0);
-            Vec3 center = origin.add(look.scale(3.0));
+            Vec3 origin = nova.position().add(0f, 1f, 0f);
+            Vec3 center = origin.add(look.scale(4f));
 
             AABB field = new AABB(
-                    center.x - 2.0, center.y - 1.5, center.z - 2.0,
-                    center.x + 2.0, center.y + 1.5, center.z + 2.0
+                    center.x - 6f, center.y - 1.5f, center.z - 6f,
+                    center.x + 6f, center.y + 1.5f, center.z + 6f
             );
 
             List<LivingEntity> entities = server.getEntitiesOfClass(LivingEntity.class, field, entity -> entity != nova && entity.isAlive());

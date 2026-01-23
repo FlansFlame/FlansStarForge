@@ -1,7 +1,12 @@
 package net.flansflame.flans_star_forge.config;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
+import net.flansflame.flans_star_forge.entities.entity.StellarEndStageEntity;
+import net.flansflame.flans_star_forge.event.MobStrengthenEvents;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class CommonConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();

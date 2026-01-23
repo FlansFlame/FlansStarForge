@@ -37,7 +37,7 @@ public class ShockWaveStellarAttack extends StellarAttackPhase {
                     .inflate(WAVE_RADIUS), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
             for (LivingEntity entity : _entfound) {
                 if (entity != stellar && !stellar.isOwnedBy(entity) && (int) entity.getY() == (int) stellar.getY()) {
-                    entity.hurt(new DamageSource(server.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.CRAMMING)), WAVE_DAMAGE * MobStrengthenEvents.BLESSING_ATTACK_MULTIPLIER);
+                    entity.hurt(new DamageSource(server.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.CRAMMING)), WAVE_DAMAGE);
                 }
             }
             server.sendParticles(ParticleTypes.EXPLOSION, stellar.getX(), stellar.getY() + 0.5, stellar.getZ(), 64, 5, 0, 5, 0);

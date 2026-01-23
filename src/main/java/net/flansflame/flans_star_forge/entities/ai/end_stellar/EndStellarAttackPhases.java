@@ -1,6 +1,5 @@
 package net.flansflame.flans_star_forge.entities.ai.end_stellar;
 
-import net.flansflame.flans_star_forge.entities.ai.*;
 import net.flansflame.flans_star_forge.entities.ai.end_stellar.custom.*;
 import net.minecraft.sounds.SoundEvents;
 

@@ -1,7 +1,7 @@
 package net.flansflame.flans_star_forge.entities.entity;
 
 import net.flansflame.flans_star_forge.particle.ModParticles;
-import net.flansflame.flans_star_forge.entities.ai.StarsClusterGoal;
+import net.flansflame.flans_star_forge.entities.ai.stars_cluster.StarsClusterGoal;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

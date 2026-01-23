@@ -1,9 +1,15 @@
 package net.flansflame.flans_star_forge.energy;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public abstract class StarDustEnergyStorage implements IEnergyStorage {
+
+    public static final Capability<StarDustEnergyStorage> CAPABILITY = CapabilityManager.get(new CapabilityToken<>(){});
+
     protected QuintLong energy;
     protected QuintLong capacity;
     protected QuintLong maxReceive;
