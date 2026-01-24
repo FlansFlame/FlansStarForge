@@ -1,6 +1,7 @@
-// 1.20.1	2026-01-10T22:19:55.2747774	Item Models: flans_star_forge
+// 1.20.1	2026-01-24T19:08:13.0761883	Item Models: flans_star_forge
 db079f4110f9e8bc231aa916c4546f5532bf5a7c assets/flans_star_forge/models/item/forged_stars_fragment.json
 3d3ae7cca9c46341e10dd6281661ef43c9228367 assets/flans_star_forge/models/item/mysterious_mechanism.json
 f0eb1f58f374a73e10ddb655b6f21772b78ca361 assets/flans_star_forge/models/item/stars_fragment.json
 186b8a5049920b2ca54ab4c8d8869fc2a1529947 assets/flans_star_forge/models/item/stars_powerstone.json
 02ca19d33c2b38be835d13ea087ab825e4db8e71 assets/flans_star_forge/models/item/withering_powerstone.json
+f466c8a6f15613a09a25e819594ee2aa43d2e335 assets/flans_star_forge/models/item/wrench.json

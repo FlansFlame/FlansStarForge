@@ -4,6 +4,7 @@ import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.items.item.ForgedStarsFragmentSword;
 import net.flansflame.flans_star_forge.items.item.StarsFragmentSword;
 import net.flansflame.flans_star_forge.items.item.StarsPowerStoneItem;
+import net.flansflame.flans_star_forge.items.item.WrenchItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -30,6 +31,8 @@ public class ModItems {
             () -> new StarsFragmentSword(28, 2.4f, new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()));
 
     public static final RegistryObject<Item> MYSTERIOUS_MECHANISM = ITEMS.register("mysterious_mechanism", createSimpleItem());
+    public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench",
+            () -> new WrenchItem(new Item.Properties().stacksTo(1)));
 
     public static Supplier<Item> createSimpleItem(){
         return () -> new Item(new Item.Properties());

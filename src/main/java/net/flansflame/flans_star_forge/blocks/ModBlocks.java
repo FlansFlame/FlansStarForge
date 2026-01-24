@@ -1,6 +1,7 @@
 package net.flansflame.flans_star_forge.blocks;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
+import net.flansflame.flans_star_forge.blocks.block.EnergyCableBlock;
 import net.flansflame.flans_star_forge.blocks.block.MeteorBlock;
 import net.flansflame.flans_star_forge.blocks.block.UniStoneBlock;
 import net.flansflame.flans_star_forge.blocks.machine.CombinerBlock;
@@ -38,6 +39,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> MACHINE_FRAME = register("machine_frame", createSimpleMetalBlock());
     public static final RegistryObject<Block> COMBINER = register("combiner",
             () -> new CombinerBlock(createMetalProperty()));
+
+    public static final RegistryObject<Block> ENERGY_CABLE = register("energy_cable",
+            () -> new EnergyCableBlock(createMetalProperty().noLootTable()));
 
     public static Supplier<Block> createSimpleMetalBlock(){
         return () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK));
