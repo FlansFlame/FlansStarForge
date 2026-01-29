@@ -1,12 +1,12 @@
 package net.flansflame.flans_star_forge.pipe.energy;
 
-import mekanism.common.content.network.EnergyNetwork;
 import net.flansflame.flans_star_forge.blocks.block.EnergyCableBlock;
+import net.flansflame.flans_star_forge.energy.QuintLong;
+import net.flansflame.flans_star_forge.energy.StarDustEnergyStorage;
 import net.flansflame.flans_star_forge.pipe.PipeConnection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -19,13 +19,13 @@ import java.util.Set;
 public class EnergyCableNetwork {
 
     public final Set<BlockPos> pipes = new HashSet<>();
-    public final Set<EnergyCableNode> sources = new HashSet<>();
-    public final Set<EnergyCableNode> sinks = new HashSet<>();
+    public final Set<EnergyCableNode> producers = new HashSet<>();
+    public final Set<EnergyCableNode> consumers = new HashSet<>();
 
     private boolean dirty = true;
     private BlockPos rebuildStart;
 
-    private static final int MAX_TRANSFER = 1000;
+    private static final QuintLong MAX_TRANSFER = QuintLong.MAX_VALUE.copy();
 
     public void markDirty(BlockPos start) {
         dirty = true;
@@ -36,8 +36,8 @@ public class EnergyCableNetwork {
         if (!dirty || rebuildStart == null) return;
 
         pipes.clear();
-        sources.clear();
-        sinks.clear();
+        producers.clear();
+        consumers.clear();
 
         Queue<BlockPos> queue = new ArrayDeque<>();
         queue.add(rebuildStart);
@@ -69,11 +69,11 @@ public class EnergyCableNetwork {
                 if (be == null) continue;
 
                 if (out.canExtract() || out.canReceive()) {
-                be.getCapability(ForgeCapabilities.ENERGY, dir.getOpposite())
+                be.getCapability(StarDustEnergyStorage.CAPABILITY, dir.getOpposite())
                         .ifPresent(cap -> {
                             EnergyCableNode node = new EnergyCableNode(be, dir.getOpposite(), cap);
-                            if (cap.canExtract()) sources.add(node);
-                            if (cap.canReceive()) sinks.add(node);
+                            if (cap.canExtract()) producers.add(node);
+                            if (cap.canReceive()) consumers.add(node);
                         });
                 }
             }
@@ -86,22 +86,20 @@ public class EnergyCableNetwork {
     public void tick(ServerLevel level) {
         rebuildIfDirty(level);
 
-        if (sources.isEmpty() || sinks.isEmpty()) return;
+        if (producers.isEmpty() || consumers.isEmpty()) return;
 
-        int perSink = MAX_TRANSFER / sinks.size();
+        for (EnergyCableNode producer : producers) {
+            QuintLong available = producer.energy().extractEnergy(MAX_TRANSFER.copy(), true);
 
-        for (EnergyCableNode source : sources) {
-            int available = source.energy().extractEnergy(MAX_TRANSFER, true);
-            if (available <= 0) continue;
+            if (available.isSmallerOrSameThan(0)) continue;
 
-            int remaining = available;
+            for (EnergyCableNode consumer : consumers) {
+                QuintLong accepted = consumer.energy().receiveEnergy(available.copy(), false);
+                producer.energy().extractEnergy(accepted.copy(), false);
+                available.remove(accepted.copy());
 
-            for (EnergyCableNode sink : sinks) {
-                if (remaining <= 0) break;
-                remaining -= sink.energy().receiveEnergy(perSink, false);
+                if (available.isSmallerOrSameThan(0)) break;
             }
-
-            source.energy().extractEnergy(available - remaining, false);
         }
     }
 }

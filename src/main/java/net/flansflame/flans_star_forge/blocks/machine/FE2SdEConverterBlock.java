@@ -1,7 +1,7 @@
 package net.flansflame.flans_star_forge.blocks.machine;
 
 import net.flansflame.flans_star_forge.blocks.ModBlockEntities;
-import net.flansflame.flans_star_forge.blocks.entity.CombinerBlockEntity;
+import net.flansflame.flans_star_forge.blocks.entity.FE2SdEConverterBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -16,10 +16,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class CombinerBlock extends BaseMachineBlock {
-
-    /*CONSTRUCTOR*/
-    public CombinerBlock(Properties build) {
+public class FE2SdEConverterBlock extends BaseMachineBlock {
+    public FE2SdEConverterBlock(Properties build) {
         super(build);
     }
 
@@ -29,8 +27,8 @@ public class CombinerBlock extends BaseMachineBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof CombinerBlockEntity combiner) {
-                combiner.drops();
+            if (blockEntity instanceof FE2SdEConverterBlockEntity fe2SdEConverter) {
+                fe2SdEConverter.drops();
             }
         }
 
@@ -41,11 +39,11 @@ public class CombinerBlock extends BaseMachineBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if (!level.isClientSide) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof CombinerBlockEntity combiner) {
-                NetworkHooks.openScreen((ServerPlayer) player, combiner, pos);
+            if (blockEntity instanceof FE2SdEConverterBlockEntity fe2SdEConverter) {
+                NetworkHooks.openScreen((ServerPlayer) player, fe2SdEConverter, pos);
                 return InteractionResult.SUCCESS;
             } else {
-                throw new IllegalStateException("The CombinerBlockEntity did not open. **** :)");
+                throw new IllegalStateException("The BlockEntity did not open. **** :)");
             }
         }
 
@@ -55,7 +53,7 @@ public class CombinerBlock extends BaseMachineBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new CombinerBlockEntity(pos, state);
+        return new FE2SdEConverterBlockEntity(pos, state);
     }
 
     @Nullable
@@ -64,7 +62,7 @@ public class CombinerBlock extends BaseMachineBlock {
         if (level.isClientSide) {
             return null;
         }
-        return createTickerHelper(type, ModBlockEntities.COMBINER.get(),
+        return createTickerHelper(type, ModBlockEntities.FE_2_SDE_CONVERTER.get(),
                 (sLevel, sPos, sState, sBlockEntity) -> sBlockEntity.tick(sLevel, sPos, sState));
     }
 }

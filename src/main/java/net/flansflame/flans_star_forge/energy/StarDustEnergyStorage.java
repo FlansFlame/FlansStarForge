@@ -8,7 +8,8 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public abstract class StarDustEnergyStorage implements IEnergyStorage {
 
-    public static final Capability<StarDustEnergyStorage> CAPABILITY = CapabilityManager.get(new CapabilityToken<>(){});
+    public static final Capability<StarDustEnergyStorage> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
     protected QuintLong energy;
     protected QuintLong capacity;
@@ -63,8 +64,30 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
 
         QuintLong realCapacity = capacity.copy().remove(energy);
 
-        if (maxReceive.isGreaterThan(this.maxReceive)) maxReceive.set(this.maxReceive);
-        if (maxReceive.isGreaterThan(realCapacity)) maxReceive.set(realCapacity);
+        if (maxReceive.isGreaterThan(this.maxReceive)) {
+            maxReceive.set(this.maxReceive);
+        }
+        if (maxReceive.isGreaterThan(realCapacity)) {
+            maxReceive.set(realCapacity);
+        }
+
+        if (!simulate) {
+            this.energy.add(maxReceive);
+        }
+
+        if (maxReceive.isGreaterThan(QuintLongValue.ZERO.get())) {
+            this.onEnergyChanged();
+        }
+        return maxReceive;
+    }
+
+    public QuintLong receiveEnergyFromInside(QuintLong maxReceive, boolean simulate) {
+        QuintLong realCapacity = capacity.copy().remove(energy);
+
+        if (maxReceive.isGreaterThan(this.exGetMaxEnergyStored()))
+            maxReceive.set(this.exGetMaxEnergyStored());
+        if (maxReceive.isGreaterThan(realCapacity))
+            maxReceive.set(realCapacity);
 
         if (!simulate) {
             this.energy.add(maxReceive);
@@ -113,6 +136,21 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
         return maxExtract;
     }
 
+    public QuintLong extractEnergyFromInside(QuintLong maxExtract, boolean simulate) {
+        if (maxExtract.isGreaterThan(this.exGetMaxEnergyStored())) maxExtract.set(this.exGetMaxEnergyStored());
+        if (maxExtract.isGreaterThan(this.energy)) maxExtract.set(this.energy);
+
+        if (!simulate) {
+            this.energy.remove(maxExtract);
+        }
+
+        if (maxExtract.isGreaterThan(QuintLongValue.ZERO.get())) {
+            this.onEnergyChanged();
+        }
+
+        return maxExtract;
+    }
+
     @Override
     public int getEnergyStored() {
         return this.energy.toInteger();
@@ -126,6 +164,7 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
     public int getMaxEnergyStored() {
         return this.capacity.toInteger();
     }
+
     public QuintLong exGetMaxEnergyStored() {
         return this.capacity;
     }

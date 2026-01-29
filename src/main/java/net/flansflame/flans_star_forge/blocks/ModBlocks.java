@@ -5,6 +5,7 @@ import net.flansflame.flans_star_forge.blocks.block.EnergyCableBlock;
 import net.flansflame.flans_star_forge.blocks.block.MeteorBlock;
 import net.flansflame.flans_star_forge.blocks.block.UniStoneBlock;
 import net.flansflame.flans_star_forge.blocks.machine.CombinerBlock;
+import net.flansflame.flans_star_forge.blocks.machine.FE2SdEConverterBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -39,9 +40,11 @@ public class ModBlocks {
     public static final RegistryObject<Block> MACHINE_FRAME = register("machine_frame", createSimpleMetalBlock());
     public static final RegistryObject<Block> COMBINER = register("combiner",
             () -> new CombinerBlock(createMetalProperty()));
+    public static final RegistryObject<Block> FE_2_SDE_CONVERTER = register("fe2sde_converter",
+            () -> new FE2SdEConverterBlock(createMetalProperty()));
 
     public static final RegistryObject<Block> ENERGY_CABLE = register("energy_cable",
-            () -> new EnergyCableBlock(createMetalProperty().noLootTable()));
+            () -> new EnergyCableBlock(createMetalProperty().noCollission().noOcclusion()));
 
     public static Supplier<Block> createSimpleMetalBlock(){
         return () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK));

@@ -1,0 +1,192 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_core"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_both",
+        "uvlock": true
+      },
+      "when": {
+        "down": "both"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_pull",
+        "uvlock": true
+      },
+      "when": {
+        "down": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_push",
+        "uvlock": true
+      },
+      "when": {
+        "down": "output"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_both",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "up": "both"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_pull",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "up": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_push",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "up": "output"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_both",
+        "uvlock": true,
+        "x": -90
+      },
+      "when": {
+        "north": "both"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_pull",
+        "uvlock": true,
+        "x": -90
+      },
+      "when": {
+        "north": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_push",
+        "uvlock": true,
+        "x": -90
+      },
+      "when": {
+        "north": "output"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_both",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "south": "both"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_pull",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "south": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_push",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "south": "output"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_both",
+        "uvlock": true,
+        "x": 90,
+        "y": -90
+      },
+      "when": {
+        "east": "both"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_pull",
+        "uvlock": true,
+        "x": 90,
+        "y": -90
+      },
+      "when": {
+        "east": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_push",
+        "uvlock": true,
+        "x": 90,
+        "y": -90
+      },
+      "when": {
+        "east": "output"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_both",
+        "uvlock": true,
+        "x": -90,
+        "y": -90
+      },
+      "when": {
+        "west": "both"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_pull",
+        "uvlock": true,
+        "x": -90,
+        "y": -90
+      },
+      "when": {
+        "west": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "flans_star_forge:block/energy_cable_wing_push",
+        "uvlock": true,
+        "x": -90,
+        "y": -90
+      },
+      "when": {
+        "west": "output"
+      }
+    }
+  ]
+}

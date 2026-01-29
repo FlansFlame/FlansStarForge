@@ -228,6 +228,8 @@ public final class QuintLong {
             throw new InvalidValueException("layer has to be in between " + 0 + " and " + (this.value.length - 1) + ". That value is invalid.");
         }
 
+        if (this.value[layer] == 0) return;
+
         if (layer == this.value.length - 1) {
             this.value[layer] = (long) this.divideAndGetFloat(divide);
         } else {

@@ -21,7 +21,6 @@ public class ModLootTableSubProvider extends BlockLootSubProvider {
         registries.addAll(ModBlocks.BLOCKS.getEntries());
         registries.remove(ModBlocks.METEOR);
         registries.remove(ModBlocks.UNI_STONE);
-        registries.remove(ModBlocks.ENERGY_CABLE);
 
         for (RegistryObject<Block> registry : registries) {
             this.dropSelf(registry.get());

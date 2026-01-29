@@ -2,7 +2,6 @@ package net.flansflame.flans_star_forge.recipes;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -15,8 +14,6 @@ import net.flansflame.flans_star_forge.screens.screen.CombinerScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
 
 @JeiPlugin
 public class JeiFSFPlugin implements IModPlugin {

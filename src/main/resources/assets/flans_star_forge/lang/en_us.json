@@ -10,7 +10,9 @@
   "block.flans_star_forge.uni_stone": "Uni-Stone",
 
   "item.flans_star_forge.mysterious_mechanism": "Mysterious Mechanism",
-  "block.flans_star_forge.machine_block": "Machine Block",
+  "item.flans_star_forge.wrench": "Wrench",
+  "block.flans_star_forge.energy_cable": "Energy Cable",
+  "block.flans_star_forge.machine_frame": "Machine Frame",
   "block.flans_star_forge.combiner": "Combiner",
 
   "effect.flans_star_forge.stars_blessing": "Stars Blessing",
