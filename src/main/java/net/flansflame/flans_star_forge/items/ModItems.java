@@ -1,10 +1,7 @@
 package net.flansflame.flans_star_forge.items;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.items.item.ForgedStarsFragmentSword;
-import net.flansflame.flans_star_forge.items.item.StarsFragmentSword;
-import net.flansflame.flans_star_forge.items.item.StarsPowerStoneItem;
-import net.flansflame.flans_star_forge.items.item.WrenchItem;
+import net.flansflame.flans_star_forge.items.item.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -33,6 +30,10 @@ public class ModItems {
     public static final RegistryObject<Item> MYSTERIOUS_MECHANISM = ITEMS.register("mysterious_mechanism", createSimpleItem());
     public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench",
             () -> new WrenchItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> ENERGIZED_CLOCK = ITEMS.register("energized_clock",
+            () -> new EnergizedClockItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> PRESSURIZED_CLOCK = ITEMS.register("pressurized_clock",
+            () -> new PressurizedClockItem(new Item.Properties().stacksTo(1)));
 
     public static Supplier<Item> createSimpleItem(){
         return () -> new Item(new Item.Properties());

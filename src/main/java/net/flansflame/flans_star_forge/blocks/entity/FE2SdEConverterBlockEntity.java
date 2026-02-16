@@ -2,13 +2,13 @@ package net.flansflame.flans_star_forge.blocks.entity;
 
 import net.flansflame.flans_star_forge.blocks.ModBlockEntities;
 import net.flansflame.flans_star_forge.blocks.machine.BaseMachineBlock;
-import net.flansflame.flans_star_forge.blocks.machine.FE2SdEConverterBlock;
 import net.flansflame.flans_star_forge.blocks.util.InventoryDirectionEntry;
 import net.flansflame.flans_star_forge.blocks.util.InventoryDirectionWrapper;
 import net.flansflame.flans_star_forge.blocks.util.WrappedHandler;
 import net.flansflame.flans_star_forge.energy.ForgeEnergyStorage;
 import net.flansflame.flans_star_forge.energy.QuintLong;
 import net.flansflame.flans_star_forge.energy.QuintLongValue;
+import net.flansflame.flans_star_forge.items.item.EnergizedClockItem;
 import net.flansflame.flans_star_forge.screens.menu.FE2SdEConverterMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,8 +41,8 @@ public class FE2SdEConverterBlockEntity extends AbstractMachineBlockEntity {
     private static final int CONVERT_RATE_SDE = 1;
     private static final int CONVERT_RATE_FE = 100000000;
 
-    public static final int FE_ENERGY_SLOT = 0;
-    public static final int SDE_ENERGY_SLOT = 1;
+    public static final int SDE_ENERGY_SLOT = 0;
+    public static final int UPGRADE_SLOT = 1;
 
     private LazyOptional<ForgeEnergyStorage> lazyForgeEnergyHandler = LazyOptional.empty();
 
@@ -93,7 +93,8 @@ public class FE2SdEConverterBlockEntity extends AbstractMachineBlockEntity {
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 return switch (slot) {
-                    case 0, 1 -> true;
+                    case SDE_ENERGY_SLOT -> stack.getItem() instanceof EnergizedClockItem;
+                    case UPGRADE_SLOT -> false;
                     default -> super.isItemValid(slot, stack);
                 };
             }
@@ -103,18 +104,18 @@ public class FE2SdEConverterBlockEntity extends AbstractMachineBlockEntity {
     @Override
     protected Map<Direction, LazyOptional<WrappedHandler>> getDirectionWrappedHandlerMap() {
         return new InventoryDirectionWrapper(this.itemHandler,
-                new InventoryDirectionEntry(Direction.UP, FE_ENERGY_SLOT, true),
+                new InventoryDirectionEntry(Direction.UP, SDE_ENERGY_SLOT, false),
                 new InventoryDirectionEntry(Direction.DOWN, SDE_ENERGY_SLOT, false),
-                new InventoryDirectionEntry(Direction.NORTH, FE_ENERGY_SLOT, true),
-                new InventoryDirectionEntry(Direction.SOUTH, FE_ENERGY_SLOT, true),
+                new InventoryDirectionEntry(Direction.NORTH, SDE_ENERGY_SLOT, false),
+                new InventoryDirectionEntry(Direction.SOUTH, SDE_ENERGY_SLOT, false),
                 new InventoryDirectionEntry(Direction.EAST, SDE_ENERGY_SLOT, false),
-                new InventoryDirectionEntry(Direction.WEST, FE_ENERGY_SLOT, true)
+                new InventoryDirectionEntry(Direction.WEST, SDE_ENERGY_SLOT, false)
         ).directionMap;
     }
 
     @Override
     public QuintLong getEnergyCapacity() {
-        return QuintLongValue.DECILLION.get();
+        return QuintLongValue.MILLION.get();
     }
 
     @Override
@@ -134,6 +135,8 @@ public class FE2SdEConverterBlockEntity extends AbstractMachineBlockEntity {
 
     @Override
     public void tick(Level level, BlockPos pos, BlockState state) {
+        super.tick(level, pos, state);
+
         boolean changed = false;
 
         if (this.isLit()) {
@@ -156,5 +159,15 @@ public class FE2SdEConverterBlockEntity extends AbstractMachineBlockEntity {
 
     private boolean isLit() {
         return this.getForgeEnergyStorage().getEnergyStored() >= CONVERT_RATE_FE && this.getEnergyStorage().exGetMaxEnergyStored().copy().remove(this.getEnergyStorage().getEnergyStored()).isGreaterThan(0);
+    }
+
+    @Override
+    public int getEnergySlotGettingFromItem() {
+        return -1;
+    }
+
+    @Override
+    public int getEnergySlotSend2Item() {
+        return SDE_ENERGY_SLOT;
     }
 }

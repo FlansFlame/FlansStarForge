@@ -5,8 +5,10 @@ import net.flansflame.flans_star_forge.damagesource.ModDamageTypes;
 import net.flansflame.flans_star_forge.entities.ai.failed_nova.actives.FailedNovaActiveSkill;
 import net.flansflame.flans_star_forge.entities.entity.FailedNovaEntity;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -29,12 +31,14 @@ public class EatActiveSkill extends FailedNovaActiveSkill {
             Vec3 center = origin.add(look.scale(4f));
 
             AABB field = new AABB(
-                    center.x - 6f, center.y - 1.5f, center.z - 6f,
-                    center.x + 6f, center.y + 1.5f, center.z + 6f
+                    center.x - 6f, nova.getY() - 1f, center.z - 6f,
+                    center.x + 6f, nova.getY() + 1f, center.z + 6f
             );
 
             List<LivingEntity> entities = server.getEntitiesOfClass(LivingEntity.class, field, entity -> entity != nova && entity.isAlive());
             for (LivingEntity entity : entities) {
+                if (entity instanceof ServerPlayer serverPlayer && serverPlayer.isSpectator()) continue;
+
                 entity.hurt(Utils.createDamageSource(server, ModDamageTypes.MOB_ATTACK_WITH_ALL_BYPASS, nova), amount * DAMAGE_MULTIPLIER);
             }
         }

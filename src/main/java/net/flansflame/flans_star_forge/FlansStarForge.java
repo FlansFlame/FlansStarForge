@@ -8,6 +8,8 @@ import net.flansflame.flans_star_forge.effects.ModEffects;
 import net.flansflame.flans_star_forge.entities.ModEntities;
 import net.flansflame.flans_star_forge.items.ModCreativeModeTabs;
 import net.flansflame.flans_star_forge.items.ModItems;
+import net.flansflame.flans_star_forge.network.ModClientPackets;
+import net.flansflame.flans_star_forge.network.ModServerPackets;
 import net.flansflame.flans_star_forge.particle.ModParticles;
 import net.flansflame.flans_star_forge.recipes.ModRecipes;
 import net.flansflame.flans_star_forge.screens.ModMenuTypes;
@@ -48,7 +50,7 @@ import java.util.function.Supplier;
 @Mod(FlansStarForge.MOD_ID)
 public class FlansStarForge {
     public static final String MOD_ID = "flans_star_forge";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public FlansStarForge() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -63,6 +65,8 @@ public class FlansStarForge {
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModRecipes.register(modEventBus);
+        ModClientPackets.register();
+        ModServerPackets.register();
 
         MinecraftForge.EVENT_BUS.register(this);
 

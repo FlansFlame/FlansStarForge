@@ -16,6 +16,7 @@ import java.util.Optional;
  *  This code is licensed under "Blu's License of Common Sense"
  *  https://github.com/BluSunrize/ImmersiveEngineering/blob/1.19.2/LICENSE
  *
+ *  Modified Version by: Kaupenjoe
  *  Modified Version by: FlansFlame
  */
 public class EnergyDisplayTooltipArea {

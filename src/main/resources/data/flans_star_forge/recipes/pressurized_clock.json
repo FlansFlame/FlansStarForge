@@ -1,0 +1,12 @@
+{
+  "type": "flans_star_forge:combining",
+  "ingredient_a": {
+    "item": "minecraft:cauldron"
+  },
+  "ingredient_b": {
+    "item": "minecraft:clock"
+  },
+  "result": {
+    "item": "flans_star_forge:pressurized_clock"
+  }
+}

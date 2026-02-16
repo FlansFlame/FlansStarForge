@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class BaseMachineBlock extends BaseEntityBlock {
 
     /*CONSTRUCTOR*/
-    protected BaseMachineBlock(Properties build) {
+    public BaseMachineBlock(Properties build) {
         super(build);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
     }

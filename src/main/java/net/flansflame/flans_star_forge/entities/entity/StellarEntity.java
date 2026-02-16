@@ -52,10 +52,6 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
     public static final EntityDataAccessor<Integer> ATTACK_PHASE = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
 
-    private static final EntityDataAccessor<Integer> SANITY = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> FATIGUE = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> MOTIVATION = SynchedEntityData.defineId(StellarEntity.class, EntityDataSerializers.INT);
-
     public static float ATTACK_DAMAGE = 12f;
 
     private boolean removed;

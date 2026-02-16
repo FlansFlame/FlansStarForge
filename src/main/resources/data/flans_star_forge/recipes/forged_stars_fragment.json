@@ -1,0 +1,9 @@
+{
+  "type": "flans_star_forge:reforging",
+  "ingredient": {
+    "item": "minecraft:diamond_sword"
+  },
+  "result": {
+    "item": "flans_star_forge:forged_stars_fragment"
+  }
+}

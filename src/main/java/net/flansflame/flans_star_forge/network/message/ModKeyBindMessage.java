@@ -1,4 +1,4 @@
-package net.flansflame.flans_star_forge.network;
+package net.flansflame.flans_star_forge.network.message;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
 import net.flansflame.flans_star_forge.entities.entity.StellarEntity;

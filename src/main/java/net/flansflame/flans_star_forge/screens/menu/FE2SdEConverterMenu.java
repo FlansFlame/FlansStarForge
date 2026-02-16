@@ -20,8 +20,8 @@ public class FE2SdEConverterMenu extends AbstractMachineMenu {
         super(ModMenuTypes.FE_2_SDE_CONVERTER.get(), containerId, inventory, blockEntity, null);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
-            this.addSlot(new SlotItemHandler(iItemHandler, FE2SdEConverterBlockEntity.FE_ENERGY_SLOT, 8, 6));
             this.addSlot(new SlotItemHandler(iItemHandler, FE2SdEConverterBlockEntity.SDE_ENERGY_SLOT, 152, 6));
+            this.addSlot(new SlotItemHandler(iItemHandler, FE2SdEConverterBlockEntity.UPGRADE_SLOT, 8, 6));
         });
     }
 

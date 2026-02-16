@@ -3,6 +3,7 @@ package net.flansflame.flans_star_forge.entities.ai.failed_nova.actives.active;
 import net.flansflame.flans_star_forge.entities.ModEntities;
 import net.flansflame.flans_star_forge.entities.ai.failed_nova.actives.FailedNovaActiveSkill;
 import net.flansflame.flans_star_forge.entities.entity.FailedNovaEntity;
+import net.flansflame.flans_star_forge.entities.entity.FriendEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -43,7 +44,7 @@ public class SummonFriendsActiveSkill extends FailedNovaActiveSkill {
                 List<LivingEntity> _entfound = server.getEntitiesOfClass(LivingEntity.class, new AABB(_center, _center)
                         .inflate(FRIENDS_DETECT_RADIUS), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
                 for (LivingEntity entity : _entfound) {
-                    if (entity.getType() == ModEntities.FRIEND.get()) {
+                    if (entity instanceof FriendEntity friend && friend.isTamedBy(nova)) {
                         followerCount++;
                     }
                 }
@@ -70,6 +71,7 @@ public class SummonFriendsActiveSkill extends FailedNovaActiveSkill {
                     if (entityToSpawn != null) {
                         entityToSpawn.setYRot(nova.getYRot());
                         entityToSpawn.setPos(vX + 0.5, y, vZ + 0.5);
+                        entityToSpawn.tame(nova);
                     }
                 }
             } else {

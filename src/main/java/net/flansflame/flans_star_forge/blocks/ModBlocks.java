@@ -5,7 +5,9 @@ import net.flansflame.flans_star_forge.blocks.block.EnergyCableBlock;
 import net.flansflame.flans_star_forge.blocks.block.MeteorBlock;
 import net.flansflame.flans_star_forge.blocks.block.UniStoneBlock;
 import net.flansflame.flans_star_forge.blocks.machine.CombinerBlock;
+import net.flansflame.flans_star_forge.blocks.machine.DestructorBlock;
 import net.flansflame.flans_star_forge.blocks.machine.FE2SdEConverterBlock;
+import net.flansflame.flans_star_forge.blocks.machine.ReforgerBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -38,10 +40,15 @@ public class ModBlocks {
             () -> new UniStoneBlock(BlockBehaviour.Properties.of().strength(10f, 1200f).sound(SoundType.STONE).requiresCorrectToolForDrops().mapColor(MapColor.COLOR_LIGHT_BLUE).noLootTable()));
 
     public static final RegistryObject<Block> MACHINE_FRAME = register("machine_frame", createSimpleMetalBlock());
-    public static final RegistryObject<Block> COMBINER = register("combiner",
-            () -> new CombinerBlock(createMetalProperty()));
     public static final RegistryObject<Block> FE_2_SDE_CONVERTER = register("fe2sde_converter",
             () -> new FE2SdEConverterBlock(createMetalProperty()));
+    public static final RegistryObject<Block> COMBINER = register("combiner",
+            () -> new CombinerBlock(createMetalProperty()));
+    public static final RegistryObject<Block> DESTRUCTOR = register("destructor",
+            () -> new DestructorBlock(createMetalProperty()));
+    public static final RegistryObject<Block> REFORGER = register("reforger",
+            () -> new ReforgerBlock(createMetalProperty()));
+
 
     public static final RegistryObject<Block> ENERGY_CABLE = register("energy_cable",
             () -> new EnergyCableBlock(createMetalProperty().noCollission().noOcclusion()));

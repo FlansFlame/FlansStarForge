@@ -7,6 +7,7 @@ import net.flansflame.flans_star_forge.entities.ModEntities;
 import net.flansflame.flans_star_forge.entities.ai.friend.FriendMeleeAttackGoal;
 import net.flansflame.flans_star_forge.items.ModItems;
 import net.flansflame.flans_star_forge.tag.ModTags;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,7 +18,10 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -28,14 +32,17 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
+
+import java.util.UUID;
 
 public class FriendEntity extends Monster implements GeoEntity, IOnRemoved {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public static final EntityDataAccessor<Float> EX_HP = SynchedEntityData.defineId(FriendEntity.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<String> OWNER_UID = SynchedEntityData.defineId(FriendEntity.class, EntityDataSerializers.STRING);
 
     public static float MAX_EX_HP = 40f;
     public static float ATTACK_DAMAGE = 8f;
@@ -133,18 +140,50 @@ public class FriendEntity extends Monster implements GeoEntity, IOnRemoved {
         super.readAdditionalSaveData(tag);
         if (tag.contains("ExHp")) this.setExHp(tag.getFloat("ExHp"));
         else this.setExHp(MAX_EX_HP);
+        if (tag.contains("Owner")) this.setOwnerUid(tag.getString("Owner"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putFloat("ExHp", this.getExHp());
+        tag.putString("Owner", this.getOwnerUid());
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(EX_HP, MAX_EX_HP);
+        this.entityData.define(OWNER_UID, "");
+    }
+
+    public void tame(LivingEntity entity) {
+        this.setOwnerUid(entity.getStringUUID());
+    }
+
+    public boolean isTamed() {
+        return !this.getOwnerUid().isEmpty();
+    }
+
+    public boolean isTamedBy(LivingEntity entity) {
+        return this.getOwnerUid().equals(entity.getStringUUID());
+    }
+
+    public Entity getOwner() {
+        if (!this.isTamed()) return null;
+
+        if (this.level() instanceof ServerLevel server) {
+            return server.getEntity(UUID.fromString(this.getOwnerUid()));
+        }
+        return null;
+    }
+
+    public void setOwnerUid(String uid) {
+        this.entityData.set(OWNER_UID, uid);
+    }
+
+    public String getOwnerUid() {
+        return this.entityData.get(OWNER_UID);
     }
 
     public void setExHp(float exHp) {
@@ -258,6 +297,11 @@ public class FriendEntity extends Monster implements GeoEntity, IOnRemoved {
     public void exDeath() {
         ++this.deathTime;
         if (this.deathTime >= 20 && !this.isRemoved()) {
+
+            if (this.level() instanceof ServerLevel server) {
+                ModEntities.WITHER_BOMB.get().spawn(server, BlockPos.containing(this.position()), MobSpawnType.COMMAND);
+            }
+
             this.level().broadcastEntityEvent(this, (byte) 60);
 
             if (this.getRemovalReason() == null) {

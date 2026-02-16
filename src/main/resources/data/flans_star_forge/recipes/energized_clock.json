@@ -1,0 +1,12 @@
+{
+  "type": "flans_star_forge:combining",
+  "ingredient_a": {
+    "item": "minecraft:redstone_block"
+  },
+  "ingredient_b": {
+    "item": "minecraft:clock"
+  },
+  "result": {
+    "item": "flans_star_forge:energized_clock"
+  }
+}

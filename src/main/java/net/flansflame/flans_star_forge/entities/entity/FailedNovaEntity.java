@@ -4,6 +4,7 @@ import net.flansflame.flans_knowledge_lib.world.entity.IBossBar;
 import net.flansflame.flans_knowledge_lib.world.entity.IOnRemoved;
 import net.flansflame.flans_knowledge_lib.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_star_forge.config.CommonConfig;
+import net.flansflame.flans_star_forge.effects.ModEffects;
 import net.flansflame.flans_star_forge.entities.ModEntities;
 import net.flansflame.flans_star_forge.entities.ai.failed_nova.actives.FailedNovaActiveSkill;
 import net.flansflame.flans_star_forge.entities.ai.failed_nova.actives.FailedNovaActiveSkills;
@@ -174,10 +175,6 @@ public class FailedNovaEntity extends Monster implements GeoEntity, IBossBar, IO
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, entity ->
-                entity.getType() != ModEntities.FAILED_NOVA.get() && entity.getType() != EntityType.WITHER_SKELETON && entity.attackable()
-        ));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -222,7 +219,7 @@ public class FailedNovaEntity extends Monster implements GeoEntity, IBossBar, IO
     @Override
     public boolean hurt(DamageSource source, float amount) {
         Entity entity = source.getEntity();
-        if (entity instanceof Player player && isDamageableWeapon(player.getMainHandItem())) {
+        if (entity instanceof Player player && isDamageableWeapon(player.getMainHandItem()) && player.hasEffect(ModEffects.STARS_BLESSING.get())) {
             this.damageExHp(amount);
             return super.hurt(this.damageSources().outOfBorder(), 0f);
         }

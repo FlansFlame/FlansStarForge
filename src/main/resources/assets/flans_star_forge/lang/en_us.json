@@ -11,21 +11,30 @@
 
   "item.flans_star_forge.mysterious_mechanism": "Mysterious Mechanism",
   "item.flans_star_forge.wrench": "Wrench",
+  "item.flans_star_forge.energized_clock": "Energized Clock",
+  "item.flans_star_forge.energized_clock.desc1": "%s SdE",
+  "item.flans_star_forge.energized_clock.desc2": "/ %s SdE",
+  "item.flans_star_forge.pressurized_clock": "Pressurized Clock",
+  "item.flans_star_forge.pressurized_clock.desc1": "%s mB",
+  "item.flans_star_forge.pressurized_clock.desc2": "/ %s mB",
   "block.flans_star_forge.energy_cable": "Energy Cable",
   "block.flans_star_forge.machine_frame": "Machine Frame",
+  "block.flans_star_forge.fe2sde_converter": "Fe2SdE Converter",
   "block.flans_star_forge.combiner": "Combiner",
+  "block.flans_star_forge.destructor": "Destructor",
+  "block.flans_star_forge.reforger": "Reforger",
 
   "effect.flans_star_forge.stars_blessing": "Stars Blessing",
   "effect.flans_star_forge.stars_blessing.desc": "A true gift from the Stars",
 
-  "entity.flans_star_forge.failed_nova": "Lecnal-is-neu Nova-af",
-  "entity.flans_star_forge.friend": "Naciuc",
+  "entity.flans_star_forge.failed_nova": "Nova [The Failed]",
+  "entity.flans_star_forge.friend": "Friend",
 
-  "entity.flans_star_forge.stellar": "§3Stellar-af",
+  "entity.flans_star_forge.stellar": "§3Stellar",
   "entity.flans_star_forge.stellar.failed_to_teleport": "[Teleport Stellar] Unable to fined your partner(´;ω;｀)",
   "entity.flans_star_forge.stars_cluster": "Stars Cluster",
 
-  "entity.flans_star_forge.stellar_end_stage": "§4Eunuz Stellar-af",
+  "entity.flans_star_forge.stellar_end_stage": "§4Stellar",
   "entity.flans_star_forge.wither_bomb": "Wither Bomb",
 
   "key.categories.flans_star_forge": "Flans Star Forge",
@@ -34,8 +43,16 @@
 
   "cmd.flans_star_forge.re_drop_meteor.fail": "§cFail to execute 're_drop_meteor'",
 
-  "flanaf-bau.flans_star_forge.stellar_on_spawn": "<Stellar-af> .nausneu laz ac .%s-af",
-  "flanaf-bau.flans_star_forge.stellar_deny_spawn": "<Stellar-af> .Neul as Vae Ni Baulv-ceu",
+  "flanaf-bau.flans_star_forge.stellar_on_spawn": "(Message coming soon... Probably)",
+  "flanaf-bau.flans_star_forge.stellar_deny_spawn": "(Message coming soon... Probably)",
 
-  "text.flans_star_forge.power_is_not_reliable": "§l§4Your power is not worth reliance..."
+  "text.flans_star_forge.power_is_not_reliable": "§l§4Your power is not worth reliance...",
+  "text.flans_star_forge.warn_totem": "§l§4You really think you can just get away from death with piece of totem?",
+
+  "screen.flans_star_forge.fake_death.causeOfDeath": "No redoing this time...",
+  "screen.flans_star_forge.fake_death.no_quitting": "There's no quitting now",
+  "screen.flans_star_forge.fake_death.pray_2_respawn": "Pray, and respawn...",
+
+  "tooltip.flans_star_forge.fluid": "%s mB",
+  "tooltip.flans_star_forge.fluid.with_capacity": "%s / %s mB"
 }

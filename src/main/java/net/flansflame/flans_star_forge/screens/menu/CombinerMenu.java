@@ -28,7 +28,7 @@ public class CombinerMenu extends AbstractMachineMenu {
             this.addSlot(new SlotItemHandler(iItemHandler, CombinerBlockEntity.INPUT_2_SLOT, 96, 15));
             this.addSlot(new SlotItemHandler(iItemHandler, CombinerBlockEntity.OUTPUT_SLOT, 80, 57));
             this.addSlot(new SlotItemHandler(iItemHandler, CombinerBlockEntity.ENERGY_SLOT, 152, 6));
-            this.addSlot(new SlotItemHandler(iItemHandler, CombinerBlockEntity.UPGRADE_SLOT, 8, 8));
+            this.addSlot(new SlotItemHandler(iItemHandler, CombinerBlockEntity.UPGRADE_SLOT, 8, 6));
         });
 
         this.init(data);

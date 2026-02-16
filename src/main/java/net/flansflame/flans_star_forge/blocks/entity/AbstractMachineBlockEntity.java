@@ -5,6 +5,7 @@ import net.flansflame.flans_star_forge.blocks.util.WrappedHandler;
 import net.flansflame.flans_star_forge.energy.QuintLong;
 import net.flansflame.flans_star_forge.energy.QuintLongValue;
 import net.flansflame.flans_star_forge.energy.StarDustEnergyStorage;
+import net.flansflame.flans_star_forge.items.item.EnergizedClockItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -16,6 +17,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -63,6 +65,7 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side) {
+
         if (capability == StarDustEnergyStorage.CAPABILITY) {
             return lazyEnergyHandler.cast();
         }
@@ -119,6 +122,7 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
         this.itemHandler.deserializeNBT(tag.getCompound("inventory"));
         this.getEnergyStorage().deserializeNBT(tag);
+
     }
 
     @Nullable
@@ -138,6 +142,26 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {
+        if (this.getEnergySlotGettingFromItem() > -1){
+            ItemStack itemStack = this.itemHandler.getStackInSlot(this.getEnergySlotGettingFromItem());
+
+            if (itemStack.getItem() instanceof EnergizedClockItem && EnergizedClockItem.getStoredEnergy(itemStack).isGreaterThan(0)){
+                QuintLong drained = EnergizedClockItem.drain(itemStack, this.getEnergyStorage().getSpace());
+
+                this.getEnergyStorage().receiveEnergy(drained, false);
+            }
+        }
+
+        if (this.getEnergySlotSend2Item() > -1){
+            ItemStack itemStack = this.itemHandler.getStackInSlot(this.getEnergySlotSend2Item());
+
+            if (itemStack.getItem() instanceof EnergizedClockItem && EnergizedClockItem.getSpace(itemStack).isGreaterThan(0)){
+                QuintLong drained = this.getEnergyStorage().extractEnergy(EnergizedClockItem.getSpace(itemStack), false);
+
+                EnergizedClockItem.send(itemStack, drained);
+            }
+
+        }
     }
 
     public abstract ItemStackHandler getItemHandler();
@@ -145,6 +169,8 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     protected abstract Map<Direction, LazyOptional<WrappedHandler>> getDirectionWrappedHandlerMap();
 
     public abstract QuintLong getEnergyCapacity();
+
+    public abstract int getEnergySlotGettingFromItem();
 
     public QuintLong getEnergyMaxTransfer() {
         return this.getEnergyCapacity();
@@ -164,6 +190,10 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
     public StarDustEnergyStorage getEnergyStorage() {
         return this.energyStorage;
+    }
+
+    public int getEnergySlotSend2Item() {
+        return -1;
     }
 
     @Override

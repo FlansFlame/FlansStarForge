@@ -5,6 +5,7 @@ import net.flansflame.flans_star_forge.blocks.ModBlocks;
 import net.flansflame.flans_star_forge.entities.ModEntities;
 import net.flansflame.flans_star_forge.entities.entity.StellarEntity;
 import net.flansflame.flans_star_forge.items.ModItems;
+import net.flansflame.flans_star_forge.items.item.EnergizedClockItem;
 import net.flansflame.flans_star_forge.variable.ModVariables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -66,8 +67,8 @@ public class UniStoneBlock extends Block {
                 }
             }
             player.addItem(new ItemStack(ModItems.STARS_POWERSTONE.get()));
-            player.addItem(new ItemStack(ModItems.MYSTERIOUS_MECHANISM.get()));
             player.addItem(new ItemStack(ModBlocks.MACHINE_FRAME.get()));
+            player.addItem(EnergizedClockItem.getFilledClock());
             ModVariables.starsBlessing(player, true);
 
             if (level.isClientSide) {

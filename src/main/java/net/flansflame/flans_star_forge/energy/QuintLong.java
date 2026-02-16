@@ -10,6 +10,7 @@ public final class QuintLong {
     private static final long MIN_VALUE = 0L;
 
     public static final QuintLong MAX_VALUE = new QuintLong(V0_MAX_VALUE, V1_V4_MAX_VALUE, V1_V4_MAX_VALUE, V1_V4_MAX_VALUE, V1_V4_MAX_VALUE);
+    public static final int LAYER_SIZE = 5;
 
     private final long[] value;
 
@@ -57,6 +58,16 @@ public final class QuintLong {
         }
 
         this.value = new long[]{value0, value1, value2, value3, value4};
+    }
+
+    public long[] getLayer(){
+        long[] layers = new long[5];
+
+        for (int i = 0; i < this.value.length; i++) {
+            layers[i] = this.getLayer(i);
+        }
+
+        return layers;
     }
 
     public void set(@NotNull QuintLong quintLong) {
@@ -374,6 +385,17 @@ public final class QuintLong {
         return (int) this.value[4];
     }
 
+    public static QuintLong createFromList(long[] layers) {
+        QuintLong toReturn = new QuintLong();
+
+        if (layers == null || layers.length > LAYER_SIZE) return toReturn;
+
+        for (int i = 0; i < LAYER_SIZE; i++) {
+            toReturn.setLayer(i, layers[i]);
+        }
+        return toReturn;
+    }
+
     private static String toString(Long l) {
         return l.toString();
     }
@@ -392,7 +414,7 @@ public final class QuintLong {
         return toReturn.toString();
     }
 
-    private static String addComma(String string) {
+    public static String addComma(String string) {
 
         if (string.length() < 4) return string;
 

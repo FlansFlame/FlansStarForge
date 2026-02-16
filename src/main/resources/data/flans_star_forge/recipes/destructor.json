@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RMR",
+    "CEC",
+    "#M#"
+  ],
+  "key": {
+    "E": {
+      "item": "flans_star_forge:machine_frame"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "flans_star_forge:pressurized_clock"
+    },
+    "M": {
+      "item": "flans_star_forge:mysterious_mechanism"
+    },
+    "#": {
+      "item": "minecraft:anvil"
+    }
+  },
+  "result": {
+    "item": "flans_star_forge:destructor"
+  }
+}

@@ -1,8 +1,7 @@
 package net.flansflame.flans_star_forge.screens;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.screens.menu.CombinerMenu;
-import net.flansflame.flans_star_forge.screens.menu.FE2SdEConverterMenu;
+import net.flansflame.flans_star_forge.screens.menu.*;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -16,10 +15,14 @@ public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, FlansStarForge.MOD_ID);
 
-    public static final RegistryObject<MenuType<CombinerMenu>> COMBINER =
-            registerMenuType(CombinerMenu::new, "combiner_menu");
     public static final RegistryObject<MenuType<FE2SdEConverterMenu>> FE_2_SDE_CONVERTER =
             registerMenuType(FE2SdEConverterMenu::new, "fe2sde_converter");
+    public static final RegistryObject<MenuType<CombinerMenu>> COMBINER =
+            registerMenuType(CombinerMenu::new, "combiner_menu");
+    public static final RegistryObject<MenuType<DestructorMenu>> DESTRUCTOR =
+            registerMenuType(DestructorMenu::new, "destructor_menu");
+    public static final RegistryObject<MenuType<ReforgerMenu>> REFORGER =
+            registerMenuType(ReforgerMenu::new, "reforger_menu");
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));

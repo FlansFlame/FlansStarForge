@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RNR",
+    "IEI",
+    "#N#"
+  ],
+  "key": {
+    "E": {
+      "item": "flans_star_forge:machine_frame"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "N": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "#": {
+      "tag": "forge:chests"
+    }
+  },
+  "result": {
+    "item": "flans_star_forge:combiner"
+  }
+}

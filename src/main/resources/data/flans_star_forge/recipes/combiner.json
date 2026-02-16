@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RMR",
+    "IEI",
+    "#M#"
+  ],
+  "key": {
+    "E": {
+      "item": "flans_star_forge:machine_frame"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "M": {
+      "item": "flans_star_forge:mysterious_mechanism"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "#": {
+      "tag": "forge:chests"
+    }
+  },
+  "result": {
+    "item": "flans_star_forge:combiner"
+  }
+}

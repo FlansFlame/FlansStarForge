@@ -169,6 +169,10 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
         return this.capacity;
     }
 
+    public QuintLong getSpace() {
+        return this.capacity.copy().remove(this.energy);
+    }
+
     @Override
     public boolean canExtract() {
         return this.maxExtract.isGreaterThan(QuintLongValue.ZERO.get());
@@ -180,21 +184,20 @@ public abstract class StarDustEnergyStorage implements IEnergyStorage {
     }
 
     public void serializeNBT(CompoundTag tag) {
-        tag.putLong("energy_layer0", this.energy.getLayer(0));
-        tag.putLong("energy_layer1", this.energy.getLayer(1));
-        tag.putLong("energy_layer2", this.energy.getLayer(2));
-        tag.putLong("energy_layer3", this.energy.getLayer(3));
-        tag.putLong("energy_layer4", this.energy.getLayer(4));
+        long[] layers = this.energy.getLayer();
+
+        for (int i = 0; i < layers.length; i++) {
+            tag.putLong("energy_layer" + i, layers[i]);
+        }
     }
 
     public void deserializeNBT(CompoundTag tag) {
-        long energy_layer0 = tag.getLong("energy_layer0");
-        long energy_layer1 = tag.getLong("energy_layer1");
-        long energy_layer2 = tag.getLong("energy_layer2");
-        long energy_layer3 = tag.getLong("energy_layer3");
-        long energy_layer4 = tag.getLong("energy_layer4");
+        long[] layers = new long[QuintLong.LAYER_SIZE];
 
-        this.energy.set(new QuintLong(energy_layer0, energy_layer1, energy_layer2, energy_layer3, energy_layer4));
+        for (int i = 0; i < layers.length; i++) {
+            layers[i] = tag.getLong("energy_layer" + i);
+        }
+        this.energy.set(QuintLong.createFromList(layers));
     }
 
     public abstract void onEnergyChanged();

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RMR",
+    "CEC",
+    "#M#"
+  ],
+  "key": {
+    "E": {
+      "item": "flans_star_forge:machine_frame"
+    },
+    "M": {
+      "item": "flans_star_forge:mysterious_mechanism"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "flans_star_forge:energized_clock"
+    },
+    "#": {
+      "item": "minecraft:blast_furnace"
+    }
+  },
+  "result": {
+    "item": "flans_star_forge:fe2sde_converter"
+  }
+}

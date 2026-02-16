@@ -5,12 +5,12 @@ import net.flansflame.flans_knowledge_lib.mixin_accesor.IEntityMixinAccessor;
 import net.flansflame.flans_knowledge_lib.world.entity.IBossBar;
 import net.flansflame.flans_knowledge_lib.world.entity.IOnRemoved;
 import net.flansflame.flans_star_forge.config.CommonConfig;
+import net.flansflame.flans_star_forge.damagesource.ModDamageTypes;
+import net.flansflame.flans_star_forge.entities.IUnremovableByFSFEntityProjectile;
 import net.flansflame.flans_star_forge.entities.ModEntities;
 import net.flansflame.flans_star_forge.entities.ai.end_stellar.EndStellarAttackGoal;
 import net.flansflame.flans_star_forge.entities.ai.end_stellar.EndStellarAttackPhase;
 import net.flansflame.flans_star_forge.entities.ai.end_stellar.EndStellarAttackPhases;
-import net.flansflame.flans_star_forge.damagesource.ModDamageTypes;
-import net.flansflame.flans_star_forge.entities.IUnremovableByFSFEntityProjectile;
 import net.flansflame.flans_star_forge.items.ModItems;
 import net.flansflame.flans_star_forge.tag.ModTags;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -38,7 +38,6 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.WitherSkeleton;
@@ -57,6 +56,7 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.List;
+import java.util.UUID;
 
 public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBar, IOnRemoved {
 
@@ -68,6 +68,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
     public static final EntityDataAccessor<Integer> MULTI_BARRIER = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> MULTI_BARRIER_COUNT = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> LASER_COUNT = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<String> OWNER_UID = SynchedEntityData.defineId(StellarEndStageEntity.class, EntityDataSerializers.STRING);
 
     public static float MAX_EX_HP = 4096f;
     public static float ATTACK_DAMAGE = 40f;
@@ -204,11 +205,12 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, entity ->
-                entity.getType() != ModEntities.STELLAR_END_STAGE.get() && entity.getType() != EntityType.WITHER_SKELETON && entity.attackable()
-        ));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, entity -> {
+            if (entity instanceof Player player) {
+                return this.isTamedBy(player);
+            }
+            return false;
+        }));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -278,6 +280,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
         else this.setMultiBarrierCount(0);
         if (tag.contains("LazerCount")) this.setLazerCount(tag.getInt("LazerCount"));
         else this.setLazerCount(DEFAULT_LASER_ACTIVATE_COUNT);
+        if (tag.contains("Owner")) this.setOwnerUid(tag.getString("Owner"));
     }
 
     @Override
@@ -289,6 +292,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
         tag.putInt("MultiBarrier", this.getMultiBarrier());
         tag.putInt("MultiBarrierCount", this.getMultiBarrierCount());
         tag.putInt("LazerCount", this.getLazerCount());
+        tag.putString("Owner", this.getOwnerUid());
     }
 
     @Override
@@ -300,6 +304,7 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
         this.entityData.define(MULTI_BARRIER, MAX_MULTI_BARRIER);
         this.entityData.define(MULTI_BARRIER_COUNT, 0);
         this.entityData.define(LASER_COUNT, DEFAULT_LASER_ACTIVATE_COUNT);
+        this.entityData.define(OWNER_UID, "");
     }
 
     public void setAttackPhase(int i) {
@@ -324,6 +329,35 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
 
     public void addAttackCount(int i) {
         this.setAttackCount(this.getAttackCount() + i);
+    }
+
+    public void tame(Player player) {
+        this.setOwnerUid(player.getStringUUID());
+    }
+
+    public boolean isTamed() {
+        return !this.getOwnerUid().isEmpty();
+    }
+
+    public boolean isTamedBy(Player player) {
+        return this.getOwnerUid().equals(player.getStringUUID());
+    }
+
+    public Player getOwner() {
+        if (!this.isTamed()) return null;
+
+        if (this.level() instanceof ServerLevel server) {
+            return server.getPlayerByUUID(UUID.fromString(this.getOwnerUid()));
+        }
+        return null;
+    }
+
+    public void setOwnerUid(String uid) {
+        this.entityData.set(OWNER_UID, uid);
+    }
+
+    public String getOwnerUid() {
+        return this.entityData.get(OWNER_UID);
     }
 
 
@@ -556,12 +590,12 @@ public class StellarEndStageEntity extends Monster implements GeoEntity, IBossBa
         }
 
         //disable projectiles if not told to
-        if (entity instanceof Projectile projectile && !(projectile instanceof IUnremovableByFSFEntityProjectile)){
+        if (entity instanceof Projectile projectile && !(projectile instanceof IUnremovableByFSFEntityProjectile)) {
 
             boolean isInRadius = false;
             List<Entity> entities = this.level().getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(INSTANT_KILL_RADIUS)).stream().toList();
-            for (Entity rEntity : entities){
-                if (rEntity instanceof Projectile rProjectile && projectile.is(rProjectile)){
+            for (Entity rEntity : entities) {
+                if (rEntity instanceof Projectile rProjectile && projectile.is(rProjectile)) {
                     isInRadius = true;
                 }
             }

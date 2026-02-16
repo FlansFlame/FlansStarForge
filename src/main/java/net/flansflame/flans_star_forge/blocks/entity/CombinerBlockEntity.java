@@ -7,6 +7,7 @@ import net.flansflame.flans_star_forge.blocks.util.InventoryDirectionWrapper;
 import net.flansflame.flans_star_forge.blocks.util.WrappedHandler;
 import net.flansflame.flans_star_forge.energy.QuintLong;
 import net.flansflame.flans_star_forge.energy.QuintLongValue;
+import net.flansflame.flans_star_forge.items.item.EnergizedClockItem;
 import net.flansflame.flans_star_forge.recipes.recipe.CombinerRecipe;
 import net.flansflame.flans_star_forge.screens.menu.CombinerMenu;
 import net.minecraft.core.BlockPos;
@@ -88,13 +89,9 @@ public class CombinerBlockEntity extends AbstractMachineBlockEntity {
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {
-        boolean changed = false;
+        super.tick(level, pos, state);
 
-        if (this.hasEnergyItem() && this.getEnergyStorage().exGetMaxEnergyStored().copy().remove(this.getEnergyStorage().exGetEnergyStored()).isGreaterOrSameThan(QuintLongValue.SEPTILLION.get())) {
-            this.getEnergyStorage().receiveEnergy(QuintLongValue.SEPTILLION.get(), false);
-            this.itemHandler.getStackInSlot(ENERGY_SLOT).shrink(1);
-            changed = true;
-        }
+        boolean changed = false;
 
         if (this.isLit()) {
             this.progress++;
@@ -190,9 +187,9 @@ public class CombinerBlockEntity extends AbstractMachineBlockEntity {
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 return switch (slot) {
-                    case 0, 1 -> true;
-                    case 2, 4 -> false;
-                    case 3 -> stack.is(Blocks.COAL_BLOCK.asItem());
+                    case INPUT_1_SLOT, INPUT_2_SLOT -> true;
+                    case OUTPUT_SLOT, UPGRADE_SLOT -> false;
+                    case ENERGY_SLOT -> stack.getItem() instanceof EnergizedClockItem;
                     default -> super.isItemValid(slot, stack);
                 };
             }
@@ -213,11 +210,16 @@ public class CombinerBlockEntity extends AbstractMachineBlockEntity {
 
     @Override
     public QuintLong getEnergyCapacity() {
-        return QuintLongValue.OCTILLION.get();
+        return QuintLongValue.MILLION.get();
     }
 
     @Override
     public QuintLong getEnergyMaxExtract() {
         return QuintLongValue.ZERO.get();
+    }
+
+    @Override
+    public int getEnergySlotGettingFromItem() {
+        return ENERGY_SLOT;
     }
 }

@@ -4,6 +4,8 @@ import net.flansflame.flans_knowledge_lib.mixin_accesor.IEntityMixinAccessor;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
+import java.util.HexFormat;
+
 public class Utils {
     public static void exRemove(Entity entity) {
         entity.level().broadcastEntityEvent(entity, (byte) 60);
@@ -23,5 +25,9 @@ public class Utils {
         if (entity instanceof LivingEntity livingEntity) {
             livingEntity.getBrain().clearMemories();
         }
+    }
+
+    public static int getMcColor(String color) {
+        return -16777216 + HexFormat.fromHexDigits(color);
     }
 }

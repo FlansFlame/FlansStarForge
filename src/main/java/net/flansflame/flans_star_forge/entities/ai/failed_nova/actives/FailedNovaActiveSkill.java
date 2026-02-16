@@ -4,10 +4,12 @@ import net.flansflame.flans_knowledge_lib.Utils;
 import net.flansflame.flans_star_forge.damagesource.ModDamageTypes;
 import net.flansflame.flans_star_forge.entities.entity.FailedNovaEntity;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.GameType;
 
 public class FailedNovaActiveSkill {
     private final String animationId;
@@ -52,6 +54,8 @@ public class FailedNovaActiveSkill {
 
         nova.swing(InteractionHand.MAIN_HAND);
         if (nova.level() instanceof ServerLevel server) {
+            if (target instanceof ServerPlayer serverPlayer && serverPlayer.isSpectator()) return;
+
             target.hurt(Utils.createDamageSource(server, ModDamageTypes.MOB_ATTACK_WITH_ALL_BYPASS, nova), amount);
 
             if (this.getAttackSound() != null) {

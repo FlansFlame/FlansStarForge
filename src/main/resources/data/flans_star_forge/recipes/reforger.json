@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RMR",
+    "IEI",
+    "#M#"
+  ],
+  "key": {
+    "E": {
+      "item": "flans_star_forge:machine_frame"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "M": {
+      "item": "flans_star_forge:mysterious_mechanism"
+    },
+    "#": {
+      "item": "minecraft:smithing_table"
+    }
+  },
+  "result": {
+    "item": "flans_star_forge:reforger"
+  }
+}

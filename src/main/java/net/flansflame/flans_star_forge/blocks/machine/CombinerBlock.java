@@ -54,17 +54,17 @@ public class CombinerBlock extends BaseMachineBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new CombinerBlockEntity(pos, state);
-    }
-
-    @Nullable
-    @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide) {
             return null;
         }
         return createTickerHelper(type, ModBlockEntities.COMBINER.get(),
                 (sLevel, sPos, sState, sBlockEntity) -> sBlockEntity.tick(sLevel, sPos, sState));
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new CombinerBlockEntity(pos, state);
     }
 }

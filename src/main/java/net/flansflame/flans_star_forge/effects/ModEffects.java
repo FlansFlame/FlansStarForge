@@ -1,6 +1,7 @@
 package net.flansflame.flans_star_forge.effects;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
+import net.flansflame.flans_star_forge.effects.effect.FrozenEffect;
 import net.flansflame.flans_star_forge.effects.effect.StarsBlessingEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -13,6 +14,7 @@ public class ModEffects {
             DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, FlansStarForge.MOD_ID);
 
     public static final RegistryObject<MobEffect> STARS_BLESSING = EFFECTS.register("stars_blessing", StarsBlessingEffect::new);
+    public static final RegistryObject<MobEffect> FROZEN = EFFECTS.register("frozen", FrozenEffect::new);
 
     public static void register(IEventBus eventBus){
         EFFECTS.register(eventBus);
