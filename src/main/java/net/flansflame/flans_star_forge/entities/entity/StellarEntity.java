@@ -280,6 +280,9 @@ public class StellarEntity extends TamableAnimal implements GeoEntity, IOnRemove
             if (itemStack.is(ModItems.STARS_POWERSTONE.get())) {
                 if (ModComponentTags.OWNER_UUID.get(itemStack).isEmpty()) {
                     ModComponentTags.OWNER_UUID.set(itemStack, player.getStringUUID());
+                    if (this.hasCustomName()){
+                        ModComponentTags.NAME.set(itemStack, String.valueOf(this.getCustomName()));
+                    }
                     this.exDiscard();
                     return InteractionResult.SUCCESS;
                 }

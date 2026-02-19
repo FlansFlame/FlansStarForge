@@ -96,7 +96,6 @@ public class EnergyCableBlock extends Block {
 
 
     /*ENERGY HANDLING*/
-
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (level instanceof ServerLevel server) {

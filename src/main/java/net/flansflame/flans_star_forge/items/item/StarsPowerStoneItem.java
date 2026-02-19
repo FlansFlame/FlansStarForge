@@ -46,18 +46,18 @@ public class StarsPowerStoneItem extends Item {
                         entityToSpawn.tame(player);
                         entityToSpawn.setYRot(server.getRandom().nextFloat() * 360F);
                         entityToSpawn.setSitting(true);
+                        if (!ModComponentTags.NAME.get(itemStack).isEmpty()) {
+                            entityToSpawn.setCustomName(Component.literal(ModComponentTags.NAME.get(itemStack)));
+                        }
                     }
                 }
 
-                if (level.isClientSide) {
-                    player.displayClientMessage(Component.translatable("flanaf-bau.flans_star_forge.stellar_on_spawn", player.getName()), false);
-                }
-
                 ModComponentTags.OWNER_UUID.set(itemStack);
+                ModComponentTags.NAME.set(itemStack);
                 return InteractionResult.SUCCESS;
             } else {
                 if (level.isClientSide) {
-                    player.displayClientMessage(Component.translatable("flanaf-bau.flans_star_forge.stellar_deny_spawn"), false);
+                    player.displayClientMessage(Component.literal("<").append(ModComponentTags.NAME.get(itemStack).isEmpty() ? Component.translatable("entity.flans_star_forge.stellar") : Component.literal(ModComponentTags.NAME.get(itemStack))).append("> ").append(Component.translatable("flanaf-bau.flans_star_forge.stellar_deny_spawn")), false);
                 }
                 return InteractionResult.FAIL;
             }

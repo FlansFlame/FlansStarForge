@@ -8,6 +8,7 @@ public class ModComponentTags {
     public static final TagRegisterer TAGS = new TagRegisterer(FlansStarForge.MOD_ID);
 
     public static final StringTag OWNER_UUID = TAGS.register(new StringTag("owner_uuid"));
+    public static final StringTag NAME = TAGS.register(new StringTag("name"));
     public static final BooleanTag TOGGLE_BLESSING = TAGS.register(new BooleanTag("toggle_blessing"));
 
     public static final QuintLongTag STORED_ENERGY = TAGS.register(new QuintLongTag("stored_energy"));

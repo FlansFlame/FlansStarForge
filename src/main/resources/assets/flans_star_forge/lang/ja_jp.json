@@ -1,22 +1,16 @@
 {
-  "tab.flans_star_forge.star_forge": "Flans Star Forge",
-
   "item.flans_star_forge.stars_powerstone": "Stars PowerStone",
   "item.flans_star_forge.stars_powerstone.desc": "§8Be aware that this item & Stellar will be crucial to this mod.\nThese will not be redistributed again.(Unless you spawn them or do /flans_star_forge re_drop_meteor)\nSo don't lose this or her.",
   "item.flans_star_forge.withering_powerstone": "Withering PowerStone",
-  "item.flans_star_forge.forged_stars_fragment": "Forged Stars Fragment",
-  "item.flans_star_forge.stars_fragment": "Stars Fragment",
+  "item.flans_star_forge.forged_stars_fragment": "星屑 [鋳造済み]",
+  "item.flans_star_forge.stars_fragment": "星屑",
 
   "block.flans_star_forge.uni_stone": "Uni-Stone",
 
   "item.flans_star_forge.mysterious_mechanism": "Mysterious Mechanism",
   "item.flans_star_forge.wrench": "Wrench",
   "item.flans_star_forge.energized_clock": "Energized Clock",
-  "item.flans_star_forge.energized_clock.desc1": "%s SdE",
-  "item.flans_star_forge.energized_clock.desc2": "/ %s SdE",
   "item.flans_star_forge.pressurized_clock": "Pressurized Clock",
-  "item.flans_star_forge.pressurized_clock.desc1": "%s mB",
-  "item.flans_star_forge.pressurized_clock.desc2": "/ %s mB",
   "block.flans_star_forge.energy_cable": "Energy Cable",
   "block.flans_star_forge.machine_frame": "Machine Frame",
   "block.flans_star_forge.fe2sde_converter": "Fe2SdE Converter",
@@ -50,8 +44,5 @@
 
   "screen.flans_star_forge.fake_death.causeOfDeath": "No redoing this time...",
   "screen.flans_star_forge.fake_death.no_quitting": "There's no quitting now",
-  "screen.flans_star_forge.fake_death.pray_2_respawn": "Pray, and respawn...",
-
-  "tooltip.flans_star_forge.fluid": "%s mB",
-  "tooltip.flans_star_forge.fluid.with_capacity": "%s / %s mB"
+  "screen.flans_star_forge.fake_death.pray_2_respawn": "Pray, and respawn..."
 }
