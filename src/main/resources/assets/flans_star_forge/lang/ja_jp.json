@@ -1,48 +1,48 @@
 {
-  "item.flans_star_forge.stars_powerstone": "Stars PowerStone",
-  "item.flans_star_forge.stars_powerstone.desc": "§8Be aware that this item & Stellar will be crucial to this mod.\nThese will not be redistributed again.(Unless you spawn them or do /flans_star_forge re_drop_meteor)\nSo don't lose this or her.",
-  "item.flans_star_forge.withering_powerstone": "Withering PowerStone",
-  "item.flans_star_forge.forged_stars_fragment": "星屑 [鋳造済み]",
+  "item.flans_star_forge.stars_powerstone": "星のパワーストーン",
+  "item.flans_star_forge.stars_powerstone.desc": "§8注意: このアイテムとステラ(Stellar)はこのModにおいて極めて重要な存在です。\n（再度スポーンさせるか /flans_star_forge re_drop_meteor を実行しない限り）これらが再び手に入ることはありません。\n絶対にこのアイテムと「彼女」を失わないでください。",
+  "item.flans_star_forge.withering_powerstone": "枯渇のパワーストーン",
+  "item.flans_star_forge.forged_stars_fragment": "星屑",
   "item.flans_star_forge.stars_fragment": "星屑",
 
-  "block.flans_star_forge.uni_stone": "Uni-Stone",
+  "block.flans_star_forge.uni_stone": "ユニ・ストーン",
 
-  "item.flans_star_forge.mysterious_mechanism": "Mysterious Mechanism",
-  "item.flans_star_forge.wrench": "Wrench",
-  "item.flans_star_forge.energized_clock": "Energized Clock",
-  "item.flans_star_forge.pressurized_clock": "Pressurized Clock",
-  "block.flans_star_forge.energy_cable": "Energy Cable",
-  "block.flans_star_forge.machine_frame": "Machine Frame",
-  "block.flans_star_forge.fe2sde_converter": "Fe2SdE Converter",
-  "block.flans_star_forge.combiner": "Combiner",
-  "block.flans_star_forge.destructor": "Destructor",
-  "block.flans_star_forge.reforger": "Reforger",
+  "item.flans_star_forge.mysterious_mechanism": "謎の機構",
+  "item.flans_star_forge.wrench": "レンチ",
+  "item.flans_star_forge.energized_clock": "帯電した時計",
+  "item.flans_star_forge.pressurized_clock": "加圧された時計",
+  "block.flans_star_forge.energy_cable": "エネルギーケーブル",
+  "block.flans_star_forge.machine_frame": "マシンフレーム",
+  "block.flans_star_forge.fe2sde_converter": "Fe2SdE コンバーター",
+  "block.flans_star_forge.combiner": "コンバイナー",
+  "block.flans_star_forge.destructor": "デストラクター",
+  "block.flans_star_forge.reforger": "リフォージャー",
 
-  "effect.flans_star_forge.stars_blessing": "Stars Blessing",
-  "effect.flans_star_forge.stars_blessing.desc": "A true gift from the Stars",
+  "effect.flans_star_forge.stars_blessing": "星の祝福",
+  "effect.flans_star_forge.stars_blessing.desc": "星々からの真の贈り物",
 
-  "entity.flans_star_forge.failed_nova": "Nova [The Failed]",
-  "entity.flans_star_forge.friend": "Friend",
+  "entity.flans_star_forge.failed_nova": "ノヴァ",
+  "entity.flans_star_forge.friend": "フレンド",
 
-  "entity.flans_star_forge.stellar": "Stellar",
-  "entity.flans_star_forge.stellar.failed_to_teleport": "[Teleport Stellar] Unable to fined your partner(´;ω;｀)",
-  "entity.flans_star_forge.stars_cluster": "Stars Cluster",
+  "entity.flans_star_forge.stellar": "ステラ",
+  "entity.flans_star_forge.stellar.failed_to_teleport": " あなたのパートナーが見つかりません(´;ω;｀)",
+  "entity.flans_star_forge.stars_cluster": "星団",
 
-  "entity.flans_star_forge.stellar_end_stage": "§4Stellar",
-  "entity.flans_star_forge.wither_bomb": "Wither Bomb",
+  "entity.flans_star_forge.stellar_end_stage": "§4ステラ",
+  "entity.flans_star_forge.wither_bomb": "ウィザーボム",
 
   "key.categories.flans_star_forge": "Flans Star Forge",
-  "key.flans_star_forge.teleport_stellar": "Teleport Stellar",
-  "key.flans_star_forge.toggle_emotions": "Toggle Emotions",
+  "key.flans_star_forge.teleport_stellar": "ステラをテレポート",
+  "key.flans_star_forge.toggle_emotions": "感情の切り替え",
 
-  "cmd.flans_star_forge.re_drop_meteor.fail": "§cFail to execute 're_drop_meteor'",
+  "cmd.flans_star_forge.re_drop_meteor.fail": "§c're_drop_meteor' の実行に失敗しました",
 
-  "flanaf-bau.flans_star_forge.stellar_deny_spawn": "I would rather not spawn there...",
+  "flanaf-bau.flans_star_forge.stellar_deny_spawn": "そこにはあまりスポーンしたくないかも...",
 
-  "text.flans_star_forge.power_is_not_reliable": "§l§4Your power is not worth reliance...",
-  "text.flans_star_forge.warn_totem": "§l§4You really think you can just get away from death with piece of totem?",
+  "text.flans_star_forge.power_is_not_reliable": "§l§4お前の力など、頼る価値もない...",
+  "text.flans_star_forge.warn_totem": "§l§4たかだかトーテムごときで、死から逃れられると本気で思っているのか？",
 
-  "screen.flans_star_forge.fake_death.causeOfDeath": "No redoing this time...",
-  "screen.flans_star_forge.fake_death.no_quitting": "There's no quitting now",
-  "screen.flans_star_forge.fake_death.pray_2_respawn": "Pray, and respawn..."
+  "screen.flans_star_forge.fake_death.causeOfDeath": "今回ばかりは、やり直しはきかない...",
+  "screen.flans_star_forge.fake_death.no_quitting": "もう後戻りはできない",
+  "screen.flans_star_forge.fake_death.pray_2_respawn": "祈れ、そしてリスポーンせよ..."
 }
