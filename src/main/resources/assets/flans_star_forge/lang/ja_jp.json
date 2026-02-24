@@ -5,6 +5,10 @@
   "item.flans_star_forge.forged_stars_fragment": "星屑",
   "item.flans_star_forge.stars_fragment": "星屑",
 
+  "item.flans_star_forge.refined_amethyst_shard": "強化されたアメジストの欠片",
+  "item.flans_star_forge.incomplete_beacon_of_star": "不完全は星のビーコン",
+  "block.flans_star_forge.beacon_of_star": "星のビーコン",
+
   "block.flans_star_forge.uni_stone": "ユニ・ストーン",
 
   "item.flans_star_forge.mysterious_mechanism": "謎の機構",
@@ -21,11 +25,11 @@
   "effect.flans_star_forge.stars_blessing": "星の祝福",
   "effect.flans_star_forge.stars_blessing.desc": "星々からの真の贈り物",
 
-  "entity.flans_star_forge.failed_nova": "ノヴァ",
-  "entity.flans_star_forge.friend": "フレンド",
+  "entity.flans_star_forge.failed_nova": "ノヴァ [失敗作]",
+  "entity.flans_star_forge.friend": "\"友達\"",
 
   "entity.flans_star_forge.stellar": "ステラ",
-  "entity.flans_star_forge.stellar.failed_to_teleport": " あなたのパートナーが見つかりません(´;ω;｀)",
+  "entity.flans_star_forge.stellar.failed_to_teleport": " [ステラをテレポート] あなたのパートナーが見つかりません(´;ω;｀)",
   "entity.flans_star_forge.stars_cluster": "星団",
 
   "entity.flans_star_forge.stellar_end_stage": "§4ステラ",
@@ -33,7 +37,6 @@
 
   "key.categories.flans_star_forge": "Flans Star Forge",
   "key.flans_star_forge.teleport_stellar": "ステラをテレポート",
-  "key.flans_star_forge.toggle_emotions": "感情の切り替え",
 
   "cmd.flans_star_forge.re_drop_meteor.fail": "§c're_drop_meteor' の実行に失敗しました",
 
