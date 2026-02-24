@@ -1,0 +1,12 @@
+{
+  "type": "flans_star_forge:combining",
+  "ingredient_a": {
+    "item": "minecraft:amethyst_shard"
+  },
+  "ingredient_b": {
+    "item": "minecraft:nether_star"
+  },
+  "result": {
+    "item": "flans_star_forge:refined_amethyst_shard"
+  }
+}

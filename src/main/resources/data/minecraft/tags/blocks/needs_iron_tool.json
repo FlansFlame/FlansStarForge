@@ -1,6 +1,10 @@
 {
   "values": [
     "flans_star_forge:machine_frame",
-    "flans_star_forge:combiner"
+    "flans_star_forge:fe2sde_converter",
+    "flans_star_forge:combiner",
+    "flans_star_forge:destructor",
+    "flans_star_forge:reforger",
+    "flans_star_forge:energy_cable"
   ]
 }

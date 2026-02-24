@@ -44,6 +44,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         ArrayList<RegistryObject<Item>> registries = new ArrayList<>();
 
         registries.addAll(ModItems.ITEMS.getEntries().stream().toList());
+        registries.remove(ModItems.REFINED_AMETHYST_SHARD);
 
         for (RegistryObject<Item> registry : registries) {
             if (registry.get() instanceof SwordItem || registry.get() instanceof PickaxeItem || registry.get() instanceof AxeItem || registry.get() instanceof ShovelItem || registry.get() instanceof HoeItem) {

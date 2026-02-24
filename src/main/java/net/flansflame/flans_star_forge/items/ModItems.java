@@ -35,6 +35,11 @@ public class ModItems {
     public static final RegistryObject<Item> PRESSURIZED_CLOCK = ITEMS.register("pressurized_clock",
             () -> new PressurizedClockItem(new Item.Properties().stacksTo(1)));
 
+    public static final RegistryObject<Item> REFINED_AMETHYST_SHARD = ITEMS.register("refined_amethyst_shard",
+            () -> new FoilItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> INCOMPLETE_BEACON_OF_STAR = ITEMS.register("incomplete_beacon_of_star",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
     public static Supplier<Item> createSimpleItem(){
         return () -> new Item(new Item.Properties());
     }

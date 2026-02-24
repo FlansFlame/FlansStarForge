@@ -1,6 +1,7 @@
 package net.flansflame.flans_star_forge.blocks;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
+import net.flansflame.flans_star_forge.blocks.block.BeaconOfStarBlock;
 import net.flansflame.flans_star_forge.blocks.block.EnergyCableBlock;
 import net.flansflame.flans_star_forge.blocks.block.MeteorBlock;
 import net.flansflame.flans_star_forge.blocks.block.UniStoneBlock;
@@ -10,6 +11,7 @@ import net.flansflame.flans_star_forge.blocks.machine.FE2SdEConverterBlock;
 import net.flansflame.flans_star_forge.blocks.machine.ReforgerBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -49,15 +51,17 @@ public class ModBlocks {
     public static final RegistryObject<Block> REFORGER = register("reforger",
             () -> new ReforgerBlock(createMetalProperty()));
 
-
     public static final RegistryObject<Block> ENERGY_CABLE = register("energy_cable",
             () -> new EnergyCableBlock(createMetalProperty().noCollission().noOcclusion()));
 
-    public static Supplier<Block> createSimpleMetalBlock(){
+    public static final RegistryObject<Block> BEACON_OF_STAR = register("beacon_of_star",
+            () -> new BeaconOfStarBlock(BlockBehaviour.Properties.copy(Blocks.BEACON).strength(-1.0F, 3600000.0F).noOcclusion()), new Item.Properties().rarity(Rarity.EPIC).stacksTo(1));
+
+    public static Supplier<Block> createSimpleMetalBlock() {
         return () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK));
     }
 
-    public static BlockBehaviour.Properties createMetalProperty(){
+    public static BlockBehaviour.Properties createMetalProperty() {
         return BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK);
     }
 
@@ -66,6 +70,13 @@ public class ModBlocks {
         ITEMS.register(id, () -> new BlockItem(toReturn.get(), new Item.Properties()));
         return toReturn;
     }
+
+    private static <T extends Block> RegistryObject<T> register(String id, Supplier<T> block, Item.Properties properties) {
+        RegistryObject<T> toReturn = BLOCKS.register(id, block);
+        ITEMS.register(id, () -> new BlockItem(toReturn.get(), properties));
+        return toReturn;
+    }
+
 
     private static <T extends Block> RegistryObject<T> registerNull(String id, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(id, block);

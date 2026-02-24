@@ -1,0 +1,12 @@
+{
+  "type": "flans_star_forge:combining",
+  "ingredient_a": {
+    "item": "minecraft:beacon"
+  },
+  "ingredient_b": {
+    "item": "flans_star_forge:refined_amethyst_shard"
+  },
+  "result": {
+    "item": "flans_star_forge:incomplete_beacon_of_star"
+  }
+}

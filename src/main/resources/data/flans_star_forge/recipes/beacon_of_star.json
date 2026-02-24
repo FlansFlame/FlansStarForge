@@ -1,0 +1,9 @@
+{
+  "type": "flans_star_forge:reforging",
+  "ingredient": {
+    "item": "flans_star_forge:incomplete_beacon_of_star"
+  },
+  "result": {
+    "item": "flans_star_forge:beacon_of_star"
+  }
+}

@@ -41,8 +41,6 @@ public class EnergyCableBlock extends Block {
 
     public static final BooleanProperty LOCKED = BlockStateProperties.LOCKED;
 
-    private boolean setOrReset = false;
-
     public EnergyCableBlock(Properties build) {
         super(build);
         this.registerDefaultState(stateDefinition.any()
@@ -207,9 +205,5 @@ public class EnergyCableBlock extends Block {
         }
 
         return super.use(state, level, pos, player, hand, result);
-    }
-
-    public void setOrReset() {
-        this.setOrReset = true;
     }
 }
