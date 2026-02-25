@@ -11,10 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class EnergyCableNetwork {
 
@@ -26,6 +23,13 @@ public class EnergyCableNetwork {
     private BlockPos rebuildStart;
 
     private static final QuintLong MAX_TRANSFER = QuintLong.MAX_VALUE.copy();
+
+    public EnergyCableNetwork() {
+    }
+
+    public EnergyCableNetwork(BlockPos pos){
+        this.pipes.add(pos);
+    }
 
     public void markDirty(BlockPos start) {
         dirty = true;
