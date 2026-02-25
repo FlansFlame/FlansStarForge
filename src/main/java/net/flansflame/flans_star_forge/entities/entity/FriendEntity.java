@@ -237,7 +237,7 @@ public class FriendEntity extends Monster implements GeoEntity, IOnRemoved {
 
     @Override
     public float getHealth() {
-        return this.getMaxHealth();
+        return this.getExHp() > 1 ? this.getExHp() : 0.5f;
     }
 
     @Override
