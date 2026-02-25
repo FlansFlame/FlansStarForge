@@ -1,26 +1,24 @@
 package net.flansflame.flans_star_forge.blocks.block;
 
-import net.flansflame.flans_star_forge.entities.ModEntities;
+import net.flansflame.flans_star_forge.blocks.ModBlockEntities;
+import net.flansflame.flans_star_forge.blocks.entity.BeaconOfStarBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-public class BeaconOfStarBlock extends Block {
-
-    private static final int SPAWN_TICK = 20;
-    private int tick = 0;
+public class BeaconOfStarBlock extends BaseEntityBlock {
 
     public BeaconOfStarBlock(Properties build) {
         super(build);
@@ -43,28 +41,24 @@ public class BeaconOfStarBlock extends Block {
         level.scheduleTick(pos, this, 1);
     }
 
+    @Nullable
     @Override
-    public void tick(BlockState state, ServerLevel server, BlockPos pos, RandomSource source) {
-        if (this.tick == -1) return;
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BeaconOfStarBlockEntity(pos, state);
+    }
 
-        if (this.tick > SPAWN_TICK) {
-            double x = pos.getX();
-            double y = pos.getY();
-            double z = pos.getZ();
-
-            server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 4, 0.1f, 0.1f, 0.1f, 0f);
-            for (int dx = -3; dx < 3; dx++) {
-                for (int dy = 0; dy < 3; dy++) {
-                    for (int dz = -3; dz < 3; dz++) {
-                        BlockPos destroyPos = BlockPos.containing(new Vec3(x + dx, y + dy, z + dz));
-                        server.setBlock(destroyPos, Blocks.AIR.defaultBlockState(), 3);
-                    }
-                }
-            }
-            ModEntities.FAILED_NOVA.get().spawn(server, pos, MobSpawnType.COMMAND);
-        } else {
-            this.tick++;
-            server.scheduleTick(pos, this, 1);
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (level.isClientSide) {
+            return null;
         }
+        return createTickerHelper(type, ModBlockEntities.BEACON_OF_STAR.get(),
+                (sLevel, sPos, sState, sBlockEntity) -> sBlockEntity.tick((ServerLevel) sLevel, sPos, sState));
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 }

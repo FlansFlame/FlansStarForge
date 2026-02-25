@@ -1,10 +1,7 @@
 package net.flansflame.flans_star_forge.blocks;
 
 import net.flansflame.flans_star_forge.FlansStarForge;
-import net.flansflame.flans_star_forge.blocks.entity.CombinerBlockEntity;
-import net.flansflame.flans_star_forge.blocks.entity.DestructorBlockEntity;
-import net.flansflame.flans_star_forge.blocks.entity.FE2SdEConverterBlockEntity;
-import net.flansflame.flans_star_forge.blocks.entity.ReforgerBlockEntity;
+import net.flansflame.flans_star_forge.blocks.entity.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,6 +33,11 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("reforger", () ->
                     BlockEntityType.Builder.of(ReforgerBlockEntity::new,
                             ModBlocks.REFORGER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<BeaconOfStarBlockEntity>> BEACON_OF_STAR =
+            BLOCK_ENTITIES.register("beacon_of_star", () ->
+                    BlockEntityType.Builder.of(BeaconOfStarBlockEntity::new,
+                            ModBlocks.BEACON_OF_STAR.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
