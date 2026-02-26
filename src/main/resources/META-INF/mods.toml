@@ -57,7 +57,7 @@ description='''${mod_description}'''
 [[dependencies."${mod_id}"]]
     modId="flans_knowledge_lib"
     mandatory=true
-    versionRange="[1.20.1-release1.4b,)"
+    versionRange="[1.20.1-release1.4c,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies."${mod_id}"]]
