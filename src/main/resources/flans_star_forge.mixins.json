@@ -1,7 +1,0 @@
-{
-  "required": true,
-  "package": "net.flansflame.flans_star_forge.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "mixins": [
-  ]
-}

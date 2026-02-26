@@ -3,7 +3,6 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.spongepowered.mixin' version '0.8.5'
 }
 
 version = mod_version
@@ -86,10 +85,8 @@ minecraft {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', mod_id
 
-            /*
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-             */
         }
 
         server {
@@ -188,12 +185,6 @@ dependencies {
     //implementation fg.deobf("curse.maven:eschatology-bosses-artifacts-1391713:7260914")
     implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:7278003")
     implementation fg.deobf("curse.maven:slashblade-resharped-1022428:7363505")
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-}
-
-mixin {
-    config "${mod_id}.mixins.json"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
