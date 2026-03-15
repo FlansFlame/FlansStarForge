@@ -14,6 +14,8 @@ public class Utils {
             ((IEntityMixinAccessor) entity).flansKnowledgeLib$setRemovalReason(Entity.RemovalReason.DISCARDED);
         }
 
+        if (entity.getRemovalReason() == null) return;
+
         if (entity.getRemovalReason().shouldDestroy()) {
             entity.stopRiding();
         }

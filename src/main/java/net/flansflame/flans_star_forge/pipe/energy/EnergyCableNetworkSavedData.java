@@ -17,7 +17,7 @@ public class EnergyCableNetworkSavedData extends SavedData {
 
     public static EnergyCableNetworkSavedData get(ServerLevel server) {
         return server.getDataStorage().computeIfAbsent(
-                tag -> load(tag),
+                EnergyCableNetworkSavedData::load,
                 EnergyCableNetworkSavedData::new,
                 "energy_cable_networks"
         );

@@ -9,9 +9,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
 
 public class EnergyCableNetwork {
 
@@ -27,7 +29,7 @@ public class EnergyCableNetwork {
     public EnergyCableNetwork() {
     }
 
-    public EnergyCableNetwork(BlockPos pos){
+    public EnergyCableNetwork(BlockPos pos) {
         this.pipes.add(pos);
     }
 
@@ -54,8 +56,9 @@ public class EnergyCableNetwork {
                 BlockPos next = pos.relative(dir);
 
                 BlockState pipeState = level.getBlockState(pos);
-                PipeConnection out = EnergyCableBlock.getConnection(pipeState, dir);
+                if (!(pipeState.getBlock() instanceof EnergyCableBlock)) continue;
 
+                PipeConnection out = EnergyCableBlock.getConnection(pipeState, dir);
                 if (!out.canConnect()) continue;
 
                 BlockState nextState = level.getBlockState(next);
@@ -67,18 +70,18 @@ public class EnergyCableNetwork {
                     if (in.canConnect()) {
                         queue.add(next);
                     }
-                }
+                } else {
+                    BlockEntity be = level.getBlockEntity(next);
+                    if (be == null) continue;
 
-                BlockEntity be = level.getBlockEntity(next);
-                if (be == null) continue;
-
-                if (out.canExtract() || out.canReceive()) {
-                be.getCapability(StarDustEnergyStorage.CAPABILITY, dir.getOpposite())
-                        .ifPresent(cap -> {
-                            EnergyCableNode node = new EnergyCableNode(be, dir.getOpposite(), cap);
-                            if (cap.canExtract()) producers.add(node);
-                            if (cap.canReceive()) consumers.add(node);
-                        });
+                    if (out.canExtract() || out.canReceive()) {
+                        be.getCapability(StarDustEnergyStorage.CAPABILITY, dir.getOpposite())
+                                .ifPresent(cap -> {
+                                    EnergyCableNode node = new EnergyCableNode(be, dir.getOpposite(), cap);
+                                    if (cap.canExtract()) producers.add(node);
+                                    if (cap.canReceive()) consumers.add(node);
+                                });
+                    }
                 }
             }
         }
