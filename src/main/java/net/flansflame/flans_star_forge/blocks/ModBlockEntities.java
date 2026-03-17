@@ -34,6 +34,17 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(ReforgerBlockEntity::new,
                             ModBlocks.REFORGER.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<HeatGeneratorBlockEntity>> HEAT_GENERATOR =
+            BLOCK_ENTITIES.register("heat_generator", () ->
+                    BlockEntityType.Builder.of(HeatGeneratorBlockEntity::new,
+                            ModBlocks.HEAT_GENERATOR.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<SdE2FEConverterBlockEntity>> SDE_2_FE_CONVERTER =
+            BLOCK_ENTITIES.register("sde2fe_converter", () ->
+                    BlockEntityType.Builder.of(SdE2FEConverterBlockEntity::new,
+                            ModBlocks.SDE_2_FE_CONVERTER.get()).build(null));
+
+
     public static final RegistryObject<BlockEntityType<BeaconOfStarBlockEntity>> BEACON_OF_STAR =
             BLOCK_ENTITIES.register("beacon_of_star", () ->
                     BlockEntityType.Builder.of(BeaconOfStarBlockEntity::new,

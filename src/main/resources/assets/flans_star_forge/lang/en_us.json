@@ -27,6 +27,10 @@
   "block.flans_star_forge.combiner": "Combiner",
   "block.flans_star_forge.destructor": "Destructor",
   "block.flans_star_forge.reforger": "Reforger",
+  "block.flans_star_forge.heat_generator": "Heat Generator",
+  "block.flans_star_forge.sde2fe_converter": "SdE2Fe Converter",
+
+  "": "",
 
   "effect.flans_star_forge.stars_blessing": "Stars Blessing",
   "effect.flans_star_forge.stars_blessing.desc": "A true gift from the Stars",

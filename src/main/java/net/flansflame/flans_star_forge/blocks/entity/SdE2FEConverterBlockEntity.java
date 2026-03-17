@@ -1,0 +1,169 @@
+package net.flansflame.flans_star_forge.blocks.entity;
+
+import net.flansflame.flans_star_forge.blocks.ModBlockEntities;
+import net.flansflame.flans_star_forge.blocks.machine.BaseMachineBlock;
+import net.flansflame.flans_star_forge.blocks.util.InventoryDirectionEntry;
+import net.flansflame.flans_star_forge.blocks.util.InventoryDirectionWrapper;
+import net.flansflame.flans_star_forge.blocks.util.WrappedHandler;
+import net.flansflame.flans_star_forge.energy.ForgeEnergyStorage;
+import net.flansflame.flans_star_forge.energy.QuintLong;
+import net.flansflame.flans_star_forge.energy.QuintLongValue;
+import net.flansflame.flans_star_forge.items.item.EnergizedClockItem;
+import net.flansflame.flans_star_forge.screens.menu.FE2SdEConverterMenu;
+import net.flansflame.flans_star_forge.screens.menu.SdE2FEConverterMenu;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
+
+public class SdE2FEConverterBlockEntity extends AbstractMachineBlockEntity {
+
+    private final ForgeEnergyStorage forgeEnergyStorage = new ForgeEnergyStorage(QuintLongValue.BILLION.get().toInteger(), 0, QuintLongValue.BILLION.get().toInteger()) {
+        @Override
+        public void onEnergyChanged() {
+            SdE2FEConverterBlockEntity.this.setChanged();
+            SdE2FEConverterBlockEntity.this.getLevel().sendBlockUpdated(SdE2FEConverterBlockEntity.this.getBlockPos(), SdE2FEConverterBlockEntity.this.getBlockState(), SdE2FEConverterBlockEntity.this.getBlockState(), 3);
+        }
+    };
+
+    private static final int CONVERT_RATE_SDE = 1;
+    private static final int CONVERT_RATE_FE = 100000000;
+
+    public static final int SDE_ENERGY_SLOT = 0;
+    public static final int UPGRADE_SLOT = 1;
+
+    private LazyOptional<ForgeEnergyStorage> lazyForgeEnergyHandler = LazyOptional.empty();
+
+    public SdE2FEConverterBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.SDE_2_FE_CONVERTER.get(), pos, state);
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side) {
+        if (capability == ForgeCapabilities.ENERGY) {
+            return this.lazyForgeEnergyHandler.cast();
+        }
+        return super.getCapability(capability, side);
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        this.lazyForgeEnergyHandler = LazyOptional.of(this::getForgeEnergyStorage);
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        this.lazyForgeEnergyHandler.invalidate();
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        tag.put("forge_energy", this.forgeEnergyStorage.serializeNBT());
+        super.saveAdditional(tag);
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        this.forgeEnergyStorage.setEnergy(tag.getInt("forge_energy"));
+    }
+
+    @Override
+    public ItemStackHandler getItemHandler() {
+        return new ItemStackHandler(2) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                SdE2FEConverterBlockEntity.this.setChanged();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                return switch (slot) {
+                    case SDE_ENERGY_SLOT -> stack.getItem() instanceof EnergizedClockItem;
+                    case UPGRADE_SLOT -> false;
+                    default -> super.isItemValid(slot, stack);
+                };
+            }
+        };
+    }
+
+    @Override
+    protected Map<Direction, LazyOptional<WrappedHandler>> getDirectionWrappedHandlerMap() {
+        return new InventoryDirectionWrapper(this.itemHandler,
+                new InventoryDirectionEntry(Direction.UP, SDE_ENERGY_SLOT, false),
+                new InventoryDirectionEntry(Direction.DOWN, SDE_ENERGY_SLOT, false),
+                new InventoryDirectionEntry(Direction.NORTH, SDE_ENERGY_SLOT, false),
+                new InventoryDirectionEntry(Direction.SOUTH, SDE_ENERGY_SLOT, false),
+                new InventoryDirectionEntry(Direction.EAST, SDE_ENERGY_SLOT, false),
+                new InventoryDirectionEntry(Direction.WEST, SDE_ENERGY_SLOT, false)
+        ).directionMap;
+    }
+
+    @Override
+    public QuintLong getEnergyCapacity() {
+        return QuintLongValue.MILLION.get();
+    }
+
+    @Override
+    public QuintLong getEnergyMaxExtract() {
+        return QuintLongValue.ZERO.get();
+    }
+
+    public ForgeEnergyStorage getForgeEnergyStorage() {
+        return forgeEnergyStorage;
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+        return new SdE2FEConverterMenu(containerId, inventory, this);
+    }
+
+    @Override
+    public void tick(Level level, BlockPos pos, BlockState state) {
+        super.tick(level, pos, state);
+
+        boolean changed = false;
+
+        if (this.isLit()) {
+            this.getEnergyStorage().extractEnergyFromInside(new QuintLong(CONVERT_RATE_SDE), false);
+            this.getForgeEnergyStorage().receiveEnergyFromInsider(CONVERT_RATE_FE, false);
+            changed = true;
+        }
+
+        boolean lit = state.getValue(BaseMachineBlock.LIT);
+        if (lit != this.getEnergyStorage().getEnergyStored() >= CONVERT_RATE_SDE) {
+            state = state.setValue(BaseMachineBlock.LIT, this.getEnergyStorage().getEnergyStored() >= CONVERT_RATE_SDE);
+            level.setBlock(pos, state, 3);
+            changed = true;
+        }
+
+        if (changed) {
+            setChanged(level, pos, state);
+        }
+    }
+
+    private boolean isLit() {
+        return this.getEnergyStorage().getEnergyStored() >= CONVERT_RATE_SDE && this.getForgeEnergyStorage().getMaxEnergyStored() - this.getForgeEnergyStorage().getEnergyStored() >= CONVERT_RATE_FE;
+    }
+
+    @Override
+    public int getEnergySlotGettingFromItem() {
+        return SDE_ENERGY_SLOT;
+    }
+}

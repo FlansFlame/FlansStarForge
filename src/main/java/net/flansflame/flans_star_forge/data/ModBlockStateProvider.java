@@ -31,6 +31,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         registries.remove(ModBlocks.MACHINE_FRAME);
         registries.remove(ModBlocks.ENERGY_CABLE);
         registries.remove(ModBlocks.BEACON_OF_STAR);
+        registries.remove(ModBlocks.HEAT_GENERATOR);
 
         for (RegistryObject<Block> registry : registries) {
             if (registry.get() instanceof BaseMachineBlock){

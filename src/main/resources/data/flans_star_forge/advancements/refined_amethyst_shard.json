@@ -1,0 +1,38 @@
+{
+  "parent": "flans_star_forge:combiner",
+  "criteria": {
+    "item_get": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "flans_star_forge:refined_amethyst_shard"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.flans_star_forge.refined_amethyst_shard.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "flans_star_forge:refined_amethyst_shard"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.flans_star_forge.refined_amethyst_shard"
+    }
+  },
+  "requirements": [
+    [
+      "item_get"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

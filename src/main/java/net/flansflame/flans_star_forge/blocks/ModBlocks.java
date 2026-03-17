@@ -5,10 +5,8 @@ import net.flansflame.flans_star_forge.blocks.block.BeaconOfStarBlock;
 import net.flansflame.flans_star_forge.blocks.block.EnergyCableBlock;
 import net.flansflame.flans_star_forge.blocks.block.MeteorBlock;
 import net.flansflame.flans_star_forge.blocks.block.UniStoneBlock;
-import net.flansflame.flans_star_forge.blocks.machine.CombinerBlock;
-import net.flansflame.flans_star_forge.blocks.machine.DestructorBlock;
-import net.flansflame.flans_star_forge.blocks.machine.FE2SdEConverterBlock;
-import net.flansflame.flans_star_forge.blocks.machine.ReforgerBlock;
+import net.flansflame.flans_star_forge.blocks.entity.SdE2FEConverterBlockEntity;
+import net.flansflame.flans_star_forge.blocks.machine.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -50,6 +48,10 @@ public class ModBlocks {
             () -> new DestructorBlock(createMetalProperty()));
     public static final RegistryObject<Block> REFORGER = register("reforger",
             () -> new ReforgerBlock(createMetalProperty()));
+    public static final RegistryObject<Block> HEAT_GENERATOR = register("heat_generator",
+            () -> new HeatGeneratorBlock(createMetalProperty()));
+    public static final RegistryObject<Block> SDE_2_FE_CONVERTER = register("sde2fe_converter",
+            () -> new SdE2FEConverterBlock(createMetalProperty()));
 
     public static final RegistryObject<Block> ENERGY_CABLE = register("energy_cable",
             () -> new EnergyCableBlock(createMetalProperty().noCollission().noOcclusion()));

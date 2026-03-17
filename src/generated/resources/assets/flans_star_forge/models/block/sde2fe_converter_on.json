@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "flans_star_forge:block/machine_bottom",
+    "front": "flans_star_forge:block/sde2fe_converter_on",
+    "side": "flans_star_forge:block/machine_side_on",
+    "top": "flans_star_forge:block/machine_top"
+  }
+}

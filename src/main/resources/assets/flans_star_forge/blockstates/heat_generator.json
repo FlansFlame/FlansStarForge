@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "flans_star_forge:block/heat_generator"
+    },
+    "lit=true": {
+      "model": "flans_star_forge:block/heat_generator_on"
+    }
+  }
+}

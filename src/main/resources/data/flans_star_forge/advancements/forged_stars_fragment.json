@@ -1,0 +1,38 @@
+{
+  "parent": "flans_star_forge:reforger",
+  "criteria": {
+    "item_get": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "flans_star_forge:forged_stars_fragment"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.flans_star_forge.forged_stars_fragment.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "flans_star_forge:forged_stars_fragment"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.flans_star_forge.forged_stars_fragment"
+    }
+  },
+  "requirements": [
+    [
+      "item_get"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

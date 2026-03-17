@@ -17,6 +17,8 @@ public class Screen2MenuConnector {
             MenuScreens.register(ModMenuTypes.COMBINER.get(), CombinerScreen::new);
             MenuScreens.register(ModMenuTypes.DESTRUCTOR.get(), DestructorScreen::new);
             MenuScreens.register(ModMenuTypes.REFORGER.get(), ReforgerScreen::new);
+            MenuScreens.register(ModMenuTypes.HEAT_GENERATOR.get(), HeatGeneratorScreen::new);
+            MenuScreens.register(ModMenuTypes.SDE_2_FE_CONVERTER.get(), SdE2FEConverterScreen::new);
         });
     }
 }

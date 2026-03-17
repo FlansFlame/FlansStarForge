@@ -17,10 +17,12 @@
   "item.flans_star_forge.pressurized_clock": "加圧された時計",
   "block.flans_star_forge.energy_cable": "エネルギーケーブル",
   "block.flans_star_forge.machine_frame": "マシンフレーム",
-  "block.flans_star_forge.fe2sde_converter": "Fe2SdE コンバーター",
+  "block.flans_star_forge.fe2sde_converter": "Fe -> SdE コンバーター",
   "block.flans_star_forge.combiner": "コンバイナー",
   "block.flans_star_forge.destructor": "デストラクター",
   "block.flans_star_forge.reforger": "リフォージャー",
+  "block.flans_star_forge.heat_generator": "熱発電機",
+  "block.flans_star_forge.sde2fe_converter": "SdE -> Fe コンバーター",
 
   "effect.flans_star_forge.stars_blessing": "星の祝福",
   "effect.flans_star_forge.stars_blessing.desc": "星々からの真の贈り物",

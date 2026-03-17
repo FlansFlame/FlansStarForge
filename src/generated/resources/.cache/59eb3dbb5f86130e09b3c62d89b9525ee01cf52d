@@ -1,9 +1,10 @@
-// 1.20.1	2026-02-19T19:41:05.482395	Loot Tables
+// 1.20.1	2026-03-17T18:15:42.0655496	Loot Tables
 3624d728c23cf3768c37088816d68d90d8feec89 data/flans_star_forge/loot_tables/blocks/beacon_of_star.json
 2787ecdbd8f1973cb72170942f59babd4f7c63f9 data/flans_star_forge/loot_tables/blocks/combiner.json
 aa64aaa52d8093acd33fb3c62a5088f242a121bb data/flans_star_forge/loot_tables/blocks/destructor.json
 24a72efb4c601228a1e652a966ddd19bef4dee7c data/flans_star_forge/loot_tables/blocks/energy_cable.json
 f0f1addea42c71a8d706f567cb17361994220439 data/flans_star_forge/loot_tables/blocks/fe2sde_converter.json
-d2a664b9bc1092590941bcdfd987ba4d7c5b330d data/flans_star_forge/loot_tables/blocks/incomplete_beacon_of_star.json
+0fc27a38aa18aff62119498aef3fb07812a73320 data/flans_star_forge/loot_tables/blocks/heat_generator.json
 0c111c41e8b48a5a6f43dccb272965bfc5b3d434 data/flans_star_forge/loot_tables/blocks/machine_frame.json
 9ec7c0b1225b7dd2dc1100d6dcf689e101ff1ce3 data/flans_star_forge/loot_tables/blocks/reforger.json
+c6f2dd4464f587e26aba5fc0524e7bee1b1ff137 data/flans_star_forge/loot_tables/blocks/sde2fe_converter.json

@@ -23,6 +23,10 @@ public class ModMenuTypes {
             registerMenuType(DestructorMenu::new, "destructor_menu");
     public static final RegistryObject<MenuType<ReforgerMenu>> REFORGER =
             registerMenuType(ReforgerMenu::new, "reforger_menu");
+    public static final RegistryObject<MenuType<HeatGeneratorMenu>> HEAT_GENERATOR =
+            registerMenuType(HeatGeneratorMenu::new, "heat_generator");
+    public static final RegistryObject<MenuType<SdE2FEConverterMenu>> SDE_2_FE_CONVERTER =
+            registerMenuType(SdE2FEConverterMenu::new, "sde2fe_generator");
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
