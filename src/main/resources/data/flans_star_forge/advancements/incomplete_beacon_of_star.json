@@ -20,7 +20,7 @@
       "translate": "advancement.flans_star_forge.incomplete_beacon_of_star.desc"
     },
     "frame": "task",
-    "hidden": false,
+    "hidden": true,
     "icon": {
       "item": "flans_star_forge:incomplete_beacon_of_star"
     },

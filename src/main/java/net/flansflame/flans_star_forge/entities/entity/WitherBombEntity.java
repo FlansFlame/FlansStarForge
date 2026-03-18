@@ -2,10 +2,10 @@ package net.flansflame.flans_star_forge.entities.entity;
 
 import net.flansflame.flans_knowledge_lib.Utils;
 import net.flansflame.flans_knowledge_lib.mixin_accesor.IEntityMixinAccessor;
+import net.flansflame.flans_knowledge_lib.world.entity.IOnRemoved;
 import net.flansflame.flans_star_forge.damagesource.ModDamageTypes;
 import net.flansflame.flans_star_forge.entities.ModEntities;
-import net.flansflame.flans_star_forge.event.MobStrengthenEvents;
-import net.flansflame.flans_knowledge_lib.world.entity.IOnRemoved;
+import net.flansflame.flans_star_forge.items.ModItems;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -22,6 +22,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -154,6 +155,12 @@ public class WitherBombEntity extends Mob implements GeoEntity, IOnRemoved {
             server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, x, y + 0.5, x, 8, 0, 0, 0, 0);
             //sendExplosionSounds
             server.playSound(null, this.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE);
+
+            if (this.isPowerup()) {
+                //spawn STARS_FRAGMENT
+                ItemEntity drop = new ItemEntity(server, this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.STARS_FRAGMENT.get()));
+                server.addFreshEntity(drop);
+            }
         }
     }
 

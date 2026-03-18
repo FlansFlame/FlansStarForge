@@ -20,7 +20,7 @@
       "translate": "advancement.flans_star_forge.forged_stars_fragment.desc"
     },
     "frame": "task",
-    "hidden": false,
+    "hidden": true,
     "icon": {
       "item": "flans_star_forge:forged_stars_fragment"
     },

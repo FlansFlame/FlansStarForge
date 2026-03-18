@@ -33,6 +33,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -318,6 +319,11 @@ public class FailedNovaEntity extends Monster implements GeoEntity, IBossBar, IO
 
         ++this.deathTime;
         if (this.deathTime >= 20 && !this.isRemoved()) {
+            if (this.level() instanceof ServerLevel server){
+                ItemEntity drop = new ItemEntity(server, this.getX(),this.getY(),this.getZ(), new ItemStack(ModItems.STARS_FRAGMENT.get()));
+                server.addFreshEntity(drop);
+            }
+
             this.level().broadcastEntityEvent(this, (byte) 60);
 
             if (this.getRemovalReason() == null) {

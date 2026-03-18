@@ -1,7 +1,7 @@
 package net.flansflame.flans_star_forge.entities.ai.stellar.custom;
 
-import net.flansflame.flans_star_forge.entities.ai.stellar.StellarAttackPhase;
 import net.flansflame.flans_star_forge.entities.ModEntities;
+import net.flansflame.flans_star_forge.entities.ai.stellar.StellarAttackPhase;
 import net.flansflame.flans_star_forge.entities.entity.StellarEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -67,11 +67,15 @@ public class SummonFollowerStellarAttack extends StellarAttackPhase {
                     }
 
                     server.sendParticles(ParticleTypes.EXPLOSION_EMITTER, vX, y, vZ, 1, 0, 0, 0, 0);
-                    var entityToSpawn = ModEntities.STARS_CLUSTER.get().spawn(server, BlockPos.containing(vX, y, vZ), MobSpawnType.MOB_SUMMONED);
-                    if (entityToSpawn != null) {
-                        entityToSpawn.setYRot(stellar.getYRot());
-                        entityToSpawn.setPos(vX + 0.5, y, vZ + 0.5);
-                        entityToSpawn.tame((Player) stellar.getOwner());
+
+
+                    if (stellar.getOwner() instanceof Player player) {
+                        var entityToSpawn = ModEntities.STARS_CLUSTER.get().spawn(server, BlockPos.containing(vX, y, vZ), MobSpawnType.MOB_SUMMONED);
+                        if (entityToSpawn != null) {
+                            entityToSpawn.setYRot(stellar.getYRot());
+                            entityToSpawn.setPos(vX + 0.5, y, vZ + 0.5);
+                            entityToSpawn.tame(player);
+                        }
                     }
                 }
             } else {

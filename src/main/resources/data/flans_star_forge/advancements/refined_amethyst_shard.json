@@ -20,7 +20,7 @@
       "translate": "advancement.flans_star_forge.refined_amethyst_shard.desc"
     },
     "frame": "task",
-    "hidden": false,
+    "hidden": true,
     "icon": {
       "item": "flans_star_forge:refined_amethyst_shard"
     },
